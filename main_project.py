@@ -12,7 +12,7 @@ def menu(file_name):
 
 
     Receives:
-        file_name - string that contains the file's name of the current user.
+        file_name - A string that contains the file's name of the current user.
     """
     pass
 
@@ -22,8 +22,8 @@ def add_request(request, file_name):
 
 
     Receives:
-        file_name - string that contains the file's name of the current user.
-        request - string that contains the user's requested information.
+        file_name - A string that contains the file's name of the current user.
+        request - A string that contains the user's requested information.
     """
     pass
 
@@ -33,7 +33,7 @@ def pick_leagues():
 
 
     Returns:
-        teams - the list of the chosen teams.
+        teams - A list of the chosen teams.
     """
     pass
 
@@ -43,7 +43,7 @@ def pick_teams():
 
 
     Returns:
-        teams - the list of the chosen teams.
+        teams - A list of the chosen teams.
     """
     pass
 
@@ -53,7 +53,7 @@ def create_user_data(name):
 
 
     Receives:
-        name - string that contains the user's name.
+        name - A string that contains the user's name.
     """
     pass
 
@@ -63,7 +63,7 @@ def handle_new_user(username):
 
 
     Receives:
-        username - string that contains the user's name.
+        username - A string that contains the user's name.
     """
     create_user_data(username)
     teams = pick_teams()
@@ -81,10 +81,10 @@ def check_username(username):
 
 
     Receives:
-        username - string that contains the user's name that was entered by the user.
+        username - A string that contains the user's name that was entered by the user.
 
     Returns:
-        check_exist - bool that indicates if the username exists or not.
+        check_exist - A bool that indicates if the username exists or not.
     """
     pass
 
@@ -93,7 +93,7 @@ def log_in_page():
     """Create the log in page.
 
     Returns:
-        username - string that contains the user's name.
+        username - A string that contains the user's name.
     """
     username = raw_input()
     return username
