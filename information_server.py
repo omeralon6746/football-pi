@@ -1,10 +1,11 @@
 """
 Program Name: information_server
 By: Omer Alon
-Date: 08/01/17
+Date: 01/04/17
 Program Version: 1.0.0
 """
 import requests
+import changes
 
 
 class InformationSource(object):
@@ -12,47 +13,28 @@ class InformationSource(object):
     OTHER_INFO_API = "http://api.football-data.org/v1/"
 
     def __init__(self):
-        self.__last_scores = None
+        """Set the class's attributes."""
+        self.__last_scores = []
 
-    def last_scores(self):
-        return self.__last_scores
+    def get_changes(self):
+        """Get the changes in the live games.
 
-    def update_scores(self):
-        live = self.get_live_games()
 
-        last_home_teams = [game['homeTeamName'] for game in self.__last_scores]
-        new_home_teams = [game['homeTeamName'] for game in live]
-        # get new games
-        new = [game for game in live if game['homeTeamName']
-               not in last_home_teams]
-
-        # get finished games
-        finished = [game for game in self.__last_scores if game['homeTeamName']
-                    not in new_home_teams]
-
-        # get new goals
-        new_goals = []
-        for game in self.__last_scores:
-            for live_game in live:
-                if live_game['homeTeamName'] == game['homeTeamName']:
-                    if live_game['goalsHomeTeam'] != game['goalsHomeTeam'] \
-                            or live_game['goalsAwayTeam'] != game['goalsAwayTeam']:
-                        new_goals.append(((game['homeTeamName'],
-                                           live_game['goalsHomeTeam'] - game['goalsHomeTeam']),
-                                        (game['homeTeamName'],
-                                         live_game['goalsAwayTeam'] - game['goalsAwayTeam'])))
-
-        new_goals += [((game['homeTeamName'], game['goalsHomeTeam'])(game['awayTeamName'], game['goalsAwayTeam']))
-                      for game in new if game['goalsAwayTeam'] != 0
-                      or game['goalsAwaysTeam'] != 0]
+        Returns:
+            changed - A list of lists that contains the updates on the live games.
+        """
+        old_scores = self.__last_scores
+        new_scores = self.get_live_games()
+        changed = changes.Changes(new_scores, old_scores).find_all_changes()
+        return changed
 
     def get_live_games(self):
         """Get the live games.
 
 
         Returns:
-            live - A list of dictionaries, each containing information
-            about the game, in the following format:
+            last_scores - A list of dictionaries, each containing information
+            about the currently live games, in the following format:
             {'league': -,
             'goalsAwayTeam': -,
             'time': -,
@@ -66,30 +48,17 @@ class InformationSource(object):
         except ValueError:
             return self.get_live_games()
         # filter the live games
-        live = [game for game in games['games'] if -1 not in game.values()]
-        return live
+        self.__last_scores = [game for game in games['games'] if -1 not in game.values()]
+        return self.__last_scores
 
-    def get_team_code(team):
-        """Return the team's code.
+    def get_team_league(team):
+        """Get the team's league of a given team name.
 
 
         Receives:
-            team - string that contains the team's name(for example: 'Barcelona').
+            team - A string that contains a team.
 
         Returns:
-            code - string that contains the team's code(for example: 'FCB').
+            league - A string that contains the team's league.
         """
-    pass
-
-
-def get_team_league(team):
-    pass
-
-
-def main():
-    i = InformationSource()
-    print i.get_live_games()
-
-
-if __name__ == '__main__':
-    main()
+        pass
