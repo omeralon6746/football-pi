@@ -41,7 +41,7 @@ Builder.load_string('''
             size_hint_x: 0.03
             id: layout
             cols: 1
-            spacing: 10
+            spacing: 20
             size_hint_y: None
     ''')
 
