@@ -6,6 +6,14 @@ Program Version: 1.0.0
 """
 import information_server
 import user
+import os
+import kv
+from kivy.config import Config
+from kivy.app import App
+
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 480
 
 
 def show_updates(updates):
@@ -62,7 +70,7 @@ def menu(current_user):
         updates = info.get_changes()
         user_updates = get_user_updates(current_user.get_details(), updates)
         show_updates(user_updates)
-        user_updates = None
+        user_updates = []
 
 
 def pick_leagues():
@@ -72,7 +80,13 @@ def pick_leagues():
     Returns:
         leagues - A list of the chosen leagues.
     """
-    pass
+    leagues = []
+    print "Choose the leagues that you would like to follow on:"
+    user_input = raw_input()
+    while user_input != "finish":
+        leagues.append(user_input)
+        user_input = raw_input()
+    return leagues
 
 
 def pick_teams():
@@ -82,7 +96,13 @@ def pick_teams():
     Returns:
         teams - A list of the chosen teams.
     """
-    pass
+    teams = []
+    print "Choose the teams that you would like to follow on:"
+    user_input = raw_input()
+    while user_input != "finish":
+        teams.append(user_input)
+        user_input = raw_input()
+    return teams
 
 
 def fill_details(current_user, new_user=True):
@@ -100,39 +120,52 @@ def fill_details(current_user, new_user=True):
     current_user.create_user_data(new_user)
 
 
-def check_username(username):
-    """Check if the username already exists in one of the saves.
-
-
-    Receives:
-        username - A string that contains the user's name that was entered by the user.
-
-    Returns:
-        check_exist - A bool that indicates if the username exists or not.
-    """
-    pass
-
-
 def log_in_page():
     """Create the log in page.
+
 
     Returns:
         username - A string that contains the user's name.
     """
+    print "Enter your name:"
     username = raw_input()
     return username
 
 
-def main():
-    username = log_in_page()
-    current_user = user.User(username)
-    check_exist = check_username(username)
-    if check_exist:
-        current_user.restore_data()
-        menu(current_user)
-    else:
-        fill_details(current_user)
+class Main(App):
+    def __init__(self, **kwargs):
+        Config.set('graphics', 'width', '%s' % SCREEN_WIDTH)
+        Config.set('graphics', 'height', '%s' % SCREEN_HEIGHT)
+        super(Main, self).__init__(**kwargs)
+        self.__user = None
+        self.__screen_manager = kv.ScreenManagerNew(self)
 
+    def build(self):
+        # set window size
+        return self.__screen_manager
+
+    def update_username(self, username):
+        self.__user = user.User(username)
+        if self.__user.check_username():
+            pass
+        self.set_screen('team_selection')
+
+    def set_screen(self, screen_name):
+        self.__screen_manager.current = screen_name
 
 if __name__ == '__main__':
-    main()
+    Main().run()
+
+# def main():
+#     username = log_in_page()
+#     current_user = user.User(username)
+#     check_exist = check_username(username)
+#     if check_exist:
+#         current_user.restore_data()
+#         menu(current_user)
+#     else:
+#         fill_details(current_user)
+#
+#
+# if __name__ == '__main__':
+#     main()
