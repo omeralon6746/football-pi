@@ -34,6 +34,7 @@ Builder.load_string('''
     layout: layout
     view: view
     ScrollView:
+        pos_hint: {'x': .01}
         id: view
         size_hint: (1, None)
         GridLayout:
@@ -53,24 +54,9 @@ class TeamSelectionScreen(Screen):
             btn = ToggleButton(size_hint_y=None, height=24, width=24,
                                background_normal='button-before-check.png',
                                background_down='button-after-check-2.png',
-                               pos=(10, 420))
+                               )
             self.layout.add_widget(btn)
         self.view.size = (Window.width, Window.height)
-        # self.size_hint = (0.03, 0.05)
-        # pos = 420
-        # self.layout.bind(minimum_height=self.layout.setter('height'))
-        # for i in xrange(50):
-        #     button = ToggleButton(background_normal='button-before-check.png',
-        #                           background_down='button-after-check-2.png',
-        #                           pos=(10, pos),
-        #                           size_hint=(1, None), height=40)
-        #     pos -= 30
-        #     self.layout.add_widget(button)
-        # self.view.size_hint = (1, None)
-        # self.view.size = (Window.width, Window.height)
-        # # root = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))
-        # # root.add_widget(self.layout)
-        # runTouchApp(self.view)
 
 
 class LoginScreen(Screen):
