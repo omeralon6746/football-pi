@@ -34,7 +34,7 @@ Builder.load_string('''
     layout: layout
     view: view
     ScrollView:
-        pos_hint: {'x': .01}
+        pos_hint: {'x': .03}
         id: view
         size_hint: (1, None)
         GridLayout:
