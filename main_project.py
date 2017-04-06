@@ -8,12 +8,7 @@ import information_server
 import user
 import os
 import kv
-from kivy.config import Config
 from kivy.app import App
-
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 480
 
 
 def show_updates(updates):
@@ -134,8 +129,6 @@ def log_in_page():
 
 class Main(App):
     def __init__(self, **kwargs):
-        Config.set('graphics', 'width', '%s' % SCREEN_WIDTH)
-        Config.set('graphics', 'height', '%s' % SCREEN_HEIGHT)
         super(Main, self).__init__(**kwargs)
         self.__user = None
         self.__screen_manager = kv.ScreenManagerNew(self)

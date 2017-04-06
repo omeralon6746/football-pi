@@ -1,10 +1,16 @@
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.label import Label
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.togglebutton import ToggleButton
+from kivy.app import runTouchApp
+from kivy.uix.scrollview import ScrollView
+from kivy.core.window import Window
+from kivy.properties import ObjectProperty
+from kivy.uix.button import Button
 
 Builder.load_string('''
 
@@ -25,22 +31,46 @@ Builder.load_string('''
             on_text_validate: root.check_username(self)
 
 <TeamSelectionScreen>:
-    RelativeLayout:
-        size_hint: 0.03, 0.05
-        ToggleButton:
-            background_normal: 'button-before-check.png'
-            background_down: 'button-after-check-2.png'
-            pos: 10, 420
-        # Button:
-        #     text: 'Next'
-        #     on_press: root.manager.current = 'login'
-''')
+    layout: layout
+    view: view
+    ScrollView:
+        id: view
+        size_hint: (1, None)
+        GridLayout:
+            size_hint_x: 0.03
+            id: layout
+            cols: 1
+            spacing: 10
+            size_hint_y: None
+    ''')
 
 
 class TeamSelectionScreen(Screen):
     def __init__(self, **kwargs):
         super(TeamSelectionScreen, self).__init__(**kwargs)
-        # self.add_widget(CheckBox(size_hint=(0.06, 0.06)))
+        self.layout.bind(minimum_height=self.layout.setter('height'))
+        for i in range(100):
+            btn = ToggleButton(size_hint_y=None, height=24, width=24,
+                               background_normal='button-before-check.png',
+                               background_down='button-after-check-2.png',
+                               pos=(10, 420))
+            self.layout.add_widget(btn)
+        self.view.size = (Window.width, Window.height)
+        # self.size_hint = (0.03, 0.05)
+        # pos = 420
+        # self.layout.bind(minimum_height=self.layout.setter('height'))
+        # for i in xrange(50):
+        #     button = ToggleButton(background_normal='button-before-check.png',
+        #                           background_down='button-after-check-2.png',
+        #                           pos=(10, pos),
+        #                           size_hint=(1, None), height=40)
+        #     pos -= 30
+        #     self.layout.add_widget(button)
+        # self.view.size_hint = (1, None)
+        # self.view.size = (Window.width, Window.height)
+        # # root = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))
+        # # root.add_widget(self.layout)
+        # runTouchApp(self.view)
 
 
 class LoginScreen(Screen):
@@ -72,6 +102,7 @@ class LoginScreen(Screen):
 
 class ScreenManagerNew(ScreenManager):
     def __init__(self, app, **kwargs):
+        Window.size = (800, 480)
         super(ScreenManagerNew, self).__init__(**kwargs)
         self.__app = app
         self.add_widget(LoginScreen(app, name='login'))
