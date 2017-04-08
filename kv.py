@@ -42,18 +42,53 @@ Builder.load_string('''
     background_down: 'button-after-check-2.png'
     on_press: root.add_remove_team()
 
+<ButtonNew>:
+    background_normal: 'button-before-press.png'
+    background_down: 'button-after-press.png'
+
+<MenuScreen>:
+
+
 <TeamSelectionScreen>:
     layout: layout
     view: view
+    layout1: layout1
+    layout0: layout0
     ScrollView:
         pos_hint: {'x': .03}
         id: view
         size_hint: (1, None)
         GridLayout:
             id: layout
-            cols: 2
-            spacing: 20
+            cols: 1
+            spacing: 35
             size_hint_y: None
+            GridLayout:
+                id: layout0
+                cols: 2
+                spacing: 20
+                size_hint_y: None
+                Label:
+                    width: 625
+                    height: 50
+                    text: ''
+                Label:
+                    text: ''
+                Label:
+                    width: 625
+                    height: 50
+                    text: 'Pick the teams you would like to follow'
+                    bold: True
+                    size_hint_x: None
+                    size_hint_y: None
+                ButtonNew:
+                    text: 'Done'
+                    on_press: app.end_team_selection_screen(root.selected_teams)
+            GridLayout:
+                id: layout1
+                cols: 2
+                spacing: 20
+                size_hint_y: None
     ''')
 
 
@@ -61,6 +96,11 @@ Builder.load_string('''
 class TeamName(Label):
     pass
 
+class ButtonNew(Button):
+    pass
+
+class MenuScreen(Screen):
+    pass
 
 class CheckButton(ToggleButton):
     def __init__(self, team, root, **kwargs):
@@ -77,10 +117,17 @@ class TeamSelectionScreen(Screen):
         super(TeamSelectionScreen, self).__init__(**kwargs)
         self.__selected_teams = []
         self.layout.bind(minimum_height=self.layout.setter('height'))
+        self.layout1.bind(minimum_height=self.layout1.setter('height'))
+        self.layout0.bind(minimum_height=self.layout0.setter('height'))
+
         for team in teams:
-            self.layout.add_widget(CheckButton(team, self))
-            self.layout.add_widget(TeamName(text=team))
+            self.layout1.add_widget(CheckButton(team, self))
+            self.layout1.add_widget(TeamName(text=team))
         self.view.size = (Window.width, Window.height)
+
+    @property
+    def selected_teams(self):
+        return self.__selected_teams
 
     def add_remove_team(self, team):
         if team in self.__selected_teams:
@@ -125,3 +172,4 @@ class ScreenManagerNew(ScreenManager):
         self.__app = app
         self.add_widget(LoginScreen(app, name='login'))
         self.add_widget(TeamSelectionScreen(teams, name='team_selection'))
+        self.add_widget(MenuScreen(name='menu'))

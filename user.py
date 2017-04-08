@@ -19,7 +19,7 @@ class User(object):
         self.__leagues = []
 
     def set_teams(self, picked_teams):
-        """Set the teams' attribute.
+        """Set the teams' attribute and update the users file.
 
 
         Receives:
@@ -27,6 +27,7 @@ class User(object):
             that the user chose to follow on.
         """
         self.__teams = picked_teams
+        
 
     def set_leagues(self, picked_leagues):
         """Set the leagues' attribute.

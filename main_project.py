@@ -137,6 +137,11 @@ class Main(App):
         # set window size
         return self.__screen_manager
 
+    def end_team_selection_screen(self, selected_teams):
+        self.__user.
+        self.set_screen('menu')
+
+
     def update_username(self, username):
         self.__user = user.User(username)
         if self.__user.check_username():
