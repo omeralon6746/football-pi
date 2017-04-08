@@ -30,6 +30,9 @@ Builder.load_string('''
             on_text: root.update_input_padding(self)
             on_text_validate: root.check_username(self)
 
+<TeamName>:
+    text_size: self.size
+
 <TeamSelectionScreen>:
     layout: layout
     view: view
@@ -38,24 +41,30 @@ Builder.load_string('''
         id: view
         size_hint: (1, None)
         GridLayout:
-            size_hint_x: 0.03
             id: layout
-            cols: 1
+            cols: 2
             spacing: 20
             size_hint_y: None
     ''')
 
 
+# to add class
+class TeamName(Label):
+    pass
+
+
 class TeamSelectionScreen(Screen):
-    def __init__(self, **kwargs):
+    def __init__(self, teams, **kwargs):
         super(TeamSelectionScreen, self).__init__(**kwargs)
         self.layout.bind(minimum_height=self.layout.setter('height'))
-        for i in range(100):
-            btn = ToggleButton(size_hint_y=None, height=24, width=24,
+        for team in teams:
+            btn = ToggleButton(size_hint_y=None,
+                               size_hint_x=None, height=24, width=24,
                                background_normal='button-before-check.png',
                                background_down='button-after-check-2.png',
                                )
             self.layout.add_widget(btn)
+            self.layout.add_widget(TeamName(text=team))
         self.view.size = (Window.width, Window.height)
 
 
@@ -87,9 +96,9 @@ class LoginScreen(Screen):
 
 
 class ScreenManagerNew(ScreenManager):
-    def __init__(self, app, **kwargs):
+    def __init__(self, app, teams, **kwargs):
         Window.size = (800, 480)
         super(ScreenManagerNew, self).__init__(**kwargs)
         self.__app = app
         self.add_widget(LoginScreen(app, name='login'))
-        self.add_widget(TeamSelectionScreen(name='team_selection'))
+        self.add_widget(TeamSelectionScreen(teams, name='team_selection'))

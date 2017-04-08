@@ -131,7 +131,7 @@ class Main(App):
     def __init__(self, **kwargs):
         super(Main, self).__init__(**kwargs)
         self.__user = None
-        self.__screen_manager = kv.ScreenManagerNew(self)
+        self.__screen_manager = kv.ScreenManagerNew(self, information_server.InformationSource.get_all_teams())
 
     def build(self):
         # set window size

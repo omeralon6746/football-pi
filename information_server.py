@@ -62,3 +62,16 @@ class InformationSource(object):
             league - A string that contains the team's league.
         """
         pass
+
+    @staticmethod
+    def get_all_teams():
+        """Get all the available teams from the teams' file.
+
+
+        Returns:
+            teams - A list that contains the available teams.
+        """
+        with open("teams.txt") as teams_list:
+            for team in teams_list.read().splitlines():
+                if team:
+                    yield team
