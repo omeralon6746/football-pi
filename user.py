@@ -27,7 +27,8 @@ class User(object):
             that the user chose to follow on.
         """
         self.__teams = picked_teams
-        
+        with open(USERS_DATA, 'a') as users_data:
+            yaml.dump([{self.__username: picked_teams}], users_data, default_flow_style=False)
 
     def set_leagues(self, picked_leagues):
         """Set the leagues' attribute.
@@ -52,9 +53,10 @@ class User(object):
         check_exist = False
         with open(USERS_DATA, "r") as users_file:
             users = yaml.load(users_file)
-            for user in users:
-                if self.__username in user.keys():
-                    check_exist = True
+            if users:
+                for user in users:
+                    if self.__username in user.keys():
+                        check_exist = True
         return check_exist
 
     def create_user_data(self, new_user):
