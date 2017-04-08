@@ -153,17 +153,3 @@ class Main(App):
 
 if __name__ == '__main__':
     Main().run()
-
-# def main():
-#     username = log_in_page()
-#     current_user = user.User(username)
-#     check_exist = check_username(username)
-#     if check_exist:
-#         current_user.restore_data()
-#         menu(current_user)
-#     else:
-#         fill_details(current_user)
-#
-#
-# if __name__ == '__main__':
-#     main()

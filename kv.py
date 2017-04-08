@@ -45,8 +45,33 @@ Builder.load_string('''
 <ButtonNew>:
     background_normal: 'button-before-press.png'
     background_down: 'button-after-press.png'
+    border: 20, 20, 20, 20
 
 <MenuScreen>:
+    layout: layout
+    view: view
+    bar: bar
+    pos_hint_x: .03
+    ScrollView:
+        id: view
+        pos_hint_x: .03
+        size_hint: 1, None
+        GridLayout:
+            id: layout
+            cols: 1
+            size_hint_y: None
+            spacing: 35
+            GridLayout:
+                id: bar
+                cols: 4
+                ButtonNew:
+                    text: "Home"
+                ButtonNew:
+                    text: "Preferences"
+                ButtonNew:
+                    text: "About"
+                ButtonNew:
+                    text: "Exit"
 
 
 <TeamSelectionScreen>:
@@ -69,13 +94,13 @@ Builder.load_string('''
                 spacing: 20
                 size_hint_y: None
                 Label:
-                    width: 625
+                    width: 600
                     height: 50
                     text: ''
                 Label:
                     text: ''
                 Label:
-                    width: 625
+                    width: 600
                     height: 50
                     text: 'Pick the teams you would like to follow'
                     bold: True
@@ -96,11 +121,19 @@ Builder.load_string('''
 class TeamName(Label):
     pass
 
+
 class ButtonNew(Button):
     pass
 
+
 class MenuScreen(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(MenuScreen, self).__init__(**kwargs)
+        # cause scroll to work
+        self.layout.bind(minimum_height=self.layout.setter("height"))
+        self.bar.bind(minimum_height=self.bar.setter("height"))
+        self.view.size = (Window.width, Window.height)
+
 
 class CheckButton(ToggleButton):
     def __init__(self, team, root, **kwargs):
