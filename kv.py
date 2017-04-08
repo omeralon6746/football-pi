@@ -94,13 +94,13 @@ Builder.load_string('''
                 spacing: 20
                 size_hint_y: None
                 Label:
-                    width: 600
+                    width: 550
                     height: 50
                     text: ''
                 Label:
                     text: ''
                 Label:
-                    width: 600
+                    width: 550
                     height: 50
                     text: 'Pick the teams you would like to follow'
                     bold: True
