@@ -33,6 +33,15 @@ Builder.load_string('''
 <TeamName>:
     text_size: self.size
 
+<CheckButton>:
+    size_hint_y: None
+    size_hint_x: None
+    height: 24
+    width: 24
+    background_normal: 'button-before-check.png'
+    background_down: 'button-after-check-2.png'
+    on_press: root.add_remove_team()
+
 <TeamSelectionScreen>:
     layout: layout
     view: view
@@ -53,19 +62,33 @@ class TeamName(Label):
     pass
 
 
+class CheckButton(ToggleButton):
+    def __init__(self, team, root, **kwargs):
+        super(CheckButton, self).__init__(**kwargs)
+        self.__team = team
+        self.__root = root
+
+    def add_remove_team(self):
+        self.__root.add_remove_team(self.__team)
+
+
 class TeamSelectionScreen(Screen):
     def __init__(self, teams, **kwargs):
         super(TeamSelectionScreen, self).__init__(**kwargs)
+        self.__selected_teams = []
         self.layout.bind(minimum_height=self.layout.setter('height'))
         for team in teams:
-            btn = ToggleButton(size_hint_y=None,
-                               size_hint_x=None, height=24, width=24,
-                               background_normal='button-before-check.png',
-                               background_down='button-after-check-2.png',
-                               )
-            self.layout.add_widget(btn)
+            self.layout.add_widget(CheckButton(team, self))
             self.layout.add_widget(TeamName(text=team))
         self.view.size = (Window.width, Window.height)
+
+    def add_remove_team(self, team):
+        if team in self.__selected_teams:
+            self.__selected_teams.remove(team)
+        else:
+            self.__selected_teams.append(team)
+
+        print self.__selected_teams
 
 
 class LoginScreen(Screen):
