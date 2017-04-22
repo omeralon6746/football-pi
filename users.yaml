@@ -14,3 +14,7 @@
   - 1. FC Kaiserslautern
   - Karlsruher SC
 - !!python/unicode 'tt': []
+- !!python/unicode 'roi':
+  - !!python/str "Fortuna D\xFCsseldorf"
+  - !!python/str "SpVgg Greuther F\xFCrth"
+  - Shakhtar Donetsk

@@ -69,12 +69,10 @@ class Changes(object):
 
     def find_all_changes(self):
         """Find updates on new games, finished games and goals.
-
+        *********delete this if there is no use at the end of the project.
 
         Returns:
             changes - A list of lists that contains the new updates.
         """
-        changes = self.find_new_games()
-        changes.append(self.find_finished_games())
-        changes.append(self.find_new_goals())
-        return changes
+        return [self.find_new_games(),
+                self.find_finished_games(), self.find_new_goals()]

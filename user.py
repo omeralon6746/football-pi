@@ -16,7 +16,7 @@ class User(object):
         """Set the class's attributes."""
         self.__username = username
         self.__teams = []
-        self.__leagues = []
+        self.__user_games = []
 
     def set_teams(self, picked_teams):
         """Set the teams' attribute and update the users file.
@@ -30,15 +30,6 @@ class User(object):
         with open(USERS_DATA, 'a') as users_data:
             yaml.dump([{self.__username: picked_teams}], users_data, default_flow_style=False)
 
-    def set_leagues(self, picked_leagues):
-        """Set the leagues' attribute.
-
-
-        Receives:
-            picked_leagues - A list that contains the leagues
-            that the user chose to follow on.
-        """
-        self.__leagues = picked_leagues
 
     def check_username(self):
         """Check if the username already exists in one of the saves.
@@ -59,43 +50,71 @@ class User(object):
                         check_exist = True
         return check_exist
 
-    def create_user_data(self, new_user):
-        """If it is new user, create a text file with the user's name and details.
-           Else, update the existing file.
-
-
-        Receives:
-            new_user - A bool that indicates if the username is new or not.
-        """
-        if new_user:
-            with open(self.__username + ".txt", "w") as name:
-                name.write("teams:\r\n\r\n")
-
-    def add_data(self, f):
-        """Add to the user's file the requested information from the user.
-
-
-        Receives:
-            request - A string that contains the user's requested information.
-        """
-        for team in self.__teams:
-            f.write(team + "\r\n\r\n")
-        f.write("leagues\r\n\r\n")
-        for league in self.__leagues:
-            f.write(league + "\r\n\r\n")
-
     def restore_data(self):
-        """Restore the details of an existing user.******************************************"""
+        """Restore the teams of an existing user.******************************************"""
         pass
 
-    def get_details(self):
-        """Get the user's details(teams and leagues).
-
+    def get_teams(self):
+        """Get the user's details teams.
+        *********delete this if there is no use at the end of the project.
 
         Returns:
-            details - A list of two lists that contains the teams and the leagues.
+            self.__teams - A list of the user's teams.
         """
-        details = None
-        details.append(self.__teams)
-        details.append(self.__leagues)
-        return details
+        return self.__teams
+
+    def get_goals_updates(self, goals_updates):
+        """Check if the user's teams are on the goals updates that was found.
+
+
+        Receives:
+            goals_updates - A list of tuples that contains the updates on the new goal
+            that was found.
+
+        Returns:
+            user_goals_updates - A list of tuples that contains the updates on the
+            new goals that relevant to the user's choices.
+        """
+        pass
+
+    def get_new_games_updates(self, new_games_updates):
+        """Check if the user's teams are on the new games updates that was found.
+
+
+        Receives:
+            new_games_updates - A list of tuples that contains the updates on the new games
+            that was found.
+
+        Returns:
+            user_new_games - A list of tuples that contains the updates on the
+            new games that relevant to the user's choices.
+        """
+        pass
+
+    def get_ended_games_updates(self, new_games_updates):
+        """Check if the user's teams are on the ended games updates that was found.
+
+
+        Receives:
+            ended_games_updates - A list of tuples that contains the updates on the ended games
+            that was found.
+
+        Returns:
+            user_ended_games - A list of tuples that contains the updates on the
+            ended games that relevant to the user's choices.
+        """
+        pass
+
+    def get_user_games(self, live_games):
+        """Check if the user's teams are on the live games.
+
+
+        Receives:
+            live_games - A list of dictionaries, each containing information
+            about the currently live games.
+
+        Returns:
+            user_live_games - A list of dictionaries, each containing information
+            about the currently live games of the user.
+        """
+        pass

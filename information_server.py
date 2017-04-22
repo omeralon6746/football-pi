@@ -48,20 +48,9 @@ class InformationSource(object):
         except ValueError:
             return self.get_live_games()
         # filter the live games
-        self.__last_scores = [game for game in games['games'] if -1 not in game.values()]
+        self.__last_scores = [game for game in games['games']
+                              if -1 not in game.values() and 'FT' not in game.values()]
         return self.__last_scores
-
-    def get_team_league(team):
-        """Get the team's league of a given team name.
-
-
-        Receives:
-            team - A string that contains a team.
-
-        Returns:
-            league - A string that contains the team's league.
-        """
-        pass
 
     @staticmethod
     def get_all_teams():
