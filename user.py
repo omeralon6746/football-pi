@@ -46,8 +46,8 @@ class User(object):
                 for user in users:
                     if self.__username in user.keys():
                         for value in user.values():
-                            value = value[0]
-                            self.__teams.append(value)
+                            for team in value:
+                                self.__teams.append(team)
                         check_exist = True
         return check_exist
 
@@ -122,5 +122,5 @@ class User(object):
                     self.__user_games.append(game)
         return self.__user_games
 
-    def get_games(self, information_server):
-        information_server.get_games(self.__teams)
+    def get_all_games(self, information_server):
+        print information_server.get_games(self.__teams)
