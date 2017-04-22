@@ -113,6 +113,8 @@ class User(object):
             self.__user_games - A list of dictionaries, each containing information
             about the currently live games of the user.
         """
+        self.__user_games = []
+
         for team in self.__teams:
             for game in live_games:
                 if team in game.values():

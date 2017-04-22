@@ -3,6 +3,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from screen import ScreenNew
 from kivy.uix.label import Label
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.togglebutton import ToggleButton
@@ -11,6 +12,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
+from kivy.uix.widget import Widget
 
 Builder.load_string('''
 
@@ -76,44 +78,36 @@ Builder.load_string('''
 
 <TeamSelectionScreen>:
     layout: layout
-    view: view
-    layout1: layout1
-    layout0: layout0
+    bar: bar
+    pos_hint_x: .03
+    GridLayout:
+        pos: 0, 480 - self.height
+        id: bar
+        size_hint: 1, 1
+        spacing: 10
+        width: 800
+        height: 50
+        cols: 2
+        Label: 
+            text: "Pick the teams you would like to follow"
+            bold: True
+            size_hint_x: None
+            width: 0.7 * 800
+        ButtonNew:
+            text: "Done"
+            on_press: app.end_team_selection_screen(root.selected_teams)
+
     ScrollView:
-        pos_hint: {'x': .03}
-        id: view
-        size_hint: (1, None)
+        size_hint: 1, None
+        size: 800, 480 - bar.height
         GridLayout:
+            padding: 20, 0
+            width: 800
             id: layout
-            cols: 1
-            spacing: 35
+            cols: 2
+            spacing: 20
             size_hint_y: None
-            GridLayout:
-                id: layout0
-                cols: 2
-                spacing: 20
-                size_hint_y: None
-                Label:
-                    width: 550
-                    height: 50
-                    text: ''
-                Label:
-                    text: ''
-                Label:
-                    width: 550
-                    height: 50
-                    text: 'Pick the teams you would like to follow'
-                    bold: True
-                    size_hint_x: None
-                    size_hint_y: None
-                ButtonNew:
-                    text: 'Done'
-                    on_press: app.end_team_selection_screen(root.selected_teams)
-            GridLayout:
-                id: layout1
-                cols: 2
-                spacing: 20
-                size_hint_y: None
+            height: self.minimum_height
     ''')
 
 
@@ -145,18 +139,14 @@ class CheckButton(ToggleButton):
         self.__root.add_remove_team(self.__team)
 
 
-class TeamSelectionScreen(Screen):
+class TeamSelectionScreen(ScreenNew):
     def __init__(self, teams, **kwargs):
         super(TeamSelectionScreen, self).__init__(**kwargs)
         self.__selected_teams = []
-        self.layout.bind(minimum_height=self.layout.setter('height'))
-        self.layout1.bind(minimum_height=self.layout1.setter('height'))
-        self.layout0.bind(minimum_height=self.layout0.setter('height'))
-
+        
         for team in teams:
-            self.layout1.add_widget(CheckButton(team, self))
-            self.layout1.add_widget(TeamName(text=team))
-        self.view.size = (Window.width, Window.height)
+            self.layout.add_widget(CheckButton(team, self))
+            self.layout.add_widget(TeamName(text=team))
 
     @property
     def selected_teams(self):
