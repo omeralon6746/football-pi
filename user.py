@@ -71,7 +71,7 @@ class User(object):
             user_goals_updates - A list of tuples that contains the updates on the
             new goals that relevant to the user's choices.
         """
-        pass
+
 
     def get_new_games_updates(self, new_games_updates):
         """Check if the user's teams are on the new games updates that was found.
@@ -110,7 +110,11 @@ class User(object):
             about the currently live games.
 
         Returns:
-            user_live_games - A list of dictionaries, each containing information
+            self.__user_games - A list of dictionaries, each containing information
             about the currently live games of the user.
         """
-        pass
+        for team in self.__teams:
+            for game in live_games:
+                if team in game.values():
+                    self.__user_games.append(game)
+        return self.__user_games
