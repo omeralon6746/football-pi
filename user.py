@@ -123,4 +123,4 @@ class User(object):
         return self.__user_games
 
     def get_all_games(self, information_server):
-        print information_server.get_games(self.__teams)
+        return information_server.get_games(self.__teams)

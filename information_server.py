@@ -13,6 +13,7 @@ from team_codes import TEAM_CODES
 class InformationSource(object):
     LIVE_RESULTS_API = "http://soccer-cli.appspot.com/"
     OTHER_INFO_API = "http://api.football-data.org/v1/"
+    HEADERS = {'X-Auth-Token': '7796fc8dfc6740048cf8ebb80c3f3108'}
 
     def __init__(self):
         """Set the class's attributes."""
@@ -46,7 +47,7 @@ class InformationSource(object):
             }
         """
         try:
-            games = requests.get(self.LIVE_RESULTS_API).json()
+            games = requests.get(self.LIVE_RESULTS_API, headers=InformationSource.HEADERS).json()
         except ValueError:
             return self.get_live_games()
         # filter the live games
@@ -82,6 +83,19 @@ class InformationSource(object):
         print user_teams
         for team in user_teams:
             team_code = TEAM_CODES[team]
-            team_games = requests.get("%s/teams/%d/fixtures" % (InformationSource.OTHER_INFO_API, team_code)).json()
-            all_games += (team_games["fixtures"])
+            team_games = requests.get("%s/teams/%d/fixtures" % (InformationSource.OTHER_INFO_API, team_code),
+                                      headers=InformationSource.HEADERS).json()
+            print team_games
+            all_games += team_games["fixtures"]
         return sorted(all_games, key=lambda game: time.mktime(time.strptime(game["date"], "%Y-%m-%dT%H:%M:%SZ")))
+
+    @staticmethod
+    def get_games_categorized(user_games):
+        pass
+
+    @staticmethod
+    def get_finished_games(user_games):
+        return [game for game in user_games if game["status"] == "FINISHED"]
+
+    def get_current_games(self, user_games):
+        pass
