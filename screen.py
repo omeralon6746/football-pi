@@ -1,3 +1,4 @@
+from kivy.compat import iteritems
 from kivy.uix.widget import Widget
 from kivy.properties import (StringProperty, ObjectProperty, AliasProperty,
                              NumericProperty, ListProperty, OptionProperty,
@@ -6,7 +7,42 @@ import kivy.uix.screenmanager
 
 
 class ScreenManager(kivy.uix.screenmanager.ScreenManager):
+    def switch_to(self, screen, **options):
+        assert(screen is not None)
 
+        # stop any transition that might be happening already
+        self.transition.stop()
+
+        # ensure the screen name will be unique
+        if screen not in self.children:
+            if self.has_screen(screen.name):
+                screen.name = self._generate_screen_name()
+
+        # change the transition if given explicitly
+        old_transition = self.transition
+        specified_transition = options.pop("transition", None)
+        if specified_transition:
+            self.transition = specified_transition
+
+        # change the transition options
+        for key, value in iteritems(options):
+            setattr(self.transition, key, value)
+
+        # add and leave if we are set as the current screen
+        self.add_widget(screen)
+        if self.current_screen is screen:
+            return
+
+        old_current = self.current_screen
+
+        def remove_old_screen(transition):
+            if old_current in self.children:
+                self.remove_widget(old_current)
+                self.transition = old_transition
+            transition.unbind(on_complete=remove_old_screen)
+        self.transition.bind(on_complete=remove_old_screen)
+
+        self.current = screen.name
 
 
 class ScreenNew(Widget):

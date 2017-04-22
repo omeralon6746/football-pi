@@ -2,8 +2,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from screen import ScreenNew
+from kivy.uix.screenmanager import Screen
+from screen import ScreenNew, ScreenManager
 from kivy.uix.label import Label
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.togglebutton import ToggleButton
