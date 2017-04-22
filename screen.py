@@ -35,14 +35,20 @@ class ScreenManager(kivy.uix.screenmanager.ScreenManager):
 
         old_current = self.current_screen
 
-        def remove_old_screen(transition):
-            if old_current in self.children:
-                self.remove_widget(old_current)
-                self.transition = old_transition
-            transition.unbind(on_complete=remove_old_screen)
-        self.transition.bind(on_complete=remove_old_screen)
-
-        self.current = screen.name
+    def add_widget(self, screen):
+        if screen.manager:
+            if screen.manager is self:
+                raise kivy.uix.screenmanager.ScreenManagerException(
+                    'Screen already managed by this ScreenManager (are you '
+                    'calling `switch_to` when you should be setting '
+                    '`current`?)')
+            raise kivy.uix.screenmanager.ScreenManagerException(
+                'Screen already managed by another ScreenManager.')
+        screen.manager = self
+        screen.bind(name=self._screen_name_changed)
+        self.screens.append(screen)
+        if self.current is None:
+            self.current = screen.name
 
 
 class ScreenNew(Widget):
