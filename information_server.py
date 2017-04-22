@@ -88,14 +88,3 @@ class InformationSource(object):
             print team_games
             all_games += team_games["fixtures"]
         return sorted(all_games, key=lambda game: time.mktime(time.strptime(game["date"], "%Y-%m-%dT%H:%M:%SZ")))
-
-    @staticmethod
-    def get_games_categorized(user_games):
-        pass
-
-    @staticmethod
-    def get_finished_games(user_games):
-        return [game for game in user_games if game["status"] == "FINISHED"]
-
-    def get_current_games(self, user_games):
-        pass

@@ -5,6 +5,7 @@ Date: 02/04/17
 Program Version: 1.0.0
 """
 import yaml
+import information_server
 
 
 USERS_DATA = "users.yaml"
@@ -17,6 +18,7 @@ class User(object):
         self.__username = username
         self.__teams = []
         self.__user_games = []
+        self.__information_source = information_server.InformationSource()
 
     def set_teams(self, picked_teams):
         """Set the teams' attribute and update the users file.
@@ -122,5 +124,14 @@ class User(object):
                     self.__user_games.append(game)
         return self.__user_games
 
-    def get_all_games(self, information_server):
-        return information_server.get_games(self.__teams)
+    def get_all_games(self):
+        return self.__information_source.get_games(self.__teams)
+
+    def get_games_categorized(self):
+        return self.get_finished_games(), self.get_current_games()
+
+    def get_finished_games(self):
+        return [game for game in self.get_all_games() if game["status"] == "FINISHED"]
+
+    def get_current_games(self):
+        return self.get_live_games(self.__information_source.get_live_games())
