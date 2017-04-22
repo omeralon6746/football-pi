@@ -1,4 +1,4 @@
-TSV 1860 München
+﻿TSV 1860 München
 Eintracht Braunschweig
 1. FC Nürnberg
 FC St. Pauli
@@ -38,18 +38,6 @@ Werder Bremen
 TSG 1899 Hoffenheim
 VfB Stuttgart
 VfL Wolfsburg
-
-
-FC Astana
-CSKA Moscow
-GNK Dinamo Zagreb
-Dynamo Kyiv
-Galatasaray SK
-Malmö FF
-Maccabi Tel Aviv
-Olympiacos F.C.
-Shakhtar Donetsk
-FC Zenit St. Petersburg
 
 
 PSV Eindhoven
