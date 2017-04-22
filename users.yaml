@@ -1,6 +1,4 @@
-- !!python/unicode 'g':
-  - !!python/str "TSV 1860 M\xFCnchen"
-- !!python/unicode 'Omer Alon':
+- !!python/unicode 'omer':
   - !!python/str "FC Bayern M\xFCnchen"
   - FC Barcelona
   - Real Madrid CF
@@ -9,12 +7,3 @@
   - Liverpool FC
   - Manchester City FC
   - Manchester United FC
-- !!python/unicode 'lazlaz':
-  - FSV Frankfurt
-  - 1. FC Kaiserslautern
-  - Karlsruher SC
-- !!python/unicode 'tt': []
-- !!python/unicode 'roi':
-  - !!python/str "Fortuna D\xFCsseldorf"
-  - !!python/str "SpVgg Greuther F\xFCrth"
-  - Shakhtar Donetsk

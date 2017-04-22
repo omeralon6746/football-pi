@@ -6,6 +6,7 @@ Program Version: 1.0.0
 """
 import requests
 import changes
+from team_codes import TEAM_CODES
 
 
 class InformationSource(object):
@@ -64,3 +65,22 @@ class InformationSource(object):
             for team in teams_list.read().splitlines():
                 if team:
                     yield team
+
+    @staticmethod
+    def get_games(user_teams):
+        """Get a user's team and return all the games that they played.
+
+
+        Receives:
+            user_teams - A list that contains the names of the user's teams.
+
+        Returns:
+            old_games - A list of dictionaries of the finished games of the teams.
+        """
+        all_games = []
+        print user_teams
+        for team in user_teams:
+            team_code = TEAM_CODES[team]
+            team_games = requests.get("%s/teams/%d/fixtures" % (InformationSource.OTHER_INFO_API, team_code)).json()
+            all_games.append(team_games["fixtures"])
+        print all_games

@@ -46,6 +46,7 @@ class User(object):
                 for user in users:
                     if self.__username in user.keys():
                         for value in user.values():
+                            value = value[0]
                             self.__teams.append(value)
                         check_exist = True
         return check_exist
@@ -101,7 +102,7 @@ class User(object):
         """
         pass
 
-    def get_user_games(self, live_games):
+    def get_live_games(self, live_games):
         """Check if the user's teams are on the live games.
 
 
@@ -120,3 +121,6 @@ class User(object):
                 if team in game.values():
                     self.__user_games.append(game)
         return self.__user_games
+
+    def get_games(self, information_server):
+        information_server.get_games(self.__teams)

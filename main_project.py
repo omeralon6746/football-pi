@@ -16,6 +16,7 @@ class Main(App):
         super(Main, self).__init__(**kwargs)
         self.__user = None
         self.__screen_manager = kv.ScreenManagerNew(self, information_server.InformationSource.get_all_teams())
+        self.__information_source = information_server.InformationSource()
 
     def build(self):
         # set window size
@@ -33,6 +34,8 @@ class Main(App):
             self.set_screen('team_selection')
 
     def set_screen(self, screen_name):
+        if screen_name == 'menu':
+            self.__user.get_games(self.__information_source)
         self.__screen_manager.current = screen_name
 
 if __name__ == '__main__':
