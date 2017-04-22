@@ -30,13 +30,11 @@ class User(object):
         with open(USERS_DATA, 'a') as users_data:
             yaml.dump([{self.__username: picked_teams}], users_data, default_flow_style=False)
 
-
     def check_username(self):
-        """Check if the username already exists in one of the saves.
+        """
+        Check if the username already exists in one of the saves.
+        If it exists, restore the user's team to the team's attribute.
 
-
-        Receives:
-            username - A string that contains the user's name that was entered by the user.
 
         Returns:
             check_exist - A bool that indicates if the username exists or not.
@@ -47,12 +45,10 @@ class User(object):
             if users:
                 for user in users:
                     if self.__username in user.keys():
+                        for value in user.values():
+                            self.__teams.append(value)
                         check_exist = True
         return check_exist
-
-    def restore_data(self):
-        """Restore the teams of an existing user.******************************************"""
-        pass
 
     def get_teams(self):
         """Get the user's details teams.
