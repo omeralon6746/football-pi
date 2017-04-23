@@ -1,49 +1,49 @@
 ﻿AFC Bournemouth: AFC Bournemouth
-Arsenal FC:
-Burnley FC:
-"Chelsea FC:
-Crystal Palace FC:
+Arsenal FC: 26.4********************************
+Burnley FC: Burnley
+Chelsea FC: 25.4***********************************
+Crystal Palace FC: Crystal Palace
 Everton FC: Everton
 Hull City FC: Hull City
-Leicester City FC:
-Liverpool FC:
-Manchester City FC:
-Manchester United FC:
+Leicester City FC: 26.4**********************************
+Liverpool FC: Liverpool
+Manchester City FC: 27.4*********************************
+Manchester United FC: Manchester United
 Middlesbrough FC: Middlesbrough
-Southampton FC:
+Southampton FC: 25.4***********************************
 Stoke City FC: Stoke City
-Sunderland AFC:
+Sunderland AFC: 26.4*************************************
 Swansea City FC: Swansea City
-Tottenham Hotspur FC:
+Tottenham Hotspur FC: 26.4*********************************
 Watford FC: Watford
-West Bromwich Albion FC:
+West Bromwich Albion FC: 29.4********************************
 West Ham United FC: West Ham United
 
 
-Bayer Leverkusen:
+Bayer Leverkusen: Bayer Leverkusen
 Borussia Dortmund: Borussia Dortmund
 Bor. Mönchengladbach: Borussia Monchengladbach
 Eintracht Frankfurt: Eintracht Frankfurt
 FC Augsburg: FC Augsburg
 FC Bayern München: Bayern Munich
-FC Schalke 04:
+FC Schalke 04: Schalke 04
 FC Ingolstadt 04: FC Ingolstadt 04
-1. FC Köln:
+1. FC Köln: 29.4*****************************************
 1. FSV Mainz 05: Mainz
 Hamburger SV: Hamburg SV
 Hertha BSC: Hertha Berlin
-Red Bull Leipzig:
-SC Freiburg:
+Red Bull Leipzig: RB Leipzig
+SC Freiburg: SC Freiburg
 SV Darmstadt 98: SV Darmstadt 98
-TSG 1899 Hoffenheim:
+TSG 1899 Hoffenheim: 30.4*************************************
 VfL Wolfsburg: VfL Wolfsburg
 Werder Bremen: Werder Bremen
 
 
 Angers SCO: Angers
-AS Monaco FC:
-AS Nancy:
-AS Saint-Étienne:
+AS Monaco FC: AS Monaco
+AS Nancy: 29.4**********************************************
+AS Saint-Étienne: St Etienne
 Dijon FCO: Dijon FCO
 EA Guingamp: Guingamp
 FC Girondins de Bordeaux: Bordeaux
@@ -51,56 +51,56 @@ FC Lorient: Lorient
 FC Metz: Metz
 FC Nantes:Nantes
 Montpellier Hérault SC: Montpellier
-OGC Nice:
-Olympique de Marseille:
-Olympique Lyonnais:
+OGC Nice: Nice
+Olympique de Marseille: 30.4**************************************
+Olympique Lyonnais: Lyon
 OSC Lille: Lille
 Paris Saint-Germain: Paris Saint-Germain
 SC Bastia: Bastia
 SM Caen: Caen
-Stade Rennais FC:
-Toulouse FC:
+Stade Rennais FC: Stade Rennes
+Toulouse FC: Toulouse
 
 
-Athletic Club:
+Athletic Club: 23.4******************************************
 CA Osasuna: Osasuna
 CD Leganes: Leganes
 Club Atlético de Madrid: Atletico Madrid
-Deportivo Alavés:
-FC Barcelona:
-Granada CF:
+Deportivo Alavés: Alav\u00e9s
+FC Barcelona: Barcelona
+Granada CF: 25.4**********************************************
 Málaga CF: Málaga
-RC Celta de Vigo:
-RC Deportivo La Coruna:
+RC Celta de Vigo: Celta Vigo
+RC Deportivo La Coruna: Deportivo La Coru\u00f1a
 RCD Espanyol: Espanyol
-Real Betis:
-Real Madrid CF:
-Real Sociedad de Fútbol:
-SD Eibar:
-Sevilla FC:
+Real Betis: Real Betis
+Real Madrid CF: Real Madrid
+Real Sociedad de Fútbol: Real Sociedad
+SD Eibar: 23.4**********************************************
+Sevilla FC: 27.4***********************************************
 Sporting Gijón: Sporting Gijón
-UD Las Palmas:
+UD Las Palmas: Las Palmas
 Valencia CF: Valencia
 Villarreal CF: Villarreal
 
 
-AC Chievo Verona:
+AC Chievo Verona: Chievo Verona
 ACF Fiorentina: Fiorentina
-AC Milan:
-AS Roma:
+AC Milan: AC Milan
+AS Roma: 24.4***************************************************
 Atalanta BC: Atalanta
 Bologna FC: Bologna
-Cagliari Calcio:
-Empoli FC:
-FC Crotone:
+Cagliari Calcio: Cagliari
+Empoli FC: Empoli
+FC Crotone: Crotone
 FC Internazionale Milano: Internazionale
-Genoa CFC:
-Juventus Turin:
-Pescara Calcio:
-SSC Napoli:
-SS Lazio:
-Torino FC:
-UC Sampdoria:
-Udinese Calcio:
-US Cittá di Palermo:
-US Sassuolo Calcio:
+Genoa CFC: Genoa
+Juventus Turin: Juventus
+Pescara Calcio: 24.4********************************************
+SSC Napoli: Napoli
+SS Lazio: Lazio
+Torino FC: Torino
+UC Sampdoria: Sampdoria
+Udinese Calcio: Udinese
+US Cittá di Palermo: Palermo
+US Sassuolo Calcio: Sassuolo
