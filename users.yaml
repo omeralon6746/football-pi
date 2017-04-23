@@ -6,7 +6,14 @@
   - Chelsea FC
   - Liverpool FC
   - Manchester City FC
-  - Manchester United FC
-  - Borussia Dortmund- !!python/unicode 'amir':
-  - !!python/str "FC Bayern M\xFCnchen"
-  - !!python/str "Bor. M\xF6nchengladbach"
+- !!python/unicode 'laz':
+  - Crystal Palace FC
+  - SSC Napoli
+- !!python/unicode 'kk':
+  - !!python/str "\uFEFFAFC Bournemouth"
+  - Arsenal FC
+  - Burnley FC
+- !!python/unicode 'ido':
+  - FC Schalke 04
+  - FC Augsburg
+  - Eintracht Frankfurt

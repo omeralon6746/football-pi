@@ -21,7 +21,8 @@ TEAM_CODES = {'Swansea City FC': 72, 'SD Eibar': 278, 'UD Almeria': 267, 'SV San
               'FC Metz': 545, 'RC Celta de Vigo': 558, 'Hamburger SV': 7, 'Chelsea FC': 61, 'West Ham United FC': 563,
               'Aston Villa FC': 58, 'Crystal Palace FC': 354, 'Stade Rennais FC': 529, 'SS Lazio': 110,
               'VfB Stuttgart': 10, 'SC Bastia': 536, 'Erzgebirge Aue': 22, 'Borussia Dortmund': 4, 'SC Freiburg': 17,
-              'Arsenal FC': 57, 'Sheffield United FC': 356, 'OSC Lille': 521, 'Levante UD': 88, 'AFC Bournemouth': 1044,
+              'Arsenal FC': 57, 'Sheffield United FC': 356, 'OSC Lille': 521, 'Levante UD': 88, '\xef\xbb\xbfAFC Bournemouth': 1044,
               'TSG 1899 Hoffenheim': 2, 'M\xc3\xa1laga CF': 84, 'Sevilla FC': 559, 'Bor. M\xc3\xb6nchengladbach': 18,
               '1. FSV Mainz 05': 15, 'SSC Napoli': 113, 'Empoli FC': 445, 'Stoke City FC': 70, 'FC St. Pauli': 20,
               'Newcastle United FC': 67, 'Southampton FC': 340}
+

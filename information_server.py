@@ -80,11 +80,9 @@ class InformationSource(object):
             old_games - A list of dictionaries of the finished games of the teams.
         """
         all_games = []
-        print user_teams
         for team in user_teams:
             team_code = TEAM_CODES[team]
             team_games = requests.get("%s/teams/%d/fixtures" % (InformationSource.OTHER_INFO_API, team_code),
                                       headers=InformationSource.HEADERS).json()
-            print team_games
             all_games += team_games["fixtures"]
         return sorted(all_games, key=lambda game: time.mktime(time.strptime(game["date"], "%Y-%m-%dT%H:%M:%SZ")))

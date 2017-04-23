@@ -135,3 +135,8 @@ class User(object):
 
     def get_current_games(self):
         return self.get_live_games(self.__information_source.get_live_games())
+
+    # def get_future_games(self):
+    #     timed_games = [game for game in self.get_all_games() if game["status"] == "finished"]
+    #     for timed_game in timed_games:
+    #         if timed_games["homeTeam"]
