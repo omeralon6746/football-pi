@@ -1,103 +1,17 @@
-﻿TSV 1860 München
-Eintracht Braunschweig
-1. FC Nürnberg
-FC St. Pauli
-1. FC Union Berlin
-Fortuna Düsseldorf
-FSV Frankfurt
-SpVgg Greuther Fürth
-1. FC Heidenheim 1846
-1. FC Kaiserslautern
-Karlsruher SC
-SC Paderborn 07
-Red Bull Leipzig
-SC Freiburg
-SV Sandhausen
-VfL Bochum
-
-
-Erzgebirge Aue
-VfR Aalen
-
-
-Bayer Leverkusen
-FC Bayern München
-Bor. Mönchengladbach
-Hertha BSC
-Borussia Dortmund
-SV Darmstadt 98
-FC Augsburg
-FC Ingolstadt 04
-1. FC Köln
-Hannover 96
-Hamburger SV
-1. FSV Mainz 05
-FC Schalke 04
-Eintracht Frankfurt
-Werder Bremen
-TSG 1899 Hoffenheim
-VfB Stuttgart
-VfL Wolfsburg
-
-
-PSV Eindhoven
-Club Atlético de Madrid
-Athletic Club
-SD Eibar
-RCD Espanyol
-FC Barcelona
-Getafe CF
-Granada CF
-RC Deportivo La Coruna
-Levante UD
-Real Madrid CF
-Málaga CF
-Rayo Vallecano de Madrid
-Real Sociedad de Fútbol
-Sevilla FC
-Valencia CF
-Villarreal CF
-RC Celta de Vigo
-Sheffield United FC
-FC Girondins de Bordeaux
-AS Saint-Étienne
-EA Guingamp
-FC Lorient
-Olympique de Marseille
-Montpellier Hérault SC
-AS Monaco FC
-FC Nantes
-OGC Nice
-Olympique Lyonnais
-OSC Lille
-Paris Saint-Germain
-Stade de Reims
-Stade Rennais FC
-SC Bastia
-SM Caen
-Toulouse FC
-
-
-Évian Thonon Gaillard FC
-FC Metz
-Paris FC
-RC Lens
-
-
+﻿AFC Bournemouth
 Arsenal FC
-AFC Bournemouth
-Aston Villa FC
+Burnley FC
 Chelsea FC
 Crystal Palace FC
 Everton FC
+Hull City FC
 Leicester City FC
 Liverpool FC
 Manchester City FC
 Manchester United FC
-Norwich City FC
-Newcastle United FC
-Stoke City FC
+Middlesbrough FC
 Southampton FC
+Stoke City FC
 Sunderland AFC
 Swansea City FC
 Tottenham Hotspur FC
@@ -106,23 +20,87 @@ West Bromwich Albion FC
 West Ham United FC
 
 
-FC Porto
-Sporting CP
-SL Benfica
+Bayer Leverkusen
+Borussia Dortmund
+Bor. Mönchengladbach
+Eintracht Frankfurt
+FC Augsburg
+FC Bayern München
+FC Schalke 04
+FC Ingolstadt 04
+1. FC Köln
+1. FSV Mainz 05
+Hamburger SV
+Hertha BSC
+Red Bull Leipzig
+SC Freiburg
+SV Darmstadt 98
+TSG 1899 Hoffenheim
+VfL Wolfsburg
+Werder Bremen
 
 
-Córdoba CF
-Elche FC
-UD Almeria
-AC Milan
-Empoli FC
-Torino FC
+Angers SCO
+AS Monaco FC
+AS Nancy
+AS Saint-Étienne
+Dijon FCO
+EA Guingamp
+FC Girondins de Bordeaux
+FC Lorient
+FC Metz
+FC Nantes
+Montpellier Hérault SC
+OGC Nice
+Olympique de Marseille
+Olympique Lyonnais
+OSC Lille
+Paris Saint-Germain
+SC Bastia
+SM Caen
+Stade Rennais FC
+Toulouse FC
+
+
+Athletic Club
+CA Osasuna
+CD Leganes
+Club Atlético de Madrid
+Deportivo Alavés
+FC Barcelona
+Granada CF
+Málaga CF
+RC Celta de Vigo
+RC Deportivo La Coruna
+RCD Espanyol
+Real Betis
+Real Madrid CF
+Real Sociedad de Fútbol
+SD Eibar
+Sevilla FC
+Sporting Gijón
+UD Las Palmas
+Valencia CF
+Villarreal CF
+
+
+AC Chievo Verona
 ACF Fiorentina
-Genoa CFC
-FC Internazionale Milano
-Juventus Turin
-SS Lazio
-US Cittá di Palermo
+AC Milan
 AS Roma
-US Sassuolo Calcio
+Atalanta BC
+Bologna FC
+Cagliari Calcio
+Empoli FC
+FC Crotone
+FC Internazionale Milano
+Genoa CFC
+Juventus Turin
+Pescara Calcio
 SSC Napoli
+SS Lazio
+Torino FC
+UC Sampdoria
+Udinese Calcio
+US Cittá di Palermo
+US Sassuolo Calcio

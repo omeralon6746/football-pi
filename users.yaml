@@ -7,4 +7,6 @@
   - Liverpool FC
   - Manchester City FC
   - Manchester United FC
-  - Borussia Dortmund
+  - Borussia Dortmund- !!python/unicode 'amir':
+  - !!python/str "FC Bayern M\xFCnchen"
+  - !!python/str "Bor. M\xF6nchengladbach"

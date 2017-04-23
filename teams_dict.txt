@@ -1,0 +1,106 @@
+﻿AFC Bournemouth: AFC Bournemouth
+Arsenal FC:
+Burnley FC:
+"Chelsea FC:
+Crystal Palace FC:
+Everton FC: Everton
+Hull City FC: Hull City
+Leicester City FC:
+Liverpool FC:
+Manchester City FC:
+Manchester United FC:
+Middlesbrough FC: Middlesbrough
+Southampton FC:
+Stoke City FC: Stoke City
+Sunderland AFC:
+Swansea City FC: Swansea City
+Tottenham Hotspur FC:
+Watford FC: Watford
+West Bromwich Albion FC:
+West Ham United FC: West Ham United
+
+
+Bayer Leverkusen:
+Borussia Dortmund: Borussia Dortmund
+Bor. Mönchengladbach: Borussia Monchengladbach
+Eintracht Frankfurt: Eintracht Frankfurt
+FC Augsburg: FC Augsburg
+FC Bayern München: Bayern Munich
+FC Schalke 04:
+FC Ingolstadt 04: FC Ingolstadt 04
+1. FC Köln:
+1. FSV Mainz 05: Mainz
+Hamburger SV: Hamburg SV
+Hertha BSC: Hertha Berlin
+Red Bull Leipzig:
+SC Freiburg:
+SV Darmstadt 98: SV Darmstadt 98
+TSG 1899 Hoffenheim:
+VfL Wolfsburg: VfL Wolfsburg
+Werder Bremen: Werder Bremen
+
+
+Angers SCO: Angers
+AS Monaco FC:
+AS Nancy:
+AS Saint-Étienne:
+Dijon FCO: Dijon FCO
+EA Guingamp: Guingamp
+FC Girondins de Bordeaux: Bordeaux
+FC Lorient: Lorient
+FC Metz: Metz
+FC Nantes:Nantes
+Montpellier Hérault SC: Montpellier
+OGC Nice:
+Olympique de Marseille:
+Olympique Lyonnais:
+OSC Lille: Lille
+Paris Saint-Germain: Paris Saint-Germain
+SC Bastia: Bastia
+SM Caen: Caen
+Stade Rennais FC:
+Toulouse FC:
+
+
+Athletic Club:
+CA Osasuna: Osasuna
+CD Leganes: Leganes
+Club Atlético de Madrid: Atletico Madrid
+Deportivo Alavés:
+FC Barcelona:
+Granada CF:
+Málaga CF: Málaga
+RC Celta de Vigo:
+RC Deportivo La Coruna:
+RCD Espanyol: Espanyol
+Real Betis:
+Real Madrid CF:
+Real Sociedad de Fútbol:
+SD Eibar:
+Sevilla FC:
+Sporting Gijón: Sporting Gijón
+UD Las Palmas:
+Valencia CF: Valencia
+Villarreal CF: Villarreal
+
+
+AC Chievo Verona:
+ACF Fiorentina: Fiorentina
+AC Milan:
+AS Roma:
+Atalanta BC: Atalanta
+Bologna FC: Bologna
+Cagliari Calcio:
+Empoli FC:
+FC Crotone:
+FC Internazionale Milano: Internazionale
+Genoa CFC:
+Juventus Turin:
+Pescara Calcio:
+SSC Napoli:
+SS Lazio:
+Torino FC:
+UC Sampdoria:
+Udinese Calcio:
+US Cittá di Palermo:
+US Sassuolo Calcio:
