@@ -62,7 +62,7 @@ Stade Rennais FC: Stade Rennes
 Toulouse FC: Toulouse
 
 
-Athletic Club: 23.4******************************************
+Athletic Club: Athletic Bilbao
 CA Osasuna: Osasuna
 CD Leganes: Leganes
 Club Atlético de Madrid: Atletico Madrid
@@ -76,7 +76,7 @@ RCD Espanyol: Espanyol
 Real Betis: Real Betis
 Real Madrid CF: Real Madrid
 Real Sociedad de Fútbol: Real Sociedad
-SD Eibar: 23.4**********************************************
+SD Eibar: Eibar
 Sevilla FC: 27.4***********************************************
 Sporting Gijón: Sporting Gijón
 UD Las Palmas: Las Palmas
@@ -87,7 +87,7 @@ Villarreal CF: Villarreal
 AC Chievo Verona: Chievo Verona
 ACF Fiorentina: Fiorentina
 AC Milan: AC Milan
-AS Roma: 24.4***************************************************
+AS Roma: AS Roma
 Atalanta BC: Atalanta
 Bologna FC: Bologna
 Cagliari Calcio: Cagliari
@@ -96,7 +96,7 @@ FC Crotone: Crotone
 FC Internazionale Milano: Internazionale
 Genoa CFC: Genoa
 Juventus Turin: Juventus
-Pescara Calcio: 24.4********************************************
+Pescara Calcio: US Pescara
 SSC Napoli: Napoli
 SS Lazio: Lazio
 Torino FC: Torino

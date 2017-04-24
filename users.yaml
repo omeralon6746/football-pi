@@ -17,3 +17,114 @@
   - FC Schalke 04
   - FC Augsburg
   - Eintracht Frankfurt
+- !!python/unicode 'all':
+  - !!python/str "\uFEFF\uFEFFAFC Bournemouth"
+  - Arsenal FC
+  - Burnley FC
+  - Chelsea FC
+  - Crystal Palace FC
+  - Everton FC
+  - Hull City FC
+  - Leicester City FC
+  - Liverpool FC
+  - Manchester City FC
+  - Manchester United FC
+  - Middlesbrough FC
+  - Southampton FC
+  - Stoke City FC
+  - Sunderland AFC
+  - Swansea City FC
+  - Tottenham Hotspur FC
+  - Watford FC
+  - West Bromwich Albion FC
+  - West Ham United FC
+  - Bayer Leverkusen
+  - Borussia Dortmund
+  - Eintracht Frankfurt
+  - !!python/str "Bor. M\xF6nchengladbach"
+  - FC Augsburg
+  - !!python/str "FC Bayern M\xFCnchen"
+  - FC Schalke 04
+  - FC Ingolstadt 04
+  - !!python/str "1. FC K\xF6ln"
+  - 1. FSV Mainz 05
+  - Hamburger SV
+  - Hertha BSC
+  - Red Bull Leipzig
+  - SC Freiburg
+  - SV Darmstadt 98
+  - TSG 1899 Hoffenheim
+  - VfL Wolfsburg
+  - Werder Bremen
+  - Angers SCO
+  - AS Monaco FC
+  - AS Nancy
+  - !!python/str "AS Saint-\xC9tienne"
+  - Dijon FCO
+  - EA Guingamp
+  - FC Girondins de Bordeaux
+  - FC Lorient
+  - FC Metz
+  - FC Nantes
+  - !!python/str "Montpellier H\xE9rault SC"
+  - OGC Nice
+  - Olympique de Marseille
+  - Olympique Lyonnais
+  - OSC Lille
+  - Paris Saint-Germain
+  - SC Bastia
+  - SM Caen
+  - Stade Rennais FC
+  - Toulouse FC
+  - Athletic Club
+  - CA Osasuna
+  - CD Leganes
+  - !!python/str "Club Atl\xE9tico de Madrid"
+  - !!python/str "Deportivo Alav\xE9s"
+  - FC Barcelona
+  - Granada CF
+  - !!python/str "M\xE1laga CF"
+  - RC Celta de Vigo
+  - RC Deportivo La Coruna
+  - RCD Espanyol
+  - Real Betis
+  - Real Madrid CF
+  - !!python/str "Real Sociedad de F\xFAtbol"
+  - SD Eibar
+  - Sevilla FC
+  - !!python/str "Sporting Gij\xF3n"
+  - UD Las Palmas
+  - Valencia CF
+  - Villarreal CF
+  - AC Chievo Verona
+  - ACF Fiorentina
+  - AC Milan
+  - AS Roma
+  - Atalanta BC
+  - Bologna FC
+  - Cagliari Calcio
+  - Empoli FC
+  - FC Crotone
+  - FC Internazionale Milano
+  - Genoa CFC
+  - Juventus Turin
+  - Pescara Calcio
+  - SSC Napoli
+  - SS Lazio
+  - Torino FC
+  - UC Sampdoria
+  - Udinese Calcio
+  - !!python/str "US Citt\xE1 di Palermo"
+  - US Sassuolo Calcio
+- !!python/unicode 's':
+  - !!python/str "\uFEFF\uFEFFAFC Bournemouth"
+  - !!python/str "Bor. M\xF6nchengladbach"
+  - !!python/str "FC Bayern M\xFCnchen"
+  - !!python/str "1. FC K\xF6ln"
+  - !!python/str "AS Saint-\xC9tienne"
+  - !!python/str "Montpellier H\xE9rault SC"
+  - !!python/str "Deportivo Alav\xE9s"
+  - !!python/str "M\xE1laga CF"
+  - !!python/str "Real Sociedad de F\xFAtbol"
+  - !!python/str "Sporting Gij\xF3n"
+  - !!python/str "US Citt\xE1 di Palermo"

@@ -7,7 +7,7 @@ Program Version: 1.0.0
 import requests
 import changes
 import time
-from team_codes import TEAM_CODES
+from team_codes import TEAM_CODES_NEW
 
 
 class InformationSource(object):
@@ -81,8 +81,11 @@ class InformationSource(object):
         """
         all_games = []
         for team in user_teams:
-            team_code = TEAM_CODES[team]
+            team_code = TEAM_CODES_NEW[team]
             team_games = requests.get("%s/teams/%d/fixtures" % (InformationSource.OTHER_INFO_API, team_code),
                                       headers=InformationSource.HEADERS).json()
-            all_games += team_games["fixtures"]
+            try:
+                all_games += team_games["fixtures"]
+            except KeyError:
+                print team_games
         return sorted(all_games, key=lambda game: time.mktime(time.strptime(game["date"], "%Y-%m-%dT%H:%M:%SZ")))
