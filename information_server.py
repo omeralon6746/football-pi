@@ -7,7 +7,7 @@ Program Version: 1.0.0
 import requests
 import changes
 import time
-from team_codes import TEAM_CODES_NEW
+from team_codes import TEAM_CODES
 
 
 class InformationSource(object):
@@ -81,7 +81,7 @@ class InformationSource(object):
         """
         all_games = []
         for team in user_teams:
-            team_code = TEAM_CODES_NEW[team]
+            team_code = TEAM_CODES[team]
             team_games = requests.get("%s/teams/%d/fixtures" % (InformationSource.OTHER_INFO_API, team_code),
                                       headers=InformationSource.HEADERS).json()
             try:

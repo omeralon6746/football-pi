@@ -1,7 +1,7 @@
 ﻿AFC Bournemouth: AFC Bournemouth
 Arsenal FC: 26.4********************************
 Burnley FC: Burnley
-Chelsea FC: 25.4***********************************
+Chelsea FC: Chelsea
 Crystal Palace FC: Crystal Palace
 Everton FC: Everton
 Hull City FC: Hull City
@@ -10,7 +10,7 @@ Liverpool FC: Liverpool
 Manchester City FC: 27.4*********************************
 Manchester United FC: Manchester United
 Middlesbrough FC: Middlesbrough
-Southampton FC: 25.4***********************************
+Southampton FC: Southampton
 Stoke City FC: Stoke City
 Sunderland AFC: 26.4*************************************
 Swansea City FC: Swansea City
@@ -68,7 +68,7 @@ CD Leganes: Leganes
 Club Atlético de Madrid: Atletico Madrid
 Deportivo Alavés: Alav\u00e9s
 FC Barcelona: Barcelona
-Granada CF: 25.4**********************************************
+Granada CF: Granada
 Málaga CF: Málaga
 RC Celta de Vigo: Celta Vigo
 RC Deportivo La Coruna: Deportivo La Coru\u00f1a

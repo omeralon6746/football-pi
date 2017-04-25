@@ -6,9 +6,11 @@ Program Version: 1.0.0
 """
 import yaml
 import information_server
+from team_codes import TEAMS_DICT
 
 
 USERS_DATA = "users.yaml"
+FUTURE_STATUSES = ["POSTPONED", "TIMED", "SCHEDULED"]
 
 
 class User(object):
@@ -127,16 +129,26 @@ class User(object):
     def get_all_games(self):
         return self.__information_source.get_games(self.__teams)
 
-    def get_games_categorized(self):
-        return self.get_finished_games(), self.get_current_games()
+    def get_games_categorized(self, live):
+        return self.get_finished_games(live), self.get_current_games()
 
-    def get_finished_games(self):
-        return [game for game in self.get_all_games() if game["status"] == "FINISHED"]
+    def get_finished_games(self, live):
+        finished_games = [game for game in self.get_all_games() if game["status"] == "FINISHED"]
+        return self.check_in_live(finished_games, live)
 
     def get_current_games(self):
         return self.get_live_games(self.__information_source.get_live_games())
 
-    # def get_future_games(self):
-    #     timed_games = [game for game in self.get_all_games() if game["status"] == "finished"]
-    #     for timed_game in timed_games:
-    #         if timed_games["homeTeam"]
+    def get_future_games(self, live):
+        future_games = [game for game in self.get_all_games() if game["status"] in FUTURE_STATUSES]
+        return self.check_in_live(future_games, live)
+
+    @staticmethod
+    def check_in_live(games, live_games):
+        for game in games:
+            if game["homeTeamName"] == TEAMS_DICT[live_games["homeTeamName"]] and game["date"] == "?*":
+                del game
+            else:
+                game["homeTeamName"] = TEAMS_DICT[game["homeTeamName"]]
+                game["awayTeamName"] = TEAMS_DICT[game["awayTeamName"]]
+        return games
