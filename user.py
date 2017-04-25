@@ -130,18 +130,18 @@ class User(object):
         return self.__information_source.get_games(self.__teams)
 
     def get_games_categorized(self, live):
-        return self.get_finished_games(live), self.get_current_games()
+        return self.get_finished_games(live), self.get_current_games(), self.get_future_games(live)
 
     def get_finished_games(self, live):
         finished_games = [game for game in self.get_all_games() if game["status"] == "FINISHED"]
-        return self.check_in_live(finished_games, live)
+        return User.check_in_live(finished_games, live)
 
     def get_current_games(self):
         return self.get_live_games(self.__information_source.get_live_games())
 
     def get_future_games(self, live):
         future_games = [game for game in self.get_all_games() if game["status"] in FUTURE_STATUSES]
-        return self.check_in_live(future_games, live)
+        return User.check_in_live(future_games, live)
 
     @staticmethod
     def check_in_live(games, live_games):
