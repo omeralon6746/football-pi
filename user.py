@@ -7,6 +7,7 @@ Program Version: 1.0.0
 import yaml
 import information_server
 from team_codes import TEAMS_DICT
+import datetime
 
 
 USERS_DATA = "users.yaml"
@@ -146,7 +147,9 @@ class User(object):
     @staticmethod
     def check_in_live(games, live_games):
         for game in games:
-            if game["homeTeamName"] == TEAMS_DICT[live_games["homeTeamName"]] and game["date"] == "?*":
+            if game["homeTeamName"] == TEAMS_DICT[live_games["homeTeamName"]] \
+                    and datetime.datetime.strptime(game["date"][:10], "%Y-%m-%d") == \
+                    datetime.datetime.today().date():
                 del game
             else:
                 game["homeTeamName"] = TEAMS_DICT[game["homeTeamName"]]
