@@ -11,7 +11,6 @@ import datetime
 
 
 USERS_DATA = "users.yaml"
-FUTURE_STATUSES = ["POSTPONED", "TIMED", "SCHEDULED"]
 
 
 class User(object):
@@ -107,6 +106,17 @@ class User(object):
         """
         pass
 
+    def get_all_games(self):
+        return self.__information_source.get_games(self.__teams)
+
+    def get_games_categorized(self):
+        live = self.__information_source.get_live_games()
+        return self.get_finished_games(live), self.get_live_games(live), self.get_future_games(live)
+
+    def get_finished_games(self, live):
+        finished_games = [game for game in self.get_all_games() if game["status"] == "FINISHED"]
+        return User.check_in_live(finished_games, live)
+
     def get_live_games(self, live_games):
         """Check if the user's teams are on the live games.
 
@@ -127,31 +137,19 @@ class User(object):
                     self.__user_games.append(game)
         return self.__user_games
 
-    def get_all_games(self):
-        return self.__information_source.get_games(self.__teams)
-
-    def get_games_categorized(self, live):
-        return self.get_finished_games(live), self.get_current_games(), self.get_future_games(live)
-
-    def get_finished_games(self, live):
-        finished_games = [game for game in self.get_all_games() if game["status"] == "FINISHED"]
-        return User.check_in_live(finished_games, live)
-
-    def get_current_games(self):
-        return self.get_live_games(self.__information_source.get_live_games())
-
     def get_future_games(self, live):
-        future_games = [game for game in self.get_all_games() if game["status"] in FUTURE_STATUSES]
+        future_games = [game for game in self.get_all_games() if None in game["result"].values()]
         return User.check_in_live(future_games, live)
 
     @staticmethod
     def check_in_live(games, live_games):
         for game in games:
-            if game["homeTeamName"] == TEAMS_DICT[live_games["homeTeamName"]] \
-                    and datetime.datetime.strptime(game["date"][:10], "%Y-%m-%d") == \
-                    datetime.datetime.today().date():
-                del game
-            else:
-                game["homeTeamName"] = TEAMS_DICT[game["homeTeamName"]]
-                game["awayTeamName"] = TEAMS_DICT[game["awayTeamName"]]
+            for live_game in live_games:
+                if game["homeTeamName"] == TEAMS_DICT[live_game["homeTeamName"]] \
+                        and datetime.datetime.strptime(game["date"][:10], "%Y-%m-%d") == \
+                        datetime.datetime.today().date():
+                    games.remove(game)
+                else:
+                    game["homeTeamName"] = TEAMS_DICT[game["homeTeamName"]]
+                    game["awayTeamName"] = TEAMS_DICT[game["awayTeamName"]]
         return games

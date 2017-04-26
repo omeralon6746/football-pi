@@ -145,8 +145,14 @@ class TeamSelectionScreen(ScreenNew):
         self.__selected_teams = []
         
         for team in teams:
+            if 'Alav' in team:
+                show_team = 'Deportivo Alav\xc3\xa9s'
+            elif 'Deportivo La' in team:
+                show_team = 'Deportivo La Coruna'
+            else:
+                show_team = team
             self.layout.add_widget(CheckButton(team, self))
-            self.layout.add_widget(TeamName(text=team))
+            self.layout.add_widget(TeamName(text=show_team))
 
     @property
     def selected_teams(self):

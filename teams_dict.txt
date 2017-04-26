@@ -1,20 +1,21 @@
-﻿AFC Bournemouth: AFC Bournemouth
-Arsenal FC: 26.4********************************
+﻿
+AFC Bournemouth: AFC Bournemouth
+Arsenal FC: Arsenal
 Burnley FC: Burnley
 Chelsea FC: Chelsea
 Crystal Palace FC: Crystal Palace
 Everton FC: Everton
 Hull City FC: Hull City
-Leicester City FC: 26.4**********************************
+Leicester City FC: Leicester City
 Liverpool FC: Liverpool
 Manchester City FC: 27.4*********************************
 Manchester United FC: Manchester United
 Middlesbrough FC: Middlesbrough
 Southampton FC: Southampton
 Stoke City FC: Stoke City
-Sunderland AFC: 26.4*************************************
+Sunderland AFC: Sunderland*************
 Swansea City FC: Swansea City
-Tottenham Hotspur FC: 26.4*********************************
+Tottenham Hotspur FC: Tottenham Hotspur
 Watford FC: Watford
 West Bromwich Albion FC: 29.4********************************
 West Ham United FC: West Ham United

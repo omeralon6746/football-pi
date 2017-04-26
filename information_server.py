@@ -64,8 +64,8 @@ class InformationSource(object):
             teams - A list that contains the available teams.
         """
         with open("teams.txt") as teams_list:
-            for team in teams_list.read().splitlines():
-                if team:
+            for i, team in enumerate(teams_list.read().splitlines()):
+                if team and i != 0:
                     yield team
 
     @staticmethod

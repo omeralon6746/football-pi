@@ -35,9 +35,10 @@ class Main(App):
 
     def set_screen(self, screen_name):
         if screen_name == 'menu':
-            finished, live = self.__user.get_games_categorized()
+            finished, live, future = self.__user.get_games_categorized()
             print finished
             print live
+            print future
         self.__screen_manager.current = screen_name
 
 if __name__ == '__main__':
