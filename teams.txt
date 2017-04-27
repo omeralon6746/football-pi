@@ -8,7 +8,7 @@ Everton
 Hull City
 Leicester City
 Liverpool
-Manchester City FC*********
+Manchester City
 Manchester United
 Middlesbrough
 Southampton
@@ -78,7 +78,7 @@ Real Betis
 Real Madrid
 Real Sociedad
 Eibar
-Sevilla FC**********
+Sevilla FC
 Sporting Gijón
 Las Palmas
 Valencia

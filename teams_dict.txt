@@ -8,12 +8,12 @@ Everton FC: Everton
 Hull City FC: Hull City
 Leicester City FC: Leicester City
 Liverpool FC: Liverpool
-Manchester City FC: 27.4*********************************
+Manchester City FC: Manchester City
 Manchester United FC: Manchester United
 Middlesbrough FC: Middlesbrough
 Southampton FC: Southampton
 Stoke City FC: Stoke City
-Sunderland AFC: Sunderland*************
+Sunderland AFC: Sunderland
 Swansea City FC: Swansea City
 Tottenham Hotspur FC: Tottenham Hotspur
 Watford FC: Watford
@@ -78,7 +78,7 @@ Real Betis: Real Betis
 Real Madrid CF: Real Madrid
 Real Sociedad de Fútbol: Real Sociedad
 SD Eibar: Eibar
-Sevilla FC: 27.4***********************************************
+Sevilla FC: Sevilla FC
 Sporting Gijón: Sporting Gijón
 UD Las Palmas: Las Palmas
 Valencia CF: Valencia
