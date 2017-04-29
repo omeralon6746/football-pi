@@ -17,7 +17,7 @@ Sunderland AFC: Sunderland
 Swansea City FC: Swansea City
 Tottenham Hotspur FC: Tottenham Hotspur
 Watford FC: Watford
-West Bromwich Albion FC: 29.4********************************
+West Bromwich Albion FC: West Bromwich Albion
 West Ham United FC: West Ham United
 
 
@@ -29,7 +29,7 @@ FC Augsburg: FC Augsburg
 FC Bayern München: Bayern Munich
 FC Schalke 04: Schalke 04
 FC Ingolstadt 04: FC Ingolstadt 04
-1. FC Köln: 29.4*****************************************
+1. FC Köln: FC Cologne
 1. FSV Mainz 05: Mainz
 Hamburger SV: Hamburg SV
 Hertha BSC: Hertha Berlin
@@ -43,7 +43,7 @@ Werder Bremen: Werder Bremen
 
 Angers SCO: Angers
 AS Monaco FC: AS Monaco
-AS Nancy: 29.4**********************************************
+AS Nancy: AS Nancy Lorraine
 AS Saint-Étienne: St Etienne
 Dijon FCO: Dijon FCO
 EA Guingamp: Guingamp

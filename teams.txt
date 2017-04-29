@@ -17,7 +17,7 @@ Sunderland
 Swansea City
 Tottenham Hotspur
 Watford
-West Bromwich Albion FC******
+West Bromwich Albion
 West Ham United
 
 
@@ -29,7 +29,7 @@ FC Augsburg
 Bayern Munich
 Schalke 04
 FC Ingolstadt 04
-1. FC Köln***********************
+1. FC Cologne
 Mainz
 Hamburg SV
 Hertha Berlin
@@ -43,7 +43,7 @@ Werder Bremen
 
 Angers
 AS Monaco
-AS Nancy**********************
+AS Nancy Lorraine
 St Etienne
 Dijon FCO
 Guingamp
