@@ -36,7 +36,7 @@ Hertha Berlin
 RB Leipzig
 SC Freiburg
 SV Darmstadt 98
-TSG 1899 Hoffenheim*********
+TSG Hoffenheim
 VfL Wolfsburg
 Werder Bremen
 
@@ -53,7 +53,7 @@ Metz
 Nantes
 Montpellier
 Nice
-Olympique de Marseille**********
+Marseille
 Lyon
 Lille
 Paris Saint-Germain
