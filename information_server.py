@@ -38,12 +38,11 @@ class InformationSource(object):
         Returns:
             last_scores - A list of dictionaries, each containing information
             about the currently live games, in the following format:
-            {"league": -,
-            "goalsAwayTeam": -,
-            "time": -,
-            "homeTeamName": -,
-            "awayTeamName": -,
-            "goalsHomeTeam": -
+            {"goalsAwayTeam": -,
+             "time": -,
+             "homeTeamName": -,
+             "awayTeamName": -,
+             "goalsHomeTeam": -
             }
         """
         try:

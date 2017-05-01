@@ -66,86 +66,35 @@ class User(object):
 
     def get_changes_categorized(self):
         new_games, ended_games, goals = self.__information_source.get_changes()
-        return User.get_new_games_updates(new_games), \
-            User.get_ended_games_updates(ended_games), \
-            User.get_goals_updates(goals)
+        return self.get_user_games(new_games), \
+            self.get_user_games(ended_games), \
+            self.get_user_games(goals)
 
-    @staticmethod
-    def get_new_games_updates(new_games_updates):
-        """Check if the user's teams are on the new games updates that was found.
-
-
-        Receives:
-            new_games_updates - A list of tuples that contains the updates on the new games
-            that was found.
-
-        Returns:
-            user_new_games - A list of tuples that contains the updates on the
-            new games that relevant to the user's choices.
-        """
-        pass
-
-    @staticmethod
-    def get_ended_games_updates(new_games_updates):
-        """Check if the user's teams are on the ended games updates that was found.
+    def get_user_games(self, games):
+        """Check if the user's teams are on the given games updates that was found.
 
 
         Receives:
-            ended_games_updates - A list of tuples that contains the updates on the ended games
-            that was found.
+            games - A list of dictionaries that contains games
 
         Returns:
-            user_ended_games - A list of tuples that contains the updates on the
-            ended games that relevant to the user's choices.
+            A list of dictionaries that contains only the games that belong to the user's teams
         """
-        pass
-
-    @staticmethod
-    def get_goals_updates(goals_updates):
-        """Check if the user's teams are on the goals updates that was found.
-
-
-        Receives:
-            goals_updates - A list of tuples that contains the updates on the new goal
-            that was found.
-
-        Returns:
-            user_goals_updates - A list of tuples that contains the updates on the
-            new goals that relevant to the user's choices.
-        """
+        return [game for game in games if game["homeTeamName"] in self.__teams
+                or game["awayTeamName"] in self.__teams]
 
     def get_all_games(self):
         return self.__information_source.get_games(self.__teams)
 
     def get_games_categorized(self):
         live = self.__information_source.get_live_games()
-        return self.get_finished_games(live), self.get_live_games(live), self.get_future_games(live)
+        return self.get_finished_games(live), self.get_user_games(live), self.get_future_games(live)
 
     def get_finished_games(self, live):
         finished_games = [game for game in self.get_all_games() if game["status"] == "FINISHED"]
-        for i in range(len(finished_games) - 1):
+        for i in xrange(len(finished_games) - 1):
             finished_games[i] = User.choose_information(finished_games[i])
         return User.check_in_live(finished_games, live)
-
-    def get_live_games(self, live_games):
-        """Check if the user's teams are on the live games.
-
-
-        Receives:
-            live_games - A list of dictionaries, each containing information
-            about the currently live games.
-
-        Returns:
-            self.__user_games - A list of dictionaries, each containing information
-            about the currently live games of the user.
-        """
-        self.__user_games = []
-
-        for team in self.__teams:
-            for game in live_games:
-                if team in game.values():
-                    self.__user_games.append(game)
-        return self.__user_games
 
     def get_future_games(self, live):
         future_games = [game for game in self.get_all_games() if None in game["result"].values()

@@ -49,27 +49,29 @@ class Changes(object):
             new_games - A list of tuples that contains
             the new goals on the live games.
         """
+        index = 0
         new_goals = []
         for game in self.__old_games:
             for live_game in self.__updated_games:
                 if live_game["homeTeamName"] == game["homeTeamName"]:
-                    if live_game["goalsHomeTeam"] != game["goalsHomeTeam"] \
-                            or live_game["goalsAwayTeam"] != game["goalsAwayTeam"]:
-                        new_goals.append(((game["homeTeamName"],
-                                           live_game["goalsHomeTeam"] - game["goalsHomeTeam"]),
-                                        (game["homeTeamName"],
-                                         live_game["goalsAwayTeam"] - game["goalsAwayTeam"])))
-
-        new_goals += [((game["homeTeamName"], game["goalsHomeTeam"]),
-                       (game["awayTeamName"], game["goalsAwayTeam"]))
-                      for game in self.find_new_games() if game["goalsAwayTeam"] != 0
-                      or game["goalsAwaysTeam"] != 0]
-
+                    if live_game["goalsHomeTeam"] != game["goalsHomeTeam"]:
+                        new_goals.append(live_game)
+                        new_goals[index]["homeGoal"] = True
+                        if live_game["goalsAwayTeam"] != game["goalsAwayTeam"]:
+                            new_goals[index]["awayGoal"] = True
+                        else:
+                            new_goals[index]["awayGoal"] = False
+                        index += 1
+                    elif live_game["goalsAwayTeam"] != game["goalsAwayTeam"]:
+                        new_goals.append(live_game)
+                        new_goals[index]["awayGoal"] = True
+                        new_goals[index]["homeGoal"] = False
+                        index += 1
         return new_goals
 
     def find_all_changes(self):
         """Find updates on new games, finished games and goals.
-        *********delete this if there is no use at the end of the project.
+
 
         Returns:
             changes - A list of lists that contains the new updates.

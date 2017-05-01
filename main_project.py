@@ -38,6 +38,12 @@ class Main(App):
             print finished
             print live
             print future
+            new_games, ended_games, new_goals = self.__user.get_changes_categorized()
+            for game in ended_games:
+                finished.append(game)
+            for game in new_games:
+                live.remove(game)
+                future.append(game)
         self.__screen_manager.current = screen_name
 
 if __name__ == '__main__':
