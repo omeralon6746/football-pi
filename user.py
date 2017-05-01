@@ -31,7 +31,7 @@ class User(object):
             that the user chose to follow on.
         """
         self.__teams = picked_teams
-        with open(USERS_DATA, 'a') as users_data:
+        with open(USERS_DATA, "a") as users_data:
             yaml.dump([{self.__username: picked_teams}], users_data, default_flow_style=False)
 
     def check_username(self):
@@ -64,21 +64,14 @@ class User(object):
         """
         return self.__teams
 
-    def get_goals_updates(self, goals_updates):
-        """Check if the user's teams are on the goals updates that was found.
+    def get_changes_categorized(self):
+        new_games, ended_games, goals = self.__information_source.get_changes()
+        return User.get_new_games_updates(new_games), \
+            User.get_ended_games_updates(ended_games), \
+            User.get_goals_updates(goals)
 
-
-        Receives:
-            goals_updates - A list of tuples that contains the updates on the new goal
-            that was found.
-
-        Returns:
-            user_goals_updates - A list of tuples that contains the updates on the
-            new goals that relevant to the user's choices.
-        """
-
-
-    def get_new_games_updates(self, new_games_updates):
+    @staticmethod
+    def get_new_games_updates(new_games_updates):
         """Check if the user's teams are on the new games updates that was found.
 
 
@@ -92,7 +85,8 @@ class User(object):
         """
         pass
 
-    def get_ended_games_updates(self, new_games_updates):
+    @staticmethod
+    def get_ended_games_updates(new_games_updates):
         """Check if the user's teams are on the ended games updates that was found.
 
 
@@ -106,6 +100,20 @@ class User(object):
         """
         pass
 
+    @staticmethod
+    def get_goals_updates(goals_updates):
+        """Check if the user's teams are on the goals updates that was found.
+
+
+        Receives:
+            goals_updates - A list of tuples that contains the updates on the new goal
+            that was found.
+
+        Returns:
+            user_goals_updates - A list of tuples that contains the updates on the
+            new goals that relevant to the user's choices.
+        """
+
     def get_all_games(self):
         return self.__information_source.get_games(self.__teams)
 
@@ -115,6 +123,8 @@ class User(object):
 
     def get_finished_games(self, live):
         finished_games = [game for game in self.get_all_games() if game["status"] == "FINISHED"]
+        for i in range(len(finished_games) - 1):
+            finished_games[i] = User.choose_information(finished_games[i])
         return User.check_in_live(finished_games, live)
 
     def get_live_games(self, live_games):
@@ -138,18 +148,33 @@ class User(object):
         return self.__user_games
 
     def get_future_games(self, live):
-        future_games = [game for game in self.get_all_games() if None in game["result"].values()]
+        future_games = [game for game in self.get_all_games() if None in game["result"].values()
+                        and game["status"] != "POSTPONED"]
+        for i in xrange(len(future_games) - 1):
+            future_games[i] = User.choose_information(future_games[i])
         return User.check_in_live(future_games, live)
 
     @staticmethod
     def check_in_live(games, live_games):
-        for game in games:
+        for i in xrange(len(games) - 1):
             for live_game in live_games:
-                if game["homeTeamName"] == TEAMS_DICT[live_game["homeTeamName"]] \
-                        and datetime.datetime.strptime(game["date"][:10], "%Y-%m-%d") == \
+                if games[i]["homeTeamName"] == live_game["homeTeamName"] \
+                        and datetime.datetime.strptime(games[i]["date"][:10], "%Y-%m-%d") == \
                         datetime.datetime.today().date():
-                    games.remove(game)
-                else:
-                    game["homeTeamName"] = TEAMS_DICT[game["homeTeamName"]]
-                    game["awayTeamName"] = TEAMS_DICT[game["awayTeamName"]]
+                    games.remove(games[i])
         return games
+
+    @staticmethod
+    def choose_information(game):
+        edited_game = {"date": game["date"],
+                       "goalsHomeTeam": game["result"]["goalsHomeTeam"],
+                       "goalsAwayTeam": game["result"]["goalsAwayTeam"]}
+        try:
+            edited_game["homeTeamName"] = TEAMS_DICT[game["homeTeamName"]]
+        except KeyError:
+            edited_game["homeTeamName"] = game["homeTeamName"]
+        try:
+            edited_game["awayTeamName"] = TEAMS_DICT[game["awayTeamName"]]
+        except KeyError:
+            edited_game["awayTeamName"] = game["awayTeamName"]
+        return edited_game

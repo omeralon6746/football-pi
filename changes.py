@@ -21,9 +21,9 @@ class Changes(object):
             new_games - A list of dictionaries that contains
             the new games that started.
         """
-        last_home_teams = [game['homeTeamName'] for game in self.__old_games]
+        last_home_teams = [game["homeTeamName"] for game in self.__old_games]
         # get new games
-        new_games = [game for game in self.__updated_games if game['homeTeamName']
+        new_games = [game for game in self.__updated_games if game["homeTeamName"]
                      not in last_home_teams]
         return new_games
 
@@ -35,9 +35,9 @@ class Changes(object):
             finished - A list of dictionaries that contains
             the games that finished
         """
-        new_home_teams = [game['homeTeamName'] for game in self.__updated_games]
+        new_home_teams = [game["homeTeamName"] for game in self.__updated_games]
         # get finished games
-        finished = [game for game in self.__old_games if game['homeTeamName']
+        finished = [game for game in self.__old_games if game["homeTeamName"]
                     not in new_home_teams]
         return finished
 
@@ -52,18 +52,18 @@ class Changes(object):
         new_goals = []
         for game in self.__old_games:
             for live_game in self.__updated_games:
-                if live_game['homeTeamName'] == game['homeTeamName']:
-                    if live_game['goalsHomeTeam'] != game['goalsHomeTeam'] \
-                            or live_game['goalsAwayTeam'] != game['goalsAwayTeam']:
-                        new_goals.append(((game['homeTeamName'],
-                                           live_game['goalsHomeTeam'] - game['goalsHomeTeam']),
-                                        (game['homeTeamName'],
-                                         live_game['goalsAwayTeam'] - game['goalsAwayTeam'])))
+                if live_game["homeTeamName"] == game["homeTeamName"]:
+                    if live_game["goalsHomeTeam"] != game["goalsHomeTeam"] \
+                            or live_game["goalsAwayTeam"] != game["goalsAwayTeam"]:
+                        new_goals.append(((game["homeTeamName"],
+                                           live_game["goalsHomeTeam"] - game["goalsHomeTeam"]),
+                                        (game["homeTeamName"],
+                                         live_game["goalsAwayTeam"] - game["goalsAwayTeam"])))
 
-        new_goals += [((game['homeTeamName'], game['goalsHomeTeam']),
-                       (game['awayTeamName'], game['goalsAwayTeam']))
-                      for game in self.find_new_games() if game['goalsAwayTeam'] != 0
-                      or game['goalsAwaysTeam'] != 0]
+        new_goals += [((game["homeTeamName"], game["goalsHomeTeam"]),
+                       (game["awayTeamName"], game["goalsAwayTeam"]))
+                      for game in self.find_new_games() if game["goalsAwayTeam"] != 0
+                      or game["goalsAwaysTeam"] != 0]
 
         return new_goals
 

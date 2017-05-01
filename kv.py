@@ -23,7 +23,7 @@ Builder.load_string('''
             pos: 0, 200
             font_size: "64sp"
         TextInput:
-            pos_hint: {'x': 0.25, 'y': 0.5}
+            pos_hint: {"x": 0.25, "y": 0.5}
             size_hint: 0.5, 0.07
             multiline: False
             hint_text: "Enter Your Name"
@@ -40,13 +40,13 @@ Builder.load_string('''
     size_hint_x: None
     height: 24
     width: 24
-    background_normal: 'button-before-check.png'
-    background_down: 'button-after-check-2.png'
+    background_normal: "button-before-check.png"
+    background_down: "button-after-check-2.png"
     on_press: root.add_remove_team()
 
 <ButtonNew>:
-    background_normal: 'button-before-press.png'
-    background_down: 'button-after-press.png'
+    background_normal: "button-before-press.png"
+    background_down: "button-after-press.png"
     border: 20, 20, 20, 20
 
 <MenuScreen>:
@@ -145,10 +145,10 @@ class TeamSelectionScreen(ScreenNew):
         self.__selected_teams = []
         
         for team in teams:
-            if 'Alav' in team:
-                show_team = 'Deportivo Alav\xc3\xa9s'
-            elif 'Deportivo La' in team:
-                show_team = 'Deportivo La Coruna'
+            if "Alav" in team:
+                show_team = "Deportivo Alav\xc3\xa9s"
+            elif "Deportivo La" in team:
+                show_team = "Deportivo La Coruna"
             else:
                 show_team = team
             self.layout.add_widget(CheckButton(team, self))
@@ -174,7 +174,7 @@ class LoginScreen(Screen):
 
     @staticmethod
     def update_input_padding(text_input):
-        if text_input.text != '':
+        if text_input.text != "":
             text_width = text_input._get_text_width(
                 text_input.text,
                 text_input.tab_width,
@@ -186,7 +186,7 @@ class LoginScreen(Screen):
             text_input.padding_x = 143
 
     def check_username(self, text_input):
-        if text_input.text == '':
+        if text_input.text == "":
             text_input.hint_text = "Please enter something!"
             # manually calculated padding
             text_input.padding_x = 118
@@ -199,6 +199,6 @@ class ScreenManagerNew(ScreenManager):
         Window.size = (800, 480)
         super(ScreenManagerNew, self).__init__(**kwargs)
         self.__app = app
-        self.add_widget(LoginScreen(app, name='login'))
-        self.add_widget(TeamSelectionScreen(teams, name='team_selection'))
-        self.add_widget(MenuScreen(name='menu'))
+        self.add_widget(LoginScreen(app, name="login"))
+        self.add_widget(TeamSelectionScreen(teams, name="team_selection"))
+        self.add_widget(MenuScreen(name="menu"))

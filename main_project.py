@@ -16,7 +16,6 @@ class Main(App):
         super(Main, self).__init__(**kwargs)
         self.__user = None
         self.__screen_manager = kv.ScreenManagerNew(self, information_server.InformationSource.get_all_teams())
-        self.__information_source = information_server.InformationSource()
 
     def build(self):
         # set window size
@@ -24,17 +23,17 @@ class Main(App):
 
     def end_team_selection_screen(self, selected_teams):
         self.__user.set_teams(selected_teams)
-        self.set_screen('menu')
+        self.set_screen("menu")
 
     def update_username(self, username):
         self.__user = user.User(username)
         if self.__user.check_username():
-            self.set_screen('menu')
+            self.set_screen("menu")
         else:
-            self.set_screen('team_selection')
+            self.set_screen("team_selection")
 
     def set_screen(self, screen_name):
-        if screen_name == 'menu':
+        if screen_name == "menu":
             finished, live, future = self.__user.get_games_categorized()
             print finished
             print live

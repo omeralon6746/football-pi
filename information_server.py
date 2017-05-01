@@ -13,10 +13,10 @@ from team_codes import TEAM_CODES
 class InformationSource(object):
     LIVE_RESULTS_API = "http://soccer-cli.appspot.com/"
     OTHER_INFO_API = "http://api.football-data.org/v1/"
-    HEADERS = {'X-Auth-Token': '7796fc8dfc6740048cf8ebb80c3f3108'}
+    HEADERS = {"X-Auth-Token": "7796fc8dfc6740048cf8ebb80c3f3108"}
 
     def __init__(self):
-        """Set the class's attributes."""
+        """Set the class"s attributes."""
         self.__last_scores = []
 
     def get_changes(self):
@@ -29,7 +29,7 @@ class InformationSource(object):
         old_scores = self.__last_scores
         new_scores = self.get_live_games()
         changed = changes.Changes(new_scores, old_scores).find_all_changes()
-        return changed
+        return changed[0], changed[1], changed[2]
 
     def get_live_games(self):
         """Get the live games.
@@ -38,12 +38,12 @@ class InformationSource(object):
         Returns:
             last_scores - A list of dictionaries, each containing information
             about the currently live games, in the following format:
-            {'league': -,
-            'goalsAwayTeam': -,
-            'time': -,
-            'homeTeamName': -,
-            'awayTeamName': -,
-            'goalsHomeTeam': -
+            {"league": -,
+            "goalsAwayTeam": -,
+            "time": -,
+            "homeTeamName": -,
+            "awayTeamName": -,
+            "goalsHomeTeam": -
             }
         """
         try:
@@ -51,8 +51,10 @@ class InformationSource(object):
         except ValueError:
             return self.get_live_games()
         # filter the live games
-        self.__last_scores = [game for game in games['games']
-                              if -1 not in game.values() and 'FT' not in game.values()]
+        self.__last_scores = [game for game in games["games"]
+                              if -1 not in game.values() and "FT" not in game.values()]
+        for game in self.__last_scores:
+            del game["league"]
         return self.__last_scores
 
     @staticmethod
