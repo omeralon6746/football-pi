@@ -53,31 +53,84 @@ Builder.load_string('''
 
 <HomeScreen>:
     app: app
-    layout: layout
-    view: view
     bar: bar
     pos_hint_x: .03
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, 1
+        height: 50
+        width: 800
+        pos: 0, 480 - self.height
+        id: bar
+        cols: 4
+        ButtonNew:
+            text: "Home"
+        ButtonNew:
+            text: "Preferences"
+        ButtonNew:
+            text: "About"
+        ButtonNew:
+            text: "Exit"
     ScrollView:
-        id: view
-        pos_hint_x: .03
         size_hint: 1, None
+        size: 800, 480 - bar.height
         GridLayout:
             id: layout
             cols: 1
+            spacing: 10
             size_hint_y: None
-            spacing: 35
-            GridLayout:
-                id: bar
-                cols: 4
-                ButtonNew:
-                    text: "Home"
-                ButtonNew:
-                    text: "Preferences"
-                ButtonNew:
-                    text: "About"
-                ButtonNew:
-                    text: "Exit"
-
+            height: self.minimum_height
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
+            Button:
+                size_hint_y: None
+                height: 40
 
 <TeamSelectionScreen>:
     layout: layout
@@ -123,13 +176,13 @@ class ButtonNew(Button):
     pass
 
 
-class HomeScreen(Screen):
+class HomeScreen(ScreenNew):
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
         # cause scroll to work
-        self.layout.bind(minimum_height=self.layout.setter("height"))
-        self.bar.bind(minimum_height=self.bar.setter("height"))
-        self.view.size = (Window.width, Window.height)
+        # self.layout.bind(minimum_height=self.layout.setter("height"))
+        # self.bar.bind(minimum_height=self.bar.setter("height"))
+        # self.view.size = (Window.width, Window.height)
 
     def update(self):
         finished, live, future = self.app.user.get_games_categorized()
@@ -144,7 +197,7 @@ class HomeScreen(Screen):
                     print future
             for game in new_games:
                 live.append(game)
-                future = [future_game for future_game in future if future_game["homeTeamName"] != game["homeTeamName"] and future_game["date"] == datetime.datetime.today()]
+                future = [future_game for future_game in future if future_game["homeTeamName"] != game["homeTeamName"] or future_game["date"] != datetime.datetime.today()]
                 print "new game: %s vs %s" % (game["homeTeamName"], game["awayTeamName"])
                 print live
                 print future
