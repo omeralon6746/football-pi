@@ -8,6 +8,7 @@ import information_server
 import user
 import os
 import kv
+import threading
 from kivy.app import App
 
 
@@ -41,10 +42,13 @@ class Main(App):
             new_games, ended_games, new_goals = self.__user.get_changes_categorized()
             for game in ended_games:
                 finished.append(game)
-            for game in new_games:
                 live.remove(game)
-                future.append(game)
+            for game in new_games:
+                live.append(game)
+                future.remove(game)
+
         self.__screen_manager.current = screen_name
+
 
 if __name__ == '__main__':
     Main().run()

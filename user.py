@@ -108,7 +108,7 @@ class User(object):
         for i in xrange(len(games) - 1):
             for live_game in live_games:
                 if games[i]["homeTeamName"] == live_game["homeTeamName"] \
-                        and datetime.datetime.strptime(games[i]["date"][:10], "%Y-%m-%d") == \
+                        and games[i]["date"] == \
                         datetime.datetime.today().date():
                     games.remove(games[i])
         return games

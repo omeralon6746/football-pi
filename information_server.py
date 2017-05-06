@@ -7,7 +7,9 @@ Program Version: 1.0.0
 import requests
 import changes
 import time
-from team_codes import TEAM_CODES
+import calendar
+import datetime
+from team_codes import *
 
 
 class InformationSource(object):
@@ -82,11 +84,47 @@ class InformationSource(object):
         """
         all_games = []
         for team in user_teams:
-            team_code = TEAM_CODES[team]
-            team_games = requests.get("%s/teams/%d/fixtures" % (InformationSource.OTHER_INFO_API, team_code),
-                                      headers=InformationSource.HEADERS).json()
+            all_games += InformationSource.get_team_games(team)
+        delete_duplicates = []
+        for game in all_games:
+            game["date"] = InformationSource.convert_to_local_time(game["date"])
+        for game in all_games:
+            if game in delete_duplicates:
+                all_games.remove(game)
             try:
-                all_games += team_games["fixtures"]
+                if TEAMS_DICT[game["homeTeamName"]] in user_teams and TEAMS_DICT[game["awayTeamName"]] in user_teams:
+                    delete_duplicates.append(game)
             except KeyError:
-                print team_games
-        return sorted(all_games, key=lambda game: time.mktime(time.strptime(game["date"], "%Y-%m-%dT%H:%M:%SZ")))
+                pass
+        print "duplicates: %r" % delete_duplicates
+        print all_games
+        return sorted(all_games, key=lambda fixture: fixture["date"])
+
+    @staticmethod
+    def get_team_games(team):
+        team_code = TEAM_CODES[team]
+        team_games = requests.get("%s/teams/%d/fixtures" % (InformationSource.OTHER_INFO_API, team_code),
+                                  headers=InformationSource.HEADERS).json()
+
+        try:
+            return team_games["fixtures"]
+        except KeyError:
+            time.sleep(50)
+            return InformationSource.get_team_games(team)
+
+    @staticmethod
+    def convert_to_local_time(timestamp):
+        timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+        timestamp = calendar.timegm(timestamp.timetuple())
+        return datetime.datetime.fromtimestamp(timestamp)
+
+    @staticmethod
+    def remove_duplicates(games):
+        pass
+        # for game in games:
+        #     counter = 0
+        #     for fixture in games:
+        #         if game["date"] == fixture["date"] and game["homeTeamName"] == fixture["homeTeamName"]:
+        #             counter += 1
+        #     if counter > 1:
+        #         games.remove(game)
