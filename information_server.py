@@ -96,8 +96,6 @@ class InformationSource(object):
                     delete_duplicates.append(game)
             except KeyError:
                 pass
-        print "duplicates: %r" % delete_duplicates
-        print all_games
         return sorted(all_games, key=lambda fixture: fixture["date"])
 
     @staticmethod

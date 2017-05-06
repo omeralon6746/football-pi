@@ -18,34 +18,31 @@ class Main(App):
         self.__user = None
         self.__screen_manager = kv.ScreenManagerNew(self, information_server.InformationSource.get_all_teams())
 
+
+    @property
+    def user(self):
+        return self.__user
+
     def build(self):
         # set window size
         return self.__screen_manager
 
     def end_team_selection_screen(self, selected_teams):
         self.__user.set_teams(selected_teams)
-        self.set_screen("menu")
+        self.set_screen("home")
 
     def update_username(self, username):
         self.__user = user.User(username)
         if self.__user.check_username():
-            self.set_screen("menu")
+            self.set_screen("home")
         else:
             self.set_screen("team_selection")
 
     def set_screen(self, screen_name):
-        if screen_name == "menu":
-            finished, live, future = self.__user.get_games_categorized()
-            print finished
-            print live
-            print future
-            new_games, ended_games, new_goals = self.__user.get_changes_categorized()
-            for game in ended_games:
-                finished.append(game)
-                live.remove(game)
-            for game in new_games:
-                live.append(game)
-                future.remove(game)
+        if screen_name == "home":
+            thread = threading.Thread(target=self.__screen_manager.home_screen.update)
+            thread.daemon = True
+            thread.start()
 
         self.__screen_manager.current = screen_name
 

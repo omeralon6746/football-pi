@@ -13,6 +13,8 @@ from kivy.core.window import Window
 from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
+import datetime
+
 
 Builder.load_string('''
 
@@ -49,7 +51,8 @@ Builder.load_string('''
     background_down: "button-after-press.png"
     border: 20, 20, 20, 20
 
-<MenuScreen>:
+<HomeScreen>:
+    app: app
     layout: layout
     view: view
     bar: bar
@@ -120,14 +123,39 @@ class ButtonNew(Button):
     pass
 
 
-class MenuScreen(Screen):
+class HomeScreen(Screen):
     def __init__(self, **kwargs):
-        super(MenuScreen, self).__init__(**kwargs)
+        super(HomeScreen, self).__init__(**kwargs)
         # cause scroll to work
         self.layout.bind(minimum_height=self.layout.setter("height"))
         self.bar.bind(minimum_height=self.bar.setter("height"))
         self.view.size = (Window.width, Window.height)
 
+    def update(self):
+        finished, live, future = self.app.user.get_games_categorized()
+        while True:
+            new_games, ended_games, new_goals_games = self.app.user.get_changes_categorized()
+            for game in ended_games:
+                finished.append(game)
+                live = [live_game for live_game in live if live_game["homeTeamName"] != game["homeTeamName"]]
+                if ended_games:
+                    print finished
+                    print live
+                    print future
+            for game in new_games:
+                live.append(game)
+                future = [future_game for future_game in future if future_game["homeTeamName"] != game["homeTeamName"] and future_game["date"] == datetime.datetime.today()]
+                print "new game: %s vs %s" % (game["homeTeamName"], game["awayTeamName"])
+                print live
+                print future
+            for game in new_goals_games:
+                for live_game in live:
+                    if live_game["homeTeamName"] == game["homeTeamName"]:
+                        live_game["goalsHomeTeam"] = game["goalsHomeTeam"]
+                        live_game["goalsAwayTeam"] = game["goalsAwayTeam"]
+                        print "goal! for %s or %s, score: %d - %d" % (live_game["homeTeamName"], live_game["awayTeamName"], live_game["goalsHomeTeam"], live_game["goalsAwayTeam"])
+                        print live
+                        print future
 
 class CheckButton(ToggleButton):
     def __init__(self, team, root, **kwargs):
@@ -199,6 +227,7 @@ class ScreenManagerNew(ScreenManager):
         Window.size = (800, 480)
         super(ScreenManagerNew, self).__init__(**kwargs)
         self.__app = app
+        self.home_screen = HomeScreen(name="home")
         self.add_widget(LoginScreen(app, name="login"))
         self.add_widget(TeamSelectionScreen(teams, name="team_selection"))
-        self.add_widget(MenuScreen(name="menu"))
+        self.add_widget(self.home_screen)
