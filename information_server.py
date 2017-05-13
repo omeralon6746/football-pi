@@ -116,13 +116,5 @@ class InformationSource(object):
         timestamp = calendar.timegm(timestamp.timetuple())
         return datetime.datetime.fromtimestamp(timestamp)
 
-    @staticmethod
-    def remove_duplicates(games):
-        pass
-        # for game in games:
-        #     counter = 0
-        #     for fixture in games:
-        #         if game["date"] == fixture["date"] and game["homeTeamName"] == fixture["homeTeamName"]:
-        #             counter += 1
-        #     if counter > 1:
-        #         games.remove(game)
+    def get_last_scores(self):
+        return self.__last_scores

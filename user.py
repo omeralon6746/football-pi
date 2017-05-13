@@ -68,7 +68,8 @@ class User(object):
         new_games, ended_games, goals = self.__information_source.get_changes()
         return self.get_user_games(new_games), \
             self.get_user_games(ended_games), \
-            self.get_user_games(goals)
+            self.get_user_games(goals), \
+            self.__information_source.get_last_scores()
 
     def get_user_games(self, games):
         """Check if the user's teams are on the given games updates that was found.

@@ -187,28 +187,28 @@ class HomeScreen(ScreenNew):
     def update(self):
         finished, live, future = self.app.user.get_games_categorized()
         while True:
-            new_games, ended_games, new_goals_games = self.app.user.get_changes_categorized()
+            new_games, ended_games, new_goals_games, live = self.app.user.get_changes_categorized()
             for game in ended_games:
                 finished.append(game)
-                live = [live_game for live_game in live if live_game["homeTeamName"] != game["homeTeamName"]]
-                if ended_games:
-                    print finished
-                    print live
-                    print future
+                # live = [live_game for live_game in live if live_game["homeTeamName"] != game["homeTeamName"]]
+                print "game ended:    %s    %d - %d    %s" % (game["homeTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"], game["homeTeamName"])
+                print finished
+                print live
             for game in new_games:
-                live.append(game)
+                # live.append(game)
                 future = [future_game for future_game in future if future_game["homeTeamName"] != game["homeTeamName"] or future_game["date"] != datetime.datetime.today()]
                 print "new game: %s vs %s" % (game["homeTeamName"], game["awayTeamName"])
                 print live
                 print future
             for game in new_goals_games:
-                for live_game in live:
-                    if live_game["homeTeamName"] == game["homeTeamName"]:
-                        live_game["goalsHomeTeam"] = game["goalsHomeTeam"]
-                        live_game["goalsAwayTeam"] = game["goalsAwayTeam"]
-                        print "goal! for %s or %s, score: %d - %d" % (live_game["homeTeamName"], live_game["awayTeamName"], live_game["goalsHomeTeam"], live_game["goalsAwayTeam"])
-                        print live
-                        print future
+                # for live_game in live:
+                #    if live_game["homeTeamName"] == game["homeTeamName"]:
+                #        live_game["goalsHomeTeam"] = game["goalsHomeTeam"]
+                #        live_game["goalsAwayTeam"] = game["goalsAwayTeam"]
+                    print "goal! for %s or %s, score: %d - %d" % (game["homeTeamName"], game["awayTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"])
+                    print live
+                    print future
+
 
 class CheckButton(ToggleButton):
     def __init__(self, team, root, **kwargs):
