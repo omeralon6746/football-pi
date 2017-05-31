@@ -117,6 +117,24 @@ Builder.load_string('''
             spacing: 20
             size_hint_y: None
             height: self.minimum_height
+
+
+<GameLabel@Label>:
+    canvas:
+        Color:
+            rgb: 0, 1, 0
+        Rectangle:
+            pos: self.pos
+            size: self.width, 2
+        Rectangle:
+            pos: self.x, self.y + self.height
+            size: self.width, 2
+        Rectangle:
+            pos: self.pos
+            size: 2, self.height
+        Rectangle:
+            pos: self.x + self.width - 2, self.y
+            size: 2, self.height
     ''')
 
 
@@ -129,9 +147,20 @@ class ButtonNew(Button):
     pass
 
 
+class GameLabel(Label):
+    pass
+
 class HomeScreen(ScreenNew):
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
+        self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
+        self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
+        self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
+        self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
+        self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
+        self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
+        self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
+        self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
         self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
         self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
         # cause scroll to work
@@ -159,13 +188,14 @@ class HomeScreen(ScreenNew):
                     print future
 
     def add_game(self, game):
-        self.grid.add_widget(Label(text=game["time"], height=20, size_hint_y=None))
-        label = Label(text="{0:>28}{1:11}{2:<5}{3:<5}{4:<11}{5:<6}".format(
+        self.grid.add_widget(GameLabel(text=game["time"], height=30, size_hint_y=None))
+        label = GameLabel(text="{0:>28}{1:11}{2:<5}{3:<5}{4:<11}{5:<6}".format(
             game["homeTeamName"], " ", game["goalsHomeTeam"], "-", game["goalsAwayTeam"], game["awayTeamName"])
             , font_name="cour.ttf", padding_x=0, height=25, width=480, size_hint_y=None)
         label.bind(size=label.setter("text_size"))
         self.grid.add_widget(label)
-        self.grid.add_widget(Label(height=30, size_hint_y=None))
+        self.grid.add_widget(Label(height=50, size_hint_y=None))
+
 
 
 class CheckButton(ToggleButton):
