@@ -17,7 +17,7 @@ class Main(App):
         super(Main, self).__init__(**kwargs)
         self.__user = None
         self.__screen_manager = kv.ScreenManagerNew(self, information_server.InformationSource.get_all_teams())
-
+        self.screen = "login"
 
     @property
     def user(self):
@@ -39,6 +39,7 @@ class Main(App):
             self.set_screen("team_selection")
 
     def set_screen(self, screen_name):
+        self.screen = screen_name
         if screen_name == "home":
             thread = threading.Thread(target=self.__screen_manager.home_screen.update)
             thread.daemon = True

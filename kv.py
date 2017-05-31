@@ -156,48 +156,44 @@ class GameLabel(Label):
     pass
 
 class HomeScreen(ScreenNew):
+
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
-        self.add_game({"time": "33'", "homeTeamName": "lazlaz", "goalsHomeTeam": 8, "awayTeamName": "laz", "goalsAwayTeam": 5})
-        self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
-        self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
-        self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
-        self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
-        self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
-        self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
-        self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
-        self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
-        self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
         self.__game_labels = []
-        # cause scroll to work
-        # self.layout.bind(minimum_height=self.layout.setter("height"))
-        # self.bar.bind(minimum_height=self.bar.setter("height"))
-        # self.view.size = (Window.width, Window.height)
+        # threading.Timer(15, self.refresh_screen, [[]]).start()
 
     def update(self):
         finished, live, future = self.app.user.get_games_categorized()
+        if live:
+            for live_game in live:
+                self.add_game(live_game)
+        else:
+            self.grid.add_widget(Label(text="No live matches"))
         while True:
-            new_games, ended_games, new_goals_games, updated = self.app.user.get_changes_categorized()
-            if not (new_games or ended_games or new_goals_games):
-                for i in xrange(len(updated)):
-                    if updated[i]["time"] != live[i]["time"]:
-                        self.change_minutes(updated)
-                        break
-            live = updated
-            for game in ended_games:
-                finished.append(game)
-                print "game ended:    %s    %d - %d    %s" % (game["homeTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"], game["homeTeamName"])
-                print finished
-                print live
-            for game in new_games:
-                future = [future_game for future_game in future if future_game["homeTeamName"] != game["homeTeamName"] or future_game["date"] != datetime.datetime.today()]
-                print "new game: %s vs %s" % (game["homeTeamName"], game["awayTeamName"])
-                print live
-                print future
-            for game in new_goals_games:
-                    print "goal! for %s or %s, score: %d - %d" % (game["homeTeamName"], game["awayTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"])
-                    print live
-                    print future
+            while self.app.screen == "home":
+                new_games, ended_games, new_goals_games, updated = self.app.user.get_changes_categorized()
+                if not (new_games or ended_games or new_goals_games):
+                    for i in xrange(len(updated)):
+                        if updated[i]["time"] != live[i]["time"]:
+                            self.change_minutes(updated)
+                            break
+                else:
+                    for game in ended_games:
+                        finished.append(game)
+                        print "game ended:    %s    %d - %d    %s" % (game["homeTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"], game["homeTeamName"])
+                        print finished
+                        print updated
+                    for game in new_games:
+                        future = [future_game for future_game in future if future_game["homeTeamName"] != game["homeTeamName"] or future_game["date"] != datetime.datetime.today()]
+                        print "new game: %s vs %s" % (game["homeTeamName"], game["awayTeamName"])
+                        print updated
+                        print future
+                    for game in new_goals_games:
+                            print "goal! for %s or %s, score: %d - %d" % (game["homeTeamName"], game["awayTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"])
+                            print updated
+                            print future
+                    self.refresh_screen(updated)
+                live = updated
 
     def add_game(self, game):
         time_label = GameLabel(text=game["time"], height=30, size_hint_y=None)
@@ -214,6 +210,11 @@ class HomeScreen(ScreenNew):
         for i in xrange(len(live)):
             self.__game_labels[i].text = live[i]["time"]
             self.__game_labels[i].texture_update()
+
+    def refresh_screen(self, live):
+        self.grid.clear_widgets()
+        for live_game in live:
+            self.add_game(live_game)
 
 
 class CheckButton(ToggleButton):
