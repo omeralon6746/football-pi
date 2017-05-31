@@ -14,6 +14,8 @@ from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 import datetime
+import pandas
+from sys import exit
 
 
 Builder.load_string('''
@@ -55,6 +57,7 @@ Builder.load_string('''
     app: app
     bar: bar
     pos_hint_x: .03
+    grid: layout
     BoxLayout:
         orientation: 'horizontal'
         size_hint: 1, 1
@@ -71,66 +74,16 @@ Builder.load_string('''
             text: "About"
         ButtonNew:
             text: "Exit"
+            on_press: exit()
     ScrollView:
         size_hint: 1, None
         size: 800, 480 - bar.height
         GridLayout:
             id: layout
             cols: 1
-            spacing: 10
             size_hint_y: None
             height: self.minimum_height
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
-            Button:
-                size_hint_y: None
-                height: 40
+
 
 <TeamSelectionScreen>:
     layout: layout
@@ -179,6 +132,8 @@ class ButtonNew(Button):
 class HomeScreen(ScreenNew):
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
+        self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
+        self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
         # cause scroll to work
         # self.layout.bind(minimum_height=self.layout.setter("height"))
         # self.bar.bind(minimum_height=self.bar.setter("height"))
@@ -190,24 +145,27 @@ class HomeScreen(ScreenNew):
             new_games, ended_games, new_goals_games, live = self.app.user.get_changes_categorized()
             for game in ended_games:
                 finished.append(game)
-                # live = [live_game for live_game in live if live_game["homeTeamName"] != game["homeTeamName"]]
                 print "game ended:    %s    %d - %d    %s" % (game["homeTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"], game["homeTeamName"])
                 print finished
                 print live
             for game in new_games:
-                # live.append(game)
                 future = [future_game for future_game in future if future_game["homeTeamName"] != game["homeTeamName"] or future_game["date"] != datetime.datetime.today()]
                 print "new game: %s vs %s" % (game["homeTeamName"], game["awayTeamName"])
                 print live
                 print future
             for game in new_goals_games:
-                # for live_game in live:
-                #    if live_game["homeTeamName"] == game["homeTeamName"]:
-                #        live_game["goalsHomeTeam"] = game["goalsHomeTeam"]
-                #        live_game["goalsAwayTeam"] = game["goalsAwayTeam"]
                     print "goal! for %s or %s, score: %d - %d" % (game["homeTeamName"], game["awayTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"])
                     print live
                     print future
+
+    def add_game(self, game):
+        self.grid.add_widget(Label(text=game["time"], height=20, size_hint_y=None))
+        label = Label(text="{0:>28}{1:11}{2:<5}{3:<5}{4:<11}{5:<6}".format(
+            game["homeTeamName"], " ", game["goalsHomeTeam"], "-", game["goalsAwayTeam"], game["awayTeamName"])
+            , font_name="cour.ttf", padding_x=0, height=25, width=480, size_hint_y=None)
+        label.bind(size=label.setter("text_size"))
+        self.grid.add_widget(label)
+        self.grid.add_widget(Label(height=30, size_hint_y=None))
 
 
 class CheckButton(ToggleButton):
@@ -224,7 +182,7 @@ class TeamSelectionScreen(ScreenNew):
     def __init__(self, teams, **kwargs):
         super(TeamSelectionScreen, self).__init__(**kwargs)
         self.__selected_teams = []
-        
+
         for team in teams:
             if "Alav" in team:
                 show_team = "Deportivo Alav\xc3\xa9s"
