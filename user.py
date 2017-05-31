@@ -93,20 +93,20 @@ class User(object):
 
     def get_finished_games(self, live):
         finished_games = [game for game in self.get_all_games() if game["status"] == "FINISHED"]
-        for i in xrange(len(finished_games) - 1):
+        for i in xrange(len(finished_games)):
             finished_games[i] = User.choose_information(finished_games[i])
         return User.check_in_live(finished_games, live)
 
     def get_future_games(self, live):
         future_games = [game for game in self.get_all_games() if None in game["result"].values()
                         and game["status"] != "POSTPONED"]
-        for i in xrange(len(future_games) - 1):
+        for i in xrange(len(future_games)):
             future_games[i] = User.choose_information(future_games[i])
         return User.check_in_live(future_games, live)
 
     @staticmethod
     def check_in_live(games, live_games):
-        for i in xrange(len(games) - 1):
+        for i in xrange(len(games)):
             for live_game in live_games:
                 if games[i]["homeTeamName"] == live_game["homeTeamName"] \
                         and games[i]["date"] == \

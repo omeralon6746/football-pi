@@ -14,6 +14,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 import datetime
+import threading
 import pandas
 from sys import exit
 
@@ -70,6 +71,7 @@ Builder.load_string('''
             text: "Home"
         ButtonNew:
             text: "Preferences"
+            on_press: app.set_screen("team_selection")
         ButtonNew:
             text: "About"
         ButtonNew:
@@ -83,6 +85,9 @@ Builder.load_string('''
             cols: 1
             size_hint_y: None
             height: self.minimum_height
+            Label:
+                height: 15
+                size_hint_y: None
 
 
 <TeamSelectionScreen>:
@@ -153,7 +158,7 @@ class GameLabel(Label):
 class HomeScreen(ScreenNew):
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
-        self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
+        self.add_game({"time": "33'", "homeTeamName": "lazlaz", "goalsHomeTeam": 8, "awayTeamName": "laz", "goalsAwayTeam": 5})
         self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
         self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
         self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
@@ -163,6 +168,7 @@ class HomeScreen(ScreenNew):
         self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
         self.add_game({"time": "33'", "homeTeamName": "guikG", "goalsHomeTeam": 8, "awayTeamName": "guikGe55y5wy", "goalsAwayTeam": 5})
         self.add_game({"time": "66'", "homeTeamName": "Borussia Monchengladbach", "goalsHomeTeam": 0, "awayTeamName": "Borussia Monchengladbach", "goalsAwayTeam": 5})
+        self.__game_labels = []
         # cause scroll to work
         # self.layout.bind(minimum_height=self.layout.setter("height"))
         # self.bar.bind(minimum_height=self.bar.setter("height"))
@@ -171,7 +177,13 @@ class HomeScreen(ScreenNew):
     def update(self):
         finished, live, future = self.app.user.get_games_categorized()
         while True:
-            new_games, ended_games, new_goals_games, live = self.app.user.get_changes_categorized()
+            new_games, ended_games, new_goals_games, updated = self.app.user.get_changes_categorized()
+            if not (new_games or ended_games or new_goals_games):
+                for i in xrange(len(updated)):
+                    if updated[i]["time"] != live[i]["time"]:
+                        self.change_minutes(updated)
+                        break
+            live = updated
             for game in ended_games:
                 finished.append(game)
                 print "game ended:    %s    %d - %d    %s" % (game["homeTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"], game["homeTeamName"])
@@ -188,14 +200,20 @@ class HomeScreen(ScreenNew):
                     print future
 
     def add_game(self, game):
-        self.grid.add_widget(GameLabel(text=game["time"], height=30, size_hint_y=None))
-        label = GameLabel(text="{0:>28}{1:11}{2:<5}{3:<5}{4:<11}{5:<6}".format(
+        time_label = GameLabel(text=game["time"], height=30, size_hint_y=None)
+        self.grid.add_widget(time_label)
+        label = GameLabel(text="{0:>33}{1:11}{2:<5}{3:<5}{4:<11}{5:<6}".format(
             game["homeTeamName"], " ", game["goalsHomeTeam"], "-", game["goalsAwayTeam"], game["awayTeamName"])
-            , font_name="cour.ttf", padding_x=0, height=25, width=480, size_hint_y=None)
+            , font_name="Inconsolata-Bold.ttf", padding_x=0, height=25, width=480, size_hint_y=None)
         label.bind(size=label.setter("text_size"))
         self.grid.add_widget(label)
         self.grid.add_widget(Label(height=50, size_hint_y=None))
+        self.__game_labels.append(time_label)
 
+    def change_minutes(self, live):
+        for i in xrange(len(live)):
+            self.__game_labels[i].text = live[i]["time"]
+            self.__game_labels[i].texture_update()
 
 
 class CheckButton(ToggleButton):
