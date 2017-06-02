@@ -155,6 +155,7 @@ class ButtonNew(Button):
 class GameLabel(Label):
     pass
 
+
 class HomeScreen(ScreenNew):
 
     def __init__(self, **kwargs):
@@ -164,11 +165,7 @@ class HomeScreen(ScreenNew):
 
     def update(self):
         finished, live, future = self.app.user.get_games_categorized()
-        if live:
-            for live_game in live:
-                self.add_game(live_game)
-        else:
-            self.grid.add_widget(Label(text="No live matches"))
+        self.refresh_screen(live)
         while True:
             while self.app.screen == "home":
                 new_games, ended_games, new_goals_games, updated = self.app.user.get_changes_categorized()
@@ -213,8 +210,12 @@ class HomeScreen(ScreenNew):
 
     def refresh_screen(self, live):
         self.grid.clear_widgets()
-        for live_game in live:
-            self.add_game(live_game)
+        self.grid.add_widget(Label(height=15, size_hint_y=None))
+        if live:
+            for live_game in live:
+                self.add_game(live_game)
+        else:
+            self.grid.add_widget(Label(text="There are currently no live games for your teams"))
 
 
 class CheckButton(ToggleButton):
