@@ -18,7 +18,7 @@ class InformationSource(object):
     HEADERS = {"X-Auth-Token": "7796fc8dfc6740048cf8ebb80c3f3108"}
 
     def __init__(self):
-        """Set the class"s attributes."""
+        """Set the class's attributes."""
         self.__last_scores = []
 
     def get_changes(self):
@@ -100,10 +100,14 @@ class InformationSource(object):
 
     @staticmethod
     def get_team_games(team):
+        """Get all the teams' games."""
         team_code = TEAM_CODES[team]
-        team_games = requests.get("%s/teams/%d/fixtures" % (InformationSource.OTHER_INFO_API, team_code),
-                                  headers=InformationSource.HEADERS).json()
-
+        try:
+            team_games = requests.get("%s/teams/%d/fixtures" % (InformationSource.OTHER_INFO_API, team_code),
+                                      headers=InformationSource.HEADERS).json()
+        except ValueError:
+            return InformationSource.get_team_games(team)
+        # sleep time because of the request limit on the information server
         try:
             return team_games["fixtures"]
         except KeyError:
@@ -112,9 +116,11 @@ class InformationSource(object):
 
     @staticmethod
     def convert_to_local_time(timestamp):
+        """Convert to the time in Israel."""
         timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
         timestamp = calendar.timegm(timestamp.timetuple())
         return datetime.datetime.fromtimestamp(timestamp)
 
     def get_last_scores(self):
+        """Get the last scores."""
         return self.__last_scores

@@ -143,7 +143,6 @@ Builder.load_string('''
     ''')
 
 
-# to add class
 class TeamName(Label):
     pass
 
@@ -159,42 +158,50 @@ class GameLabel(Label):
 class HomeScreen(ScreenNew):
 
     def __init__(self, **kwargs):
+        """Set the class's attributes."""
         super(HomeScreen, self).__init__(**kwargs)
         self.__game_labels = []
-        # threading.Timer(15, self.refresh_screen, [[]]).start()
 
     def update(self):
+        """Update the home screen according to the user's live updates."""
+        self.grid.add_widget(Label(text="Loading...", height=50, size_hint_y=None))
+        # get the finished, live and future matches of the user
         finished, live, future = self.app.user.get_games_categorized()
         self.refresh_screen(live)
         while True:
             while self.app.screen == "home":
                 new_games, ended_games, new_goals_games, updated = self.app.user.get_changes_categorized()
+                # if only the minutes changed, present the new minutes on the screen
                 if not (new_games or ended_games or new_goals_games):
                     for i in xrange(len(updated)):
                         if updated[i]["time"] != live[i]["time"]:
                             self.change_minutes(updated)
                             break
                 else:
+                    # check if the changes working(not necessary)
                     for game in ended_games:
                         finished.append(game)
                         print "game ended:    %s    %d - %d    %s" % (game["homeTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"], game["homeTeamName"])
-                        print finished
-                        print updated
                     for game in new_games:
                         future = [future_game for future_game in future if future_game["homeTeamName"] != game["homeTeamName"] or future_game["date"] != datetime.datetime.today()]
                         print "new game: %s vs %s" % (game["homeTeamName"], game["awayTeamName"])
-                        print updated
-                        print future
                     for game in new_goals_games:
-                            print "goal! for %s or %s, score: %d - %d" % (game["homeTeamName"], game["awayTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"])
-                            print updated
-                            print future
+                        print "goal! for %s or %s, score: %d - %d" % (game["homeTeamName"], game["awayTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"])
+                    # update the screen according to the changes that were found
                     self.refresh_screen(updated)
                 live = updated
 
     def add_game(self, game):
+        """Present a live game on the screen.
+
+
+        Receives:
+            game - A dictionary that contains the game information.
+        """
+        # present the minute
         time_label = GameLabel(text=game["time"], height=30, size_hint_y=None)
         self.grid.add_widget(time_label)
+        # present the score and teams' names
         label = GameLabel(text="{0:>33}{1:11}{2:<5}{3:<5}{4:<11}{5:<6}".format(
             game["homeTeamName"], " ", game["goalsHomeTeam"], "-", game["goalsAwayTeam"], game["awayTeamName"])
             , font_name="Inconsolata-Bold.ttf", padding_x=0, height=25, width=480, size_hint_y=None)
@@ -204,13 +211,26 @@ class HomeScreen(ScreenNew):
         self.__game_labels.append(time_label)
 
     def change_minutes(self, live):
+        """Change the minutes of the live games.
+
+
+        Receives:
+            live - A list of dictionaries that contains the live games.
+        """
         for i in xrange(len(live)):
             self.__game_labels[i].text = live[i]["time"]
             self.__game_labels[i].texture_update()
 
     def refresh_screen(self, live):
+        """Clear the screen and present the updated information.
+
+
+        Receives:
+            live - A list of dictionaries that contains the live games.
+        """
         self.grid.clear_widgets()
         self.grid.add_widget(Label(height=15, size_hint_y=None))
+        # if there are no live games, print a message
         if live:
             for live_game in live:
                 self.add_game(live_game)
@@ -220,6 +240,7 @@ class HomeScreen(ScreenNew):
 
 class CheckButton(ToggleButton):
     def __init__(self, team, root, **kwargs):
+        """Set the class's attributes."""
         super(CheckButton, self).__init__(**kwargs)
         self.__team = team
         self.__root = root
@@ -230,9 +251,10 @@ class CheckButton(ToggleButton):
 
 class TeamSelectionScreen(ScreenNew):
     def __init__(self, teams, **kwargs):
+        """Set the class's attributes."""
         super(TeamSelectionScreen, self).__init__(**kwargs)
         self.__selected_teams = []
-
+        # special team names
         for team in teams:
             if "Alav" in team:
                 show_team = "Deportivo Alav\xc3\xa9s"
@@ -248,6 +270,12 @@ class TeamSelectionScreen(ScreenNew):
         return self.__selected_teams
 
     def add_remove_team(self, team):
+        """If a button is pressed, add/remove the team that the button points on.
+
+
+        Receives:
+            team - A string that contains the team that the pressed button points on.
+        """
         if team in self.__selected_teams:
             self.__selected_teams.remove(team)
         else:
@@ -258,11 +286,13 @@ class TeamSelectionScreen(ScreenNew):
 
 class LoginScreen(Screen):
     def __init__(self, app, **kwargs):
+        """Set the class's attributes."""
         super(LoginScreen, self).__init__(**kwargs)
         self.__app = app
 
     @staticmethod
     def update_input_padding(text_input):
+        """Set the text to the middle of the screen."""
         if text_input.text != "":
             text_width = text_input._get_text_width(
                 text_input.text,
@@ -275,6 +305,7 @@ class LoginScreen(Screen):
             text_input.padding_x = 143
 
     def check_username(self, text_input):
+        """Get the user's input"""
         if text_input.text == "":
             text_input.hint_text = "Please enter something!"
             # manually calculated padding
@@ -285,6 +316,7 @@ class LoginScreen(Screen):
 
 class ScreenManagerNew(ScreenManager):
     def __init__(self, app, teams, **kwargs):
+        """Set the class's attributes."""
         Window.size = (800, 480)
         super(ScreenManagerNew, self).__init__(**kwargs)
         self.__app = app

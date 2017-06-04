@@ -97,7 +97,7 @@ TEAMS_DICT = {"AFC Bournemouth": "AFC Bournemouth",
               "US Citt\xc3\xa1 di Palermo": "Palermo",
               "US Sassuolo Calcio": "Sassuolo"}
 
-#CLI
+# CLI
 TEAM_CODES = {"VfL Wolfsburg": 11,
              "Borussia Dortmund": 4,
              "FC Augsburg": 16,

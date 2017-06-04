@@ -55,16 +55,9 @@ class User(object):
                         check_exist = True
         return check_exist
 
-    def get_teams(self):
-        """Get the user's details teams.
-        *********delete this if there is no use at the end of the project.
-
-        Returns:
-            self.__teams - A list of the user's teams.
-        """
-        return self.__teams
-
     def get_changes_categorized(self):
+        """Get all the changes that found."""
+        # get the changes from the information source
         new_games, ended_games, goals = self.__information_source.get_changes()
         return self.get_user_games(new_games), \
             self.get_user_games(ended_games), \
@@ -85,19 +78,23 @@ class User(object):
                 or game["awayTeamName"] in self.__teams]
 
     def get_all_games(self):
+        """Get all the user games(finished, live and future) together."""
         return self.__information_source.get_games(self.__teams)
 
     def get_games_categorized(self):
+        """Get the finished, live and future games categorized."""
         live = self.__information_source.get_live_games()
         return self.get_finished_games(live), self.get_user_games(live), self.get_future_games(live)
 
     def get_finished_games(self, live):
+        """Get only the finished games."""
         finished_games = [game for game in self.get_all_games() if game["status"] == "FINISHED"]
         for i in xrange(len(finished_games)):
             finished_games[i] = User.choose_information(finished_games[i])
         return User.check_in_live(finished_games, live)
 
     def get_future_games(self, live):
+        """Get only the future games."""
         future_games = [game for game in self.get_all_games() if None in game["result"].values()
                         and game["status"] != "POSTPONED"]
         for i in xrange(len(future_games)):
@@ -106,6 +103,7 @@ class User(object):
 
     @staticmethod
     def check_in_live(games, live_games):
+        """Check special incidents."""
         for i in xrange(len(games)):
             for live_game in live_games:
                 if games[i]["homeTeamName"] == live_game["homeTeamName"] \
@@ -116,6 +114,7 @@ class User(object):
 
     @staticmethod
     def choose_information(game):
+        """Edit the dictionary values."""
         edited_game = {"date": game["date"],
                        "goalsHomeTeam": game["result"]["goalsHomeTeam"],
                        "goalsAwayTeam": game["result"]["goalsAwayTeam"]}
