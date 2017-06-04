@@ -170,20 +170,16 @@
   - Stade Rennais
   - Toulouse
   - Athletic Bilbao
-- !!python/unicode 'jjjj':
-  - AFC Bournemouth
-  - Arsenal
-  - Burnley
-- !!python/unicode 'jjjj':
-  - AFC Bournemouth
-  - Arsenal
-  - Burnley
-- !!python/unicode 'jjjj':
-  - AFC Bournemouth
-  - Arsenal
-  - Burnley
-- !!python/unicode 'jjjj':
-  - AFC Bournemouth
-  - Arsenal
-  - Burnley
-- !!python/unicode 'omer': []
+- !!python/unicode 'try':
+  - Crystal Palace
+  - Everton
+  - Hull City
+  - Leicester City
+- !!python/unicode 'try2':
+  - Hull City
+  - Leicester City
+  - Liverpool
+  - Manchester City
+  - Watford
+  - West Bromwich Albion
+  - SC Freiburg
