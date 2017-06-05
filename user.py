@@ -91,6 +91,7 @@ class User(object):
         finished_games = [game for game in self.get_all_games() if game["status"] == "FINISHED"]
         for i in xrange(len(finished_games)):
             finished_games[i] = User.choose_information(finished_games[i])
+        print User.check_in_live(finished_games, live)
         return User.check_in_live(finished_games, live)
 
     def get_future_games(self, live):

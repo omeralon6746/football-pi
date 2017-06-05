@@ -53,6 +53,14 @@ class Main(App):
         else:
             self.set_screen("team_selection")
 
+    @staticmethod
+    def special_names(team):
+        if "Alav" in team:
+            return "Deportivo Alav\xc3\xa9s"
+        elif "Deportivo La" in team:
+            return "Deportivo La Coruna"
+        return team
+
     def set_screen(self, screen_name):
         """Move to the next screen.
 

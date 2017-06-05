@@ -157,17 +157,18 @@ class GameLabel(Label):
 
 class HomeScreen(ScreenNew):
 
-    def __init__(self, **kwargs):
+    def __init__(self, app, **kwargs):
         """Set the class's attributes."""
         super(HomeScreen, self).__init__(**kwargs)
         self.__game_labels = []
+        self.__app = app
 
     def update(self):
         """Update the home screen according to the user's live updates."""
         self.grid.add_widget(Label(text="Loading...", height=50, size_hint_y=None))
         # get the finished, live and future matches of the user
         finished, live, future = self.app.user.get_games_categorized()
-        self.refresh_screen(live)
+        self.refresh_screen(finished, live, future)
         while True:
             while self.app.screen == "home":
                 new_games, ended_games, new_goals_games, updated = self.app.user.get_changes_categorized()
@@ -188,10 +189,10 @@ class HomeScreen(ScreenNew):
                     for game in new_goals_games:
                         print "goal! for %s or %s, score: %d - %d" % (game["homeTeamName"], game["awayTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"])
                     # update the screen according to the changes that were found
-                    self.refresh_screen(updated)
+                    self.refresh_screen(finished, updated, future)
                 live = updated
 
-    def add_game(self, game):
+    def add_game(self, game, type_time):
         """Present a live game on the screen.
 
 
@@ -199,7 +200,7 @@ class HomeScreen(ScreenNew):
             game - A dictionary that contains the game information.
         """
         # present the minute
-        time_label = GameLabel(text=game["time"], height=30, size_hint_y=None)
+        time_label = GameLabel(text=str(game["%s" % type_time]), height=30, size_hint_y=None)
         self.grid.add_widget(time_label)
         # present the score and teams' names
         label = GameLabel(text="{0:>33}{1:11}{2:<5}{3:<5}{4:<11}{5:<6}".format(
@@ -221,7 +222,7 @@ class HomeScreen(ScreenNew):
             self.__game_labels[i].text = live[i]["time"]
             self.__game_labels[i].texture_update()
 
-    def refresh_screen(self, live):
+    def refresh_screen(self, finished, live, future):
         """Clear the screen and present the updated information.
 
 
@@ -231,9 +232,22 @@ class HomeScreen(ScreenNew):
         self.grid.clear_widgets()
         self.grid.add_widget(Label(height=15, size_hint_y=None))
         # if there are no live games, print a message
-        if live:
+        if live or future or finished:
+            self.grid.add_widget(Label(text="Finished matches", height=30, size_hint_y=None))
+            for finished_game in finished:
+                finished_game["homeTeamName"] = self.__app.special_names(finished_game["homeTeamName"])
+                finished_game["awayTeamName"] = self.__app.special_names(finished_game["awayTeamName"])
+                self.add_game(finished_game, "date")
+            self.grid.add_widget(Label(text="Live matches", height=30, size_hint_y=None))
             for live_game in live:
-                self.add_game(live_game)
+                live_game["homeTeamName"] = self.__app.special_names(live_game["homeTeamName"])
+                live_game["awayTeamName"] = self.__app.special_names(live["awayTeamName"])
+                self.add_game(live_game, "time")
+            self.grid.add_widget(Label(text="Future matches", height=30, size_hint_y=None))
+            for future_game in future:
+                future_game["homeTeamName"] = self.__app.special_names(future_game["homeTeamName"])
+                future_game["awayTeamName"] = self.__app.special_names(future_game["awayTeamName"])
+                self.add_game(future_game, "date")
         else:
             self.grid.add_widget(Label(text="There are currently no live games for your teams"))
 
@@ -250,18 +264,14 @@ class CheckButton(ToggleButton):
 
 
 class TeamSelectionScreen(ScreenNew):
-    def __init__(self, teams, **kwargs):
+    def __init__(self, app, teams, **kwargs):
         """Set the class's attributes."""
         super(TeamSelectionScreen, self).__init__(**kwargs)
         self.__selected_teams = []
+        self.__app = app
         # special team names
         for team in teams:
-            if "Alav" in team:
-                show_team = "Deportivo Alav\xc3\xa9s"
-            elif "Deportivo La" in team:
-                show_team = "Deportivo La Coruna"
-            else:
-                show_team = team
+            show_team = self.__app.special_names(team)
             self.layout.add_widget(CheckButton(team, self))
             self.layout.add_widget(TeamName(text=show_team))
 
@@ -320,7 +330,7 @@ class ScreenManagerNew(ScreenManager):
         Window.size = (800, 480)
         super(ScreenManagerNew, self).__init__(**kwargs)
         self.__app = app
-        self.home_screen = HomeScreen(name="home")
+        self.home_screen = HomeScreen(app, name="home")
         self.add_widget(LoginScreen(app, name="login"))
-        self.add_widget(TeamSelectionScreen(teams, name="team_selection"))
+        self.add_widget(TeamSelectionScreen(app, teams, name="team_selection"))
         self.add_widget(self.home_screen)

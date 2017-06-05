@@ -89,14 +89,9 @@ class InformationSource(object):
         for game in all_games:
             game["date"] = InformationSource.convert_to_local_time(game["date"])
         for game in all_games:
-            if game in delete_duplicates:
-                all_games.remove(game)
-            try:
-                if TEAMS_DICT[game["homeTeamName"]] in user_teams and TEAMS_DICT[game["awayTeamName"]] in user_teams:
-                    delete_duplicates.append(game)
-            except KeyError:
-                pass
-        return sorted(all_games, key=lambda fixture: fixture["date"])
+            if game not in delete_duplicates:
+                delete_duplicates.append(game)
+        return sorted(delete_duplicates, key=lambda fixture: fixture["date"])
 
     @staticmethod
     def get_team_games(team):
