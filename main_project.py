@@ -10,6 +10,7 @@ import os
 import kv
 import threading
 from kivy.app import App
+from kivy.core.audio import SoundLoader
 
 
 class Main(App):
@@ -17,7 +18,8 @@ class Main(App):
         """Set the class's attributes."""
         super(Main, self).__init__(**kwargs)
         self.__user = None
-        self.__screen_manager = kv.ScreenManagerNew(self, information_server.InformationSource.get_all_teams())
+        self.__screen_manager = kv.ScreenManagerNew(
+            self, information_server.InformationSource.get_all_teams())
         self.screen = "login"
 
     @property
@@ -38,6 +40,11 @@ class Main(App):
         self.__user.set_teams(selected_teams)
         # move to the next screen: home
         self.set_screen("home")
+
+    @staticmethod
+    def click():
+        click = SoundLoader.load('button-click.mp3')
+        click.play()
 
     def update_username(self, username):
         """Create the user object.
@@ -66,11 +73,13 @@ class Main(App):
 
 
         Receives:
-            screen_name - A string that contains the name of the screen that need to be show.
+            screen_name - A string that contains the
+                          name of the screen that need to be show.
         """
         self.screen = screen_name
         if screen_name == "home":
-            thread = threading.Thread(target=self.__screen_manager.home_screen.update)
+            thread = threading.Thread(
+                target=self.__screen_manager.home_screen.update)
             thread.daemon = True
             thread.start()
         self.__screen_manager.current = screen_name

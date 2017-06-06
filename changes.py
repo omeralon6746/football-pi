@@ -6,6 +6,9 @@ Program Version: 1.0.0
 """
 
 
+from team_codes import *
+
+
 class Changes(object):
 
     def __init__(self, updated_games, old_games):
@@ -21,9 +24,9 @@ class Changes(object):
             new_games - A list of dictionaries that contains
             the new games that started.
         """
-        last_home_teams = [game["homeTeamName"] for game in self.__old_games]
+        last_home_teams = [game[HOME] for game in self.__old_games]
         # get new games
-        new_games = [game for game in self.__updated_games if game["homeTeamName"]
+        new_games = [game for game in self.__updated_games if game[HOME]
                      not in last_home_teams]
         return new_games
 
@@ -35,9 +38,9 @@ class Changes(object):
             finished - A list of dictionaries that contains
             the games that finished
         """
-        new_home_teams = [game["homeTeamName"] for game in self.__updated_games]
+        new_home_teams = [game[HOME] for game in self.__updated_games]
         # get finished games
-        finished = [game for game in self.__old_games if game["homeTeamName"]
+        finished = [game for game in self.__old_games if game[HOME]
                     not in new_home_teams]
         return finished
 
@@ -53,16 +56,16 @@ class Changes(object):
         new_goals = []
         for game in self.__old_games:
             for live_game in self.__updated_games:
-                if live_game["homeTeamName"] == game["homeTeamName"]:
-                    if live_game["goalsHomeTeam"] != game["goalsHomeTeam"]:
+                if live_game[HOME] == game[HOME]:
+                    if live_game[HOME_GOALS] != game[HOME_GOALS]:
                         new_goals.append(live_game)
                         new_goals[index]["homeGoal"] = True
-                        if live_game["goalsAwayTeam"] != game["goalsAwayTeam"]:
+                        if live_game[AWAY_GOALS] != game[AWAY_GOALS]:
                             new_goals[index]["awayGoal"] = True
                         else:
                             new_goals[index]["awayGoal"] = False
                         index += 1
-                    elif live_game["goalsAwayTeam"] != game["goalsAwayTeam"]:
+                    elif live_game[AWAY_GOALS] != game[AWAY_GOALS]:
                         new_goals.append(live_game)
                         new_goals[index]["awayGoal"] = True
                         new_goals[index]["homeGoal"] = False

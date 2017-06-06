@@ -26,7 +26,8 @@ class InformationSource(object):
 
 
         Returns:
-            changed - A list of lists that contains the updates on the live games.
+            changed - A list of lists that contains
+                      the updates on the live games.
         """
         old_scores = self.__last_scores
         new_scores = self.get_live_games()
@@ -48,12 +49,13 @@ class InformationSource(object):
             }
         """
         try:
-            games = requests.get(self.LIVE_RESULTS_API, headers=InformationSource.HEADERS).json()
+            games = requests.get(self.LIVE_RESULTS_API,
+                                 headers=InformationSource.HEADERS).json()
         except ValueError:
             return self.get_live_games()
         # filter the live games
-        self.__last_scores = [game for game in games["games"]
-                              if -1 not in game.values() and "FT" not in game.values()]
+        self.__last_scores = [game for game in games["games"] if -1 not in
+                              game.values() and "FT" not in game.values()]
         for game in self.__last_scores:
             del game["league"]
         return self.__last_scores
@@ -80,26 +82,28 @@ class InformationSource(object):
             user_teams - A list that contains the names of the user's teams.
 
         Returns:
-            old_games - A list of dictionaries of the finished games of the teams.
+            old_games - A list of dictionaries of the finished games.
         """
         all_games = []
         for team in user_teams:
             all_games += InformationSource.get_team_games(team)
         delete_duplicates = []
         for game in all_games:
-            game["date"] = InformationSource.convert_to_local_time(game["date"])
+            game[DATE] = InformationSource.convert_to_local_time(game[DATE])
         for game in all_games:
             if game not in delete_duplicates:
                 delete_duplicates.append(game)
-        return sorted(delete_duplicates, key=lambda fixture: fixture["date"])
+        return sorted(delete_duplicates, key=lambda fixture: fixture[DATE])
 
     @staticmethod
     def get_team_games(team):
         """Get all the teams' games."""
         team_code = TEAM_CODES[team]
         try:
-            team_games = requests.get("%s/teams/%d/fixtures" % (InformationSource.OTHER_INFO_API, team_code),
-                                      headers=InformationSource.HEADERS).json()
+            team_games = requests.get(
+                "%s/teams/%d/fixtures" % (
+                    InformationSource.OTHER_INFO_API, team_code),
+                headers=InformationSource.HEADERS).json()
         except ValueError:
             return InformationSource.get_team_games(team)
         # sleep time because of the request limit on the information server

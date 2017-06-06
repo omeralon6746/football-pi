@@ -1,3 +1,9 @@
+"""
+Program Name: kv
+By: Omer Alon
+Date: 02/04/17
+Program Version: 1.0.0
+"""
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.gridlayout import GridLayout
@@ -17,6 +23,7 @@ import datetime
 import threading
 import pandas
 from sys import exit
+from team_codes import *
 
 
 Builder.load_string('''
@@ -34,7 +41,7 @@ Builder.load_string('''
             hint_text: "Enter Your Name"
             padding_x: 150
             id: username
-            on_text: root.update_input_padding(self)
+            on_text: root.update_input_padding(self), app.click()
             on_text_validate: root.check_username(self)
 
 <TeamName>:
@@ -47,7 +54,7 @@ Builder.load_string('''
     width: 24
     background_normal: "button-before-check.png"
     background_down: "button-after-check-2.png"
-    on_press: root.add_remove_team()
+    on_press: root.add_remove_team(), app.click()
 
 <ButtonNew>:
     background_normal: "button-before-press.png"
@@ -69,14 +76,16 @@ Builder.load_string('''
         cols: 4
         ButtonNew:
             text: "Home"
+            on_press: app.click()
         ButtonNew:
             text: "Preferences"
-            on_press: app.set_screen("team_selection")
+            on_press: app.set_screen("team_selection"), app.click()
         ButtonNew:
             text: "About"
+            on_press: app.click()
         ButtonNew:
             text: "Exit"
-            on_press: exit()
+            on_press: app.click(), exit()
     ScrollView:
         size_hint: 1, None
         size: 800, 480 - bar.height
@@ -102,14 +111,14 @@ Builder.load_string('''
         width: 800
         height: 50
         cols: 2
-        Label: 
+        Label:
             text: "Pick the teams you would like to follow"
             bold: True
             size_hint_x: None
             width: 0.7 * 800
         ButtonNew:
             text: "Done"
-            on_press: app.end_team_selection_screen(root.selected_teams)
+            on_press: app.end_team_selection_screen(root.selected_teams), app.click()
 
     ScrollView:
         size_hint: 1, None
@@ -165,14 +174,16 @@ class HomeScreen(ScreenNew):
 
     def update(self):
         """Update the home screen according to the user's live updates."""
-        self.grid.add_widget(Label(text="Loading...", height=50, size_hint_y=None))
+        self.grid.add_widget(Label(
+            text="Loading...", height=50, size_hint_y=None))
         # get the finished, live and future matches of the user
         finished, live, future = self.app.user.get_games_categorized()
         self.refresh_screen(finished, live, future)
         while True:
             while self.app.screen == "home":
-                new_games, ended_games, new_goals_games, updated = self.app.user.get_changes_categorized()
-                # if only the minutes changed, present the new minutes on the screen
+                new_games, ended_games, new_goals_games, updated = \
+                    self.app.user.get_changes_categorized()
+                # if only the minutes changed, present the updated
                 if not (new_games or ended_games or new_goals_games):
                     for i in xrange(len(updated)):
                         if updated[i]["time"] != live[i]["time"]:
@@ -182,13 +193,16 @@ class HomeScreen(ScreenNew):
                     # check if the changes working(not necessary)
                     for game in ended_games:
                         finished.append(game)
-                        print "game ended:    %s    %d - %d    %s" % (game["homeTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"], game["homeTeamName"])
+                        # present on screen!
                     for game in new_games:
-                        future = [future_game for future_game in future if future_game["homeTeamName"] != game["homeTeamName"] or future_game["date"] != datetime.datetime.today()]
-                        print "new game: %s vs %s" % (game["homeTeamName"], game["awayTeamName"])
+                        future = [future_game for future_game in future
+                                  if future_game[HOME] !=
+                                  game[HOME] or future_game["date"] !=
+                                  datetime.datetime.today()]
+                        # present on screen!
                     for game in new_goals_games:
-                        print "goal! for %s or %s, score: %d - %d" % (game["homeTeamName"], game["awayTeamName"], game["goalsHomeTeam"], game["goalsAwayTeam"])
-                    # update the screen according to the changes that were found
+                        print "present on screen!"
+                    # update the screen according to the changes
                     self.refresh_screen(finished, updated, future)
                 live = updated
 
@@ -200,12 +214,15 @@ class HomeScreen(ScreenNew):
             game - A dictionary that contains the game information.
         """
         # present the minute
-        time_label = GameLabel(text=str(game["%s" % type_time]), height=30, size_hint_y=None)
+        time_label = GameLabel(text=str(game["%s" % type_time]),
+                               height=30, size_hint_y=None)
         self.grid.add_widget(time_label)
         # present the score and teams' names
         label = GameLabel(text="{0:>33}{1:11}{2:<5}{3:<5}{4:<11}{5:<6}".format(
-            game["homeTeamName"], " ", game["goalsHomeTeam"], "-", game["goalsAwayTeam"], game["awayTeamName"])
-            , font_name="Inconsolata-Bold.ttf", padding_x=0, height=25, width=480, size_hint_y=None)
+            game[HOME], " ", game[HOME_GOALS],
+            "-", game[AWAY_GOALS], game[AWAY]),
+            font_name="Inconsolata-Bold.ttf", padding_x=0,
+            height=25, width=480, size_hint_y=None)
         label.bind(size=label.setter("text_size"))
         self.grid.add_widget(label)
         self.grid.add_widget(Label(height=50, size_hint_y=None))
@@ -233,23 +250,29 @@ class HomeScreen(ScreenNew):
         self.grid.add_widget(Label(height=15, size_hint_y=None))
         # if there are no live games, print a message
         if live or future or finished:
-            self.grid.add_widget(Label(text="Finished matches", height=30, size_hint_y=None))
+            self.grid.add_widget(Label(
+                text="Finished matches", height=30, size_hint_y=None))
             for finished_game in finished:
-                finished_game["homeTeamName"] = self.__app.special_names(finished_game["homeTeamName"])
-                finished_game["awayTeamName"] = self.__app.special_names(finished_game["awayTeamName"])
+                finished_game[HOME] = \
+                    self.__app.special_names(finished_game[HOME])
+                finished_game[AWAY] = \
+                    self.__app.special_names(finished_game[AWAY])
                 self.add_game(finished_game, "date")
-            self.grid.add_widget(Label(text="Live matches", height=30, size_hint_y=None))
+            self.grid.add_widget(Label(
+                text="Live matches", height=30, size_hint_y=None))
             for live_game in live:
-                live_game["homeTeamName"] = self.__app.special_names(live_game["homeTeamName"])
-                live_game["awayTeamName"] = self.__app.special_names(live["awayTeamName"])
+                live_game[HOME] = self.__app.special_names(live_game[HOME])
+                live_game[AWAY] = self.__app.special_names(live[AWAY])
                 self.add_game(live_game, "time")
-            self.grid.add_widget(Label(text="Future matches", height=30, size_hint_y=None))
+            self.grid.add_widget(Label(
+                text="Future matches", height=30, size_hint_y=None))
             for future_game in future:
-                future_game["homeTeamName"] = self.__app.special_names(future_game["homeTeamName"])
-                future_game["awayTeamName"] = self.__app.special_names(future_game["awayTeamName"])
+                future_game[HOME] = self.__app.special_names(future_game[HOME])
+                future_game[AWAY] = self.__app.special_names(future_game[AWAY])
                 self.add_game(future_game, "date")
         else:
-            self.grid.add_widget(Label(text="There are currently no live games for your teams"))
+            self.grid.add_widget(Label(
+                text="There are currently no live games for your teams"))
 
 
 class CheckButton(ToggleButton):
@@ -284,7 +307,8 @@ class TeamSelectionScreen(ScreenNew):
 
 
         Receives:
-            team - A string that contains the team that the pressed button points on.
+            team - A string that contains the team
+                   that the pressed button points on.
         """
         if team in self.__selected_teams:
             self.__selected_teams.remove(team)

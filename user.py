@@ -6,7 +6,7 @@ Program Version: 1.0.0
 """
 import yaml
 import information_server
-from team_codes import TEAMS_DICT
+from team_codes import *
 import datetime
 
 
@@ -14,7 +14,6 @@ USERS_DATA = "users.yaml"
 
 
 class User(object):
-
     def __init__(self, username):
         """Set the class's attributes."""
         self.__username = username
@@ -32,7 +31,8 @@ class User(object):
         """
         self.__teams = picked_teams
         with open(USERS_DATA, "a") as users_data:
-            yaml.dump([{self.__username: picked_teams}], users_data, default_flow_style=False)
+            yaml.dump([{self.__username: picked_teams}],
+                      users_data, default_flow_style=False)
 
     def check_username(self):
         """
@@ -69,13 +69,14 @@ class User(object):
 
 
         Receives:
-            games - A list of dictionaries that contains games
+            games - A list of dictionaries that contains games.
 
         Returns:
-            A list of dictionaries that contains only the games that belong to the user's teams
+            A list of dictionaries that contains
+            only the games that belong to the user's teams.
         """
-        return [game for game in games if game["homeTeamName"] in self.__teams
-                or game["awayTeamName"] in self.__teams]
+        return [game for game in games if game[HOME] in self.__teams or
+                game[AWAY] in self.__teams]
 
     def get_all_games(self):
         """Get all the user games(finished, live and future) together."""
@@ -84,11 +85,13 @@ class User(object):
     def get_games_categorized(self):
         """Get the finished, live and future games categorized."""
         live = self.__information_source.get_live_games()
-        return self.get_finished_games(live), self.get_user_games(live), self.get_future_games(live)
+        return self.get_finished_games(live), self.get_user_games(live), \
+            self.get_future_games(live)
 
     def get_finished_games(self, live):
         """Get only the finished games."""
-        finished_games = [game for game in self.get_all_games() if game["status"] == "FINISHED"]
+        finished_games = [game for game in self.get_all_games() if
+                          game["status"] == "FINISHED"]
         for i in xrange(len(finished_games)):
             finished_games[i] = User.choose_information(finished_games[i])
         print User.check_in_live(finished_games, live)
@@ -96,8 +99,9 @@ class User(object):
 
     def get_future_games(self, live):
         """Get only the future games."""
-        future_games = [game for game in self.get_all_games() if None in game["result"].values()
-                        and game["status"] != "POSTPONED"]
+        future_games = [game for game in self.get_all_games() if
+                        None in game["result"].values() and
+                        game["status"] != "POSTPONED"]
         for i in xrange(len(future_games)):
             future_games[i] = User.choose_information(future_games[i])
         return User.check_in_live(future_games, live)
@@ -107,7 +111,7 @@ class User(object):
         """Check special incidents."""
         for i in xrange(len(games)):
             for live_game in live_games:
-                if games[i]["homeTeamName"] == live_game["homeTeamName"] \
+                if games[i][HOME] == live_game[HOME] \
                         and games[i]["date"] == \
                         datetime.datetime.today().date():
                     games.remove(games[i])
@@ -117,14 +121,14 @@ class User(object):
     def choose_information(game):
         """Edit the dictionary values."""
         edited_game = {"date": game["date"],
-                       "goalsHomeTeam": game["result"]["goalsHomeTeam"],
-                       "goalsAwayTeam": game["result"]["goalsAwayTeam"]}
+                       HOME_GOALS: game["result"][HOME_GOALS],
+                       AWAY_GOALS: game["result"][AWAY_GOALS]}
         try:
-            edited_game["homeTeamName"] = TEAMS_DICT[game["homeTeamName"]]
+            edited_game[HOME] = TEAMS_DICT[game[HOME]]
         except KeyError:
-            edited_game["homeTeamName"] = game["homeTeamName"]
+            edited_game[HOME] = game[HOME]
         try:
-            edited_game["awayTeamName"] = TEAMS_DICT[game["awayTeamName"]]
+            edited_game[AWAY] = TEAMS_DICT[game[AWAY]]
         except KeyError:
-            edited_game["awayTeamName"] = game["awayTeamName"]
+            edited_game[AWAY] = game[AWAY]
         return edited_game
