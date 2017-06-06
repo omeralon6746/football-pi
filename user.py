@@ -56,7 +56,12 @@ class User(object):
         return check_exist
 
     def get_changes_categorized(self):
-        """Get all the changes that found."""
+        """Get all the changes that found.
+
+
+        Returns:
+            new games, ended games, goals, live games
+        """
         # get the changes from the information source
         new_games, ended_games, goals = self.__information_source.get_changes()
         return self.get_user_games(new_games), \
@@ -79,17 +84,35 @@ class User(object):
                 game[AWAY] in self.__teams]
 
     def get_all_games(self):
-        """Get all the user games(finished, live and future) together."""
+        """Get all the user games(finished, live and future) together.
+
+
+        Returns:
+            all the games that belong to the user.
+        """
         return self.__information_source.get_games(self.__teams)
 
     def get_games_categorized(self):
-        """Get the finished, live and future games categorized."""
+        """Get the finished, live and future games categorized.
+
+
+        Returns:
+            finished games, live games, future games.
+        """
         live = self.__information_source.get_live_games()
         return self.get_finished_games(live), self.get_user_games(live), \
             self.get_future_games(live)
 
     def get_finished_games(self, live):
-        """Get only the finished games."""
+        """Get only the finished games.
+
+
+        Receives:
+            live - A string that contains the live games.
+
+        Returns:
+            The user teams' finished games.
+        """
         finished_games = [game for game in self.get_all_games() if
                           game["status"] == "FINISHED"]
         for i in xrange(len(finished_games)):
@@ -98,7 +121,15 @@ class User(object):
         return User.check_in_live(finished_games, live)
 
     def get_future_games(self, live):
-        """Get only the future games."""
+        """Get only the future games.
+
+
+        Receives:
+            live - A string that contains the live games.
+
+        Returns:
+            The user teams' future games.
+        """
         future_games = [game for game in self.get_all_games() if
                         None in game["result"].values() and
                         game["status"] != "POSTPONED"]
@@ -108,7 +139,16 @@ class User(object):
 
     @staticmethod
     def check_in_live(games, live_games):
-        """Check special incidents."""
+        """Check special incidents.
+
+
+        Receives:
+            games - A list of dictionaries that contains games.
+            live_games - A list of dictionaries that contains live games.
+
+        Returns:
+            games - The given games without the live games.
+        """
         for i in xrange(len(games)):
             for live_game in live_games:
                 if games[i][HOME] == live_game[HOME] \
@@ -119,7 +159,15 @@ class User(object):
 
     @staticmethod
     def choose_information(game):
-        """Edit the dictionary values."""
+        """Edit the game values.
+
+
+        Receives:
+            game - A dictionary that contains finished/future game.
+
+        Returns:
+            edited_game - The given game without the Unnecessary values.
+        """
         edited_game = {"date": game["date"],
                        HOME_GOALS: game["result"][HOME_GOALS],
                        AWAY_GOALS: game["result"][AWAY_GOALS]}

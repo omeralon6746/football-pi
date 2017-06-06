@@ -41,7 +41,7 @@ Builder.load_string('''
             hint_text: "Enter Your Name"
             padding_x: 150
             id: username
-            on_text: root.update_input_padding(self), app.click()
+            on_text: root.update_input_padding(self), app.audio(app.CLICK_SOUND)
             on_text_validate: root.check_username(self)
 
 <TeamName>:
@@ -54,7 +54,7 @@ Builder.load_string('''
     width: 24
     background_normal: "button-before-check.png"
     background_down: "button-after-check-2.png"
-    on_press: root.add_remove_team(), app.click()
+    on_press: root.add_remove_team(), app.audio(app.CLICK_SOUND)
 
 <ButtonNew>:
     background_normal: "button-before-press.png"
@@ -76,16 +76,16 @@ Builder.load_string('''
         cols: 4
         ButtonNew:
             text: "Home"
-            on_press: app.click()
+            on_press: app.audio(app.CLICK_SOUND)
         ButtonNew:
             text: "Preferences"
-            on_press: app.set_screen("team_selection"), app.click()
+            on_press: app.set_screen("team_selection"), app.audio(app.CLICK_SOUND)
         ButtonNew:
             text: "About"
-            on_press: app.click()
+            on_press: app.audio(app.CLICK_SOUND)
         ButtonNew:
             text: "Exit"
-            on_press: app.click(), exit()
+            on_press: app.audio(app.CLICK_SOUND), exit()
     ScrollView:
         size_hint: 1, None
         size: 800, 480 - bar.height
@@ -118,7 +118,7 @@ Builder.load_string('''
             width: 0.7 * 800
         ButtonNew:
             text: "Done"
-            on_press: app.end_team_selection_screen(root.selected_teams), app.click()
+            on_press: app.end_team_selection_screen(root.selected_teams), app.audio(app.CLICK_SOUND)
 
     ScrollView:
         size_hint: 1, None
@@ -212,6 +212,7 @@ class HomeScreen(ScreenNew):
 
         Receives:
             game - A dictionary that contains the game information.
+            type_time - A string that contains the word "date"/"time".
         """
         # present the minute
         time_label = GameLabel(text=str(game["%s" % type_time]),
@@ -244,11 +245,14 @@ class HomeScreen(ScreenNew):
 
 
         Receives:
+            finished - A list of dictionaries that contains the finished games.
             live - A list of dictionaries that contains the live games.
+            future - A list of dictionaries that contains the future games.
         """
+        # clear the screen
         self.grid.clear_widgets()
         self.grid.add_widget(Label(height=15, size_hint_y=None))
-        # if there are no live games, print a message
+        # if there are no live games, present a message
         if live or future or finished:
             self.grid.add_widget(Label(
                 text="Finished matches", height=30, size_hint_y=None))
@@ -283,6 +287,8 @@ class CheckButton(ToggleButton):
         self.__root = root
 
     def add_remove_team(self):
+        """if a button was pressed, add the team that the button belongs to
+           or remove the team in case the button was already pressed."""
         self.__root.add_remove_team(self.__team)
 
 
@@ -303,7 +309,8 @@ class TeamSelectionScreen(ScreenNew):
         return self.__selected_teams
 
     def add_remove_team(self, team):
-        """If a button is pressed, add/remove the team that the button points on.
+        """if a button was pressed, add the team that the button belongs to
+           or remove the team in case the button was already pressed.
 
 
         Receives:
@@ -315,10 +322,10 @@ class TeamSelectionScreen(ScreenNew):
         else:
             self.__selected_teams.append(team)
 
-        print self.__selected_teams
-
 
 class LoginScreen(Screen):
+    EMPTY_NAME_MESSAGE = "Please enter something!"
+
     def __init__(self, app, **kwargs):
         """Set the class's attributes."""
         super(LoginScreen, self).__init__(**kwargs)
@@ -326,7 +333,12 @@ class LoginScreen(Screen):
 
     @staticmethod
     def update_input_padding(text_input):
-        """Set the text to the middle of the screen."""
+        """Set the text to the middle of the screen.
+
+
+        Receives:
+            text_input - A string that contains the user's input.
+        """
         if text_input.text != "":
             text_width = text_input._get_text_width(
                 text_input.text,
@@ -338,14 +350,20 @@ class LoginScreen(Screen):
             # manually calculated padding
             text_input.padding_x = 143
 
-    def check_username(self, text_input):
-        """Get the user's input"""
-        if text_input.text == "":
-            text_input.hint_text = "Please enter something!"
+    def check_username(self, username):
+        """Update the username.
+
+
+        Receives:
+            text_input - A string that contains the user's name.
+        """
+        # if the user didn't enter nothing, present a message
+        if username.text == "":
+            username.hint_text = self.EMPTY_NAME_MESSAGE
             # manually calculated padding
-            text_input.padding_x = 118
+            username.padding_x = 118
         else:
-            self.__app.update_username(text_input.text)
+            self.__app.update_username(username.text)
 
 
 class ScreenManagerNew(ScreenManager):

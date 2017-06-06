@@ -6,7 +6,6 @@ Program Version: 1.0.0
 """
 import information_server
 import user
-import os
 import kv
 import threading
 from kivy.app import App
@@ -14,6 +13,11 @@ from kivy.core.audio import SoundLoader
 
 
 class Main(App):
+    CLICK_SOUND = "click-sound.mp3"
+    WHISTLE = "whistle.mp3"
+    FINAL_WHISTLE = "final-whistle.mp3"
+    GOAL_SOUND = "goal-sound.mp3"
+
     def __init__(self, **kwargs):
         """Set the class's attributes."""
         super(Main, self).__init__(**kwargs)
@@ -24,10 +28,11 @@ class Main(App):
 
     @property
     def user(self):
+        """Return the current user details."""
         return self.__user
 
     def build(self):
-        # set window size
+        """Set window size."""
         return self.__screen_manager
 
     def end_team_selection_screen(self, selected_teams):
@@ -42,9 +47,14 @@ class Main(App):
         self.set_screen("home")
 
     @staticmethod
-    def click():
-        click = SoundLoader.load('button-click.mp3')
-        click.play()
+    def audio(sound):
+        """Play a Sound.
+
+
+        Receives:
+            sound - A string that contains mp3 file name.
+        """
+        SoundLoader.load(sound).play()
 
     def update_username(self, username):
         """Create the user object.
@@ -62,6 +72,16 @@ class Main(App):
 
     @staticmethod
     def special_names(team):
+        """Check if the team name is in the special names:
+           a name that contains letter that python can't read.
+
+
+        Receives:
+            team - A string that contains a given team name.
+
+        Return:
+            team - A string that contains the team name.
+           """
         if "Alav" in team:
             return "Deportivo Alav\xc3\xa9s"
         elif "Deportivo La" in team:
