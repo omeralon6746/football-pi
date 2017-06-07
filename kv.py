@@ -75,11 +75,14 @@ Builder.load_string('''
         id: bar
         cols: 4
         ButtonNew:
-            text: "Home"
-            on_press: app.audio(app.CLICK_SOUND)
+            text: "Live"
+            on_press: app.audio(app.CLICK_SOUND), root.show_live()
         ButtonNew:
-            text: "Preferences"
-            on_press: app.set_screen("team_selection"), app.audio(app.CLICK_SOUND)
+            text: "Future Matches"
+            on_press: app.audio(app.CLICK_SOUND), root.show_future()
+        ButtonNew:
+            text: "Finished Matches"
+            on_press: app.audio(app.CLICK_SOUND), root.show_finished()
         ButtonNew:
             text: "About"
             on_press: app.audio(app.CLICK_SOUND)
@@ -166,11 +169,18 @@ class MatchLabel(Label):
 
 class HomeScreen(ScreenNew):
     NO_LIVE_MATCHES = "There are currently no live matches for your teams"
+    NO_FUTURE_MATCHES = "There are no future matches for your teams"
+    NO_FINISHED_MATCHES = "There are no finished matches for your teams"
     FONT = "Inconsolata-Bold.ttf"
     LOADING = "Loading..."
+
     def __init__(self, app, **kwargs):
         """Set the class's attributes."""
         super(HomeScreen, self).__init__(**kwargs)
+        self.__finished = []
+        self.__live = []
+        self.__future = []
+        self.__user_place = "live"
         self.__match_labels = []
         self.__app = app
 
@@ -179,34 +189,74 @@ class HomeScreen(ScreenNew):
         self.grid.add_widget(Label(
             text=self.LOADING, height=50, size_hint_y=None))
         # get the finished, live and future matches of the user
-        finished, live, future = self.app.user.get_matches_categorized()
-        self.refresh_screen(finished, live, future)
+        self.__finished, self.__live, self.__future =\
+            self.app.user.get_matches_categorized()
+        self.show_live()
         while True:
-            while self.app.screen == "home":
-                new_matches, ended_matches, new_goals_matches, updated = \
-                    self.app.user.get_changes_categorized()
-                # if only the minutes changed, present the updated
-                if not (new_matches or ended_matches or new_goals_matches):
-                    for i in xrange(len(updated)):
-                        if updated[i][TIME] != live[i][TIME]:
-                            self.change_minutes(updated)
-                            break
+            new_matches, ended_matches, new_goals_matches, updated = \
+                self.app.user.get_changes_categorized()
+            # if only the minutes changed, present the updated
+            if not (new_matches or ended_matches or new_goals_matches):
+                for i in xrange(len(updated)):
+                    if updated[i][TIME] != self.__live[i][TIME]:
+                        self.change_minutes(updated)
+                        break
+                self.__live = updated
+            else:
+                for match in ended_matches:
+                    self.__finished.append(match)
+                    # present on screen!
+                for match in new_matches:
+                    self.__future = [future_match for future_match in
+                                     self.__future if future_match[HOME] !=
+                                     match[HOME] or future_match[DATE] !=
+                                     datetime.datetime.today()]
+                    # present on screen!
+                for match in new_goals_matches:
+                    print "present on screen!"
+                self.__live = updated
+                # update the screen according to the changes
+                if self.__user_place == "live":
+                    self.show_live()
+                elif self.__user_place == "finished":
+                    self.show_finished()
                 else:
-                    # check if the changes working(not necessary)
-                    for match in ended_matches:
-                        finished.append(match)
-                        # present on screen!
-                    for match in new_matches:
-                        future = [future_match for future_match in future
-                                  if future_match[HOME] !=
-                                  match[HOME] or future_match[DATE] !=
-                                  datetime.datetime.today()]
-                        # present on screen!
-                    for match in new_goals_matches:
-                        print "present on screen!"
-                    # update the screen according to the changes
-                    self.refresh_screen(finished, updated, future)
-                live = updated
+                    self.show_future()
+
+    def show_games(self, to_show, type_time):
+        """Clear the screen and present the given information.
+
+
+        Receives:
+            to_show - A list of dictionaries that contains the matches to show.
+            type_time - A string that contains the word "date"/"time".
+        """
+        # clear the screen
+        self.grid.clear_widgets()
+        self.grid.add_widget(Label(height=15, size_hint_y=None))
+        if to_show:
+            for match in to_show:
+                match[HOME] = self.__app.special_names(match[HOME])
+                match[AWAY] = self.__app.special_names(match[AWAY])
+                self.add_match(match, type_time)
+        elif self.__user_place == "live":
+            self.grid.add_widget(Label(text=self.NO_LIVE_MATCHES))
+        elif self.__user_place == "finished":
+            self.grid.add_widget(Label(text=self.NO_FINISHED_MATCHES))
+        else:
+            self.grid.add_widget(Label(text=self.NO_FUTURE_MATCHES))
+
+    def show_live(self):
+        self.__user_place = "live"
+        self.show_games(self.__live, TIME)
+
+    def show_finished(self):
+        self.__user_place = "finished"
+        self.show_games(self.__finished, DATE)
+
+    def show_future(self):
+        self.__user_place = "future"
+        self.show_games(self.__future, DATE)
 
     def add_match(self, match, type_time):
         """Present a live match on the screen.
@@ -241,44 +291,6 @@ class HomeScreen(ScreenNew):
         for i in xrange(len(live)):
             self.__match_labels[i].text = live[i][TIME]
             self.__match_labels[i].texture_update()
-
-    def refresh_screen(self, finished, live, future):
-        """Clear the screen and present the updated information.
-
-
-        Receives:
-            finished - A list of dictionaries that contains the finished matches.
-            live - A list of dictionaries that contains the live matches.
-            future - A list of dictionaries that contains the future matches.
-        """
-        # clear the screen
-        self.grid.clear_widgets()
-        self.grid.add_widget(Label(height=15, size_hint_y=None))
-        # if there are no live matches, present a message
-        if live or future or finished:
-            self.grid.add_widget(Label(
-                text="Finished matches", height=30, size_hint_y=None))
-            for finished_match in finished:
-                finished_match[HOME] = \
-                    self.__app.special_names(finished_match[HOME])
-                finished_match[AWAY] = \
-                    self.__app.special_names(finished_match[AWAY])
-                self.add_match(finished_match, DATE)
-            self.grid.add_widget(Label(
-                text="Live matches", height=30, size_hint_y=None))
-            for live_match in live:
-                live_match[HOME] = self.__app.special_names(live_match[HOME])
-                live_match[AWAY] = self.__app.special_names(live[AWAY])
-                self.add_match(live_match, DATE)
-            self.grid.add_widget(Label(
-                text="Future matches", height=30, size_hint_y=None))
-            for future_match in future:
-                future_match[HOME] = self.__app.special_names(future_match[HOME])
-                future_match[AWAY] = self.__app.special_names(future_match[AWAY])
-                self.add_match(future_match, DATE)
-        else:
-            self.grid.add_widget(Label(
-                text=self.NO_LIVE_MATCHES))
 
 
 class CheckButton(ToggleButton):
