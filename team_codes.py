@@ -107,8 +107,7 @@ TEAMS_DICT = {"AFC Bournemouth": "AFC Bournemouth",
               "Udinese Calcio": "Udinese",
               u'US Citt\xe1 di Palermo': "Palermo",
               "US Sassuolo Calcio": "Sassuolo"}
-
-# Information server url codes
+# Information server URL codes
 TEAM_CODES = {"VfL Wolfsburg": 11,
               "Borussia Dortmund": 4,
               "FC Augsburg": 16,
@@ -212,3 +211,6 @@ AWAY = "awayTeamName"
 HOME_GOALS = "goalsHomeTeam"
 AWAY_GOALS = "goalsAwayTeam"
 DATE = "date"
+TIME = "time"
+MATCHES = "games"
+FINAL_TIME = "FT"

@@ -22,25 +22,25 @@ class InformationSource(object):
         self.__last_scores = []
 
     def get_changes(self):
-        """Get the changes in the live games.
+        """Get the changes in the live matches.
 
 
         Returns:
             changed - A list of lists that contains
-                      the updates on the live games.
+                      the updates on the live matches.
         """
         old_scores = self.__last_scores
-        new_scores = self.get_live_games()
+        new_scores = self.get_live_matches()
         changed = changes.Changes(new_scores, old_scores).find_all_changes()
         return changed[0], changed[1], changed[2]
 
-    def get_live_games(self):
-        """Get the live games.
+    def get_live_matches(self):
+        """Get the live matches.
 
 
         Returns:
             last_scores - A list of dictionaries, each containing information
-            about the currently live games, in the following format:
+            about the currently live matches, in the following format:
             {"goalsAwayTeam": -,
              "time": -,
              "homeTeamName": -,
@@ -49,15 +49,15 @@ class InformationSource(object):
             }
         """
         try:
-            games = requests.get(self.LIVE_RESULTS_API,
-                                 headers=InformationSource.HEADERS).json()
+            matches = requests.get(self.LIVE_RESULTS_API,
+                                   headers=InformationSource.HEADERS).json()
         except ValueError:
-            return self.get_live_games()
-        # filter the live games
-        self.__last_scores = [game for game in games["games"] if -1 not in
-                              game.values() and "FT" not in game.values()]
-        for game in self.__last_scores:
-            del game["league"]
+            return self.get_live_matches()
+        # filter the live matches
+        self.__last_scores = [match for match in matches[MATCHES] if -1 not in
+                              match.values() and FINAL_TIME not in match.values()]
+        for match in self.__last_scores:
+            del match["league"]
         return self.__last_scores
 
     @staticmethod
@@ -74,52 +74,72 @@ class InformationSource(object):
                     yield team
 
     @staticmethod
-    def get_games(user_teams):
-        """Get a user's team and return all the games that they played.
+    def get_matches(user_teams):
+        """Get a user's teams and return all the matches that they played.
 
 
         Receives:
             user_teams - A list that contains the names of the user's teams.
 
         Returns:
-            old_games - A list of dictionaries of the finished games.
+            A list of dictionaries of the user teams' matches.
         """
-        all_games = []
+        all_matches = []
         for team in user_teams:
-            all_games += InformationSource.get_team_games(team)
+            all_matches += InformationSource.get_team_matches(team)
         delete_duplicates = []
-        for game in all_games:
-            game[DATE] = InformationSource.convert_to_local_time(game[DATE])
-        for game in all_games:
-            if game not in delete_duplicates:
-                delete_duplicates.append(game)
+        for match in all_matches:
+            match[DATE] = InformationSource.convert_to_local_time(match[DATE])
+        for match in all_matches:
+            if match not in delete_duplicates:
+                delete_duplicates.append(match)
         return sorted(delete_duplicates, key=lambda fixture: fixture[DATE])
 
     @staticmethod
-    def get_team_games(team):
-        """Get all the teams' games."""
+    def get_team_matches(team):
+        """Get all the team's matches.
+
+
+        Receives:
+            team - A string that contains the name of the team.
+
+
+        Returns:
+            All the team's matches(finished, future and live).
+        """
         team_code = TEAM_CODES[team]
         try:
-            team_games = requests.get(
+            team_matches = requests.get(
                 "%s/teams/%d/fixtures" % (
                     InformationSource.OTHER_INFO_API, team_code),
                 headers=InformationSource.HEADERS).json()
         except ValueError:
-            return InformationSource.get_team_games(team)
+            return InformationSource.get_team_matches(team)
         # sleep time because of the request limit on the information server
         try:
-            return team_games["fixtures"]
+            return team_matches["fixtures"]
         except KeyError:
             time.sleep(50)
-            return InformationSource.get_team_games(team)
+            return InformationSource.get_team_matches(team)
 
     @staticmethod
     def convert_to_local_time(timestamp):
-        """Convert to the time in Israel."""
+        """Convert to the time in Israel.
+
+
+
+        Receives:
+            timestamp - A string that contains the time of a match.
+
+
+        Receives:
+            The time of the match in Israel.
+        """
         timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
         timestamp = calendar.timegm(timestamp.timetuple())
         return datetime.datetime.fromtimestamp(timestamp)
 
-    def get_last_scores(self):
+    @property
+    def last_scores(self):
         """Get the last scores."""
         return self.__last_scores

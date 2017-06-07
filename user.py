@@ -18,7 +18,7 @@ class User(object):
         """Set the class's attributes."""
         self.__username = username
         self.__teams = []
-        self.__user_games = []
+        self.__user_matches = []
         self.__information_source = information_server.InformationSource()
 
     def set_teams(self, picked_teams):
@@ -60,123 +60,123 @@ class User(object):
 
 
         Returns:
-            new games, ended games, goals, live games
+            new matches, ended matches, goals, live matches
         """
         # get the changes from the information source
-        new_games, ended_games, goals = self.__information_source.get_changes()
-        return self.get_user_games(new_games), \
-            self.get_user_games(ended_games), \
-            self.get_user_games(goals), \
-            self.__information_source.get_last_scores()
+        new_matches, ended_matches, goals = self.__information_source.get_changes()
+        return self.get_user_matches(new_matches), \
+            self.get_user_matches(ended_matches), \
+            self.get_user_matches(goals), \
+            self.__information_source.last_scores
 
-    def get_user_games(self, games):
-        """Check if the user's teams are on the given games updates that was found.
+    def get_user_matches(self, matches):
+        """Check if the user's teams are on the given matches updates that was found.
 
 
         Receives:
-            games - A list of dictionaries that contains games.
+            matches - A list of dictionaries that contains matches.
 
         Returns:
             A list of dictionaries that contains
-            only the games that belong to the user's teams.
+            only the matches that belong to the user's teams.
         """
-        return [game for game in games if game[HOME] in self.__teams or
-                game[AWAY] in self.__teams]
+        return [match for match in matches if match[HOME] in self.__teams or
+                match[AWAY] in self.__teams]
 
-    def get_all_games(self):
-        """Get all the user games(finished, live and future) together.
+    def get_all_matches(self):
+        """Get all the user matches(finished, live and future) together.
 
 
         Returns:
-            all the games that belong to the user.
+            all the matches that belong to the user.
         """
-        return self.__information_source.get_games(self.__teams)
+        return self.__information_source.get_matches(self.__teams)
 
-    def get_games_categorized(self):
-        """Get the finished, live and future games categorized.
+    def get_matches_categorized(self):
+        """Get the finished, live and future matches categorized.
 
 
         Returns:
-            finished games, live games, future games.
+            finished matches, live matches, future matches.
         """
-        live = self.__information_source.get_live_games()
-        return self.get_finished_games(live), self.get_user_games(live), \
-            self.get_future_games(live)
+        live = self.__information_source.get_live_matches()
+        return self.get_finished_matches(live), self.get_user_matches(live), \
+            self.get_future_matches(live)
 
-    def get_finished_games(self, live):
-        """Get only the finished games.
+    def get_finished_matches(self, live):
+        """Get only the finished matches.
 
 
         Receives:
-            live - A string that contains the live games.
+            live - A string that contains the live matches.
 
         Returns:
-            The user teams' finished games.
+            The user teams' finished matches.
         """
-        finished_games = [game for game in self.get_all_games() if
-                          game["status"] == "FINISHED"]
-        for i in xrange(len(finished_games)):
-            finished_games[i] = User.choose_information(finished_games[i])
-        print User.check_in_live(finished_games, live)
-        return User.check_in_live(finished_games, live)
+        finished_matches = [match for match in self.get_all_matches() if
+                            match["status"] == "FINISHED"]
+        for i in xrange(len(finished_matches)):
+            finished_matches[i] = User.choose_information(finished_matches[i])
+        print User.check_in_live(finished_matches, live)
+        return User.check_in_live(finished_matches, live)
 
-    def get_future_games(self, live):
-        """Get only the future games.
+    def get_future_matches(self, live):
+        """Get only the future matches.
 
 
         Receives:
-            live - A string that contains the live games.
+            live - A string that contains the live matches.
 
         Returns:
-            The user teams' future games.
+            The user teams' future matches.
         """
-        future_games = [game for game in self.get_all_games() if
-                        None in game["result"].values() and
-                        game["status"] != "POSTPONED"]
-        for i in xrange(len(future_games)):
-            future_games[i] = User.choose_information(future_games[i])
-        return User.check_in_live(future_games, live)
+        future_matches = [match for match in self.get_all_matches() if
+                          None in match["result"].values() and
+                          match["status"] != "POSTPONED"]
+        for i in xrange(len(future_matches)):
+            future_matches[i] = User.choose_information(future_matches[i])
+        return User.check_in_live(future_matches, live)
 
     @staticmethod
-    def check_in_live(games, live_games):
+    def check_in_live(matches, live_matches):
         """Check special incidents.
 
 
         Receives:
-            games - A list of dictionaries that contains games.
-            live_games - A list of dictionaries that contains live games.
+            matches - A list of dictionaries that contains matches.
+            live_matches - A list of dictionaries that contains live matches.
 
         Returns:
-            games - The given games without the live games.
+            matches - The given matches without the live matches.
         """
-        for i in xrange(len(games)):
-            for live_game in live_games:
-                if games[i][HOME] == live_game[HOME] \
-                        and games[i]["date"] == \
+        for i in xrange(len(matches)):
+            for live_match in live_matches:
+                if matches[i][HOME] == live_match[HOME] \
+                        and matches[i][DATE] == \
                         datetime.datetime.today().date():
-                    games.remove(games[i])
-        return games
+                    matches.remove(matches[i])
+        return matches
 
     @staticmethod
-    def choose_information(game):
-        """Edit the game values.
+    def choose_information(match):
+        """Edit the match values.
 
 
         Receives:
-            game - A dictionary that contains finished/future game.
+            match - A dictionary that contains finished/future match.
 
         Returns:
-            edited_game - The given game without the Unnecessary values.
+            edited_match - The given match without the Unnecessary values.
         """
-        edited_game = {"date": game["date"],
-                       HOME_GOALS: game["result"][HOME_GOALS],
-                       AWAY_GOALS: game["result"][AWAY_GOALS]}
+        edited_match = {DATE: match[DATE],
+                        HOME_GOALS: match["result"][HOME_GOALS],
+                        AWAY_GOALS: match["result"][AWAY_GOALS]}
         try:
-            edited_game[HOME] = TEAMS_DICT[game[HOME]]
+            edited_match[HOME] = TEAMS_DICT[match[HOME]]
         except KeyError:
-            edited_game[HOME] = game[HOME]
+            edited_match[HOME] = match[HOME]
         try:
-            edited_game[AWAY] = TEAMS_DICT[game[AWAY]]
+            edited_match[AWAY] = TEAMS_DICT[match[AWAY]]
         except KeyError:
-            edited_game[AWAY] = game[AWAY]
-        return edited_game
+            edited_match[AWAY] = match[AWAY]
+        return edited_match

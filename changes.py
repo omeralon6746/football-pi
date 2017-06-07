@@ -11,73 +11,73 @@ from team_codes import *
 
 class Changes(object):
 
-    def __init__(self, updated_games, old_games):
+    def __init__(self, updated_matches, old_matches):
         """Set the class's attributes."""
-        self.__updated_games = updated_games
-        self.__old_games = old_games
+        self.__updated_matches = updated_matches
+        self.__old_matches = old_matches
 
-    def find_new_games(self):
-        """Find new games that started.
+    def find_new_matches(self):
+        """Find new matches that started.
 
 
         Returns:
-            new_games - A list of dictionaries that contains
-            the new games that started.
+            new_matches - A list of dictionaries that contains
+            the new matches that started.
         """
-        last_home_teams = [game[HOME] for game in self.__old_games]
-        # get new games
-        new_games = [game for game in self.__updated_games if game[HOME]
-                     not in last_home_teams]
-        return new_games
+        last_home_teams = [match[HOME] for match in self.__old_matches]
+        # get new matches
+        new_matches = [match for match in self.__updated_matches if match[HOME]
+                       not in last_home_teams]
+        return new_matches
 
-    def find_finished_games(self):
-        """Find the games that finished.
+    def find_finished_matches(self):
+        """Find the matches that finished.
 
 
         Returns:
             finished - A list of dictionaries that contains
-            the games that finished
+            the matches that finished
         """
-        new_home_teams = [game[HOME] for game in self.__updated_games]
-        # get finished games
-        finished = [game for game in self.__old_games if game[HOME]
+        new_home_teams = [match[HOME] for match in self.__updated_matches]
+        # get finished matches
+        finished = [match for match in self.__old_matches if match[HOME]
                     not in new_home_teams]
         return finished
 
     def find_new_goals(self):
-        """Find new goals on the live games.
+        """Find new goals on the live matches.
 
 
         Returns:
-            new_games - A list of tuples that contains
-            the new goals on the live games.
+            new_matches - A list of tuples that contains
+            the new goals on the live matches.
         """
         index = 0
         new_goals = []
-        for game in self.__old_games:
-            for live_game in self.__updated_games:
-                if live_game[HOME] == game[HOME]:
-                    if live_game[HOME_GOALS] != game[HOME_GOALS]:
-                        new_goals.append(live_game)
+        for match in self.__old_matches:
+            for live_match in self.__updated_matches:
+                if live_match[HOME] == match[HOME]:
+                    if live_match[HOME_GOALS] != match[HOME_GOALS]:
+                        new_goals.append(live_match)
                         new_goals[index]["homeGoal"] = True
-                        if live_game[AWAY_GOALS] != game[AWAY_GOALS]:
+                        if live_match[AWAY_GOALS] != match[AWAY_GOALS]:
                             new_goals[index]["awayGoal"] = True
                         else:
                             new_goals[index]["awayGoal"] = False
                         index += 1
-                    elif live_game[AWAY_GOALS] != game[AWAY_GOALS]:
-                        new_goals.append(live_game)
+                    elif live_match[AWAY_GOALS] != match[AWAY_GOALS]:
+                        new_goals.append(live_match)
                         new_goals[index]["awayGoal"] = True
                         new_goals[index]["homeGoal"] = False
                         index += 1
         return new_goals
 
     def find_all_changes(self):
-        """Find updates on new games, finished games and goals.
+        """Find updates on new matches, finished matches and goals.
 
 
         Returns:
             changes - A list of lists that contains the new updates.
         """
-        return [self.find_new_games(),
-                self.find_finished_games(), self.find_new_goals()]
+        return [self.find_new_matches(),
+                self.find_finished_matches(), self.find_new_goals()]
