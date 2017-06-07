@@ -206,6 +206,7 @@ TEAM_CODES = {"VfL Wolfsburg": 11,
               "Palermo": 114,
               "Alav\u00e9s": 263,
               "Sporting Gij\xc3\xb3n": 96}
+# in case they change the names in the API
 HOME = "homeTeamName"
 AWAY = "awayTeamName"
 HOME_GOALS = "goalsHomeTeam"

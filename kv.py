@@ -4,155 +4,65 @@ By: Omer Alon
 Date: 02/04/17
 Program Version: 1.0.0
 """
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.gridlayout import GridLayout
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 from screen import ScreenNew, ScreenManager
 from kivy.uix.label import Label
-from kivy.uix.checkbox import CheckBox
 from kivy.uix.togglebutton import ToggleButton
-from kivy.app import runTouchApp
-from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
-from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
-from kivy.uix.widget import Widget
 import datetime
-import threading
-import pandas
-from sys import exit
 from team_codes import *
 
 
-Builder.load_string('''
-
-<LoginScreen>:
-    RelativeLayout:
-        Label:
-            text: "Football Pi"
-            pos: 0, 200
-            font_size: "64sp"
-        TextInput:
-            pos_hint: {"x": 0.25, "y": 0.5}
-            size_hint: 0.5, 0.07
-            multiline: False
-            hint_text: "Enter Your Name"
-            padding_x: 150
-            id: username
-            on_text: root.update_input_padding(self), app.audio(app.CLICK_SOUND)
-            on_text_validate: root.check_username(self)
-
-<TeamName>:
-    text_size: self.size
-
-<CheckButton>:
-    size_hint_y: None
-    size_hint_x: None
-    height: 24
-    width: 24
-    background_normal: "button-before-check.png"
-    background_down: "button-after-check-2.png"
-    on_press: root.add_remove_team(), app.audio(app.CLICK_SOUND)
-
-<ButtonNew>:
-    background_normal: "button-before-press.png"
-    background_down: "button-after-press.png"
-    border: 20, 20, 20, 20
-
-<HomeScreen>:
-    app: app
-    bar: bar
-    pos_hint_x: .03
-    grid: layout
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: 1, 1
-        height: 50
-        width: 800
-        pos: 0, 480 - self.height
-        id: bar
-        cols: 4
-        ButtonNew:
-            text: "Live"
-            on_press: app.audio(app.CLICK_SOUND), root.show_live()
-        ButtonNew:
-            text: "Future Matches"
-            on_press: app.audio(app.CLICK_SOUND), root.show_future()
-        ButtonNew:
-            text: "Finished Matches"
-            on_press: app.audio(app.CLICK_SOUND), root.show_finished()
-        ButtonNew:
-            text: "About"
-            on_press: app.audio(app.CLICK_SOUND)
-        ButtonNew:
-            text: "Exit"
-            on_press: app.audio(app.CLICK_SOUND), exit()
-    ScrollView:
-        size_hint: 1, None
-        size: 800, 480 - bar.height
-        GridLayout:
-            id: layout
-            cols: 1
-            size_hint_y: None
-            height: self.minimum_height
-            Label:
-                height: 15
-                size_hint_y: None
+Builder.load_file("kivy.kv")
 
 
-<TeamSelectionScreen>:
-    layout: layout
-    bar: bar
-    pos_hint_x: .03
-    GridLayout:
-        pos: 0, 480 - self.height
-        id: bar
-        size_hint: 1, 1
-        spacing: 10
-        width: 800
-        height: 50
-        cols: 2
-        Label:
-            text: "Pick the teams you would like to follow"
-            bold: True
-            size_hint_x: None
-            width: 0.7 * 800
-        ButtonNew:
-            text: "Done"
-            on_press: app.end_team_selection_screen(root.selected_teams), app.audio(app.CLICK_SOUND)
-
-    ScrollView:
-        size_hint: 1, None
-        size: 800, 480 - bar.height
-        GridLayout:
-            padding: 20, 0
-            width: 800
-            id: layout
-            cols: 2
-            spacing: 20
-            size_hint_y: None
-            height: self.minimum_height
+TEXT_ORGANIZE = "{0:>33}{1:11}{2:<5}{3:<5}{4:<11}{5:<6}"
 
 
-<MatchLabel@Label>:
-    canvas:
-        Color:
-            rgb: 0, 1, 0
-        Rectangle:
-            pos: self.pos
-            size: self.width, 2
-        Rectangle:
-            pos: self.x, self.y + self.height
-            size: self.width, 2
-        Rectangle:
-            pos: self.pos
-            size: 2, self.height
-        Rectangle:
-            pos: self.x + self.width - 2, self.y
-            size: 2, self.height
-    ''')
+class AlertScreen(ScreenNew):
+
+    def __init__(self, goal_for, score, background, **kwargs):
+        super(AlertScreen, self).__init__(**kwargs)
+        self.text_label0.text = goal_for
+        self.text_label1.text = score
+        self.button.background_normal = background
+        self.button.background_down = background
+
+
+class GoalScreen(AlertScreen):
+
+    def __init__(self, match, **kwargs):
+        """Set the class's attributes."""
+        # check which team scored the goal
+        goal_for = match[HOME] if match["homeGoal"] else match[AWAY]
+        score = "{:<45}{} - {}{:>45}".format(
+            match[HOME], match[HOME_GOALS], match[AWAY_GOALS], match[AWAY])
+        super(GoalScreen, self).__init__(
+            "goal for %s" % goal_for, score, "goal.png", **kwargs)
+        # unique name to avoid confusing the screen manager
+        self.name = match[TIME] + match[HOME] + match[AWAY]
+
+
+class MatchStartScreen(AlertScreen):
+
+    def __init__(self, match, **kwargs):
+        score = "{:<45}{} - {}{:>45}".format(
+            match[HOME], match[HOME_GOALS], match[AWAY_GOALS], match[AWAY])
+        super(MatchStartScreen, self).__init__(
+            "", score, "started.png", **kwargs)
+        self.name = "started" + match[DATE] + match[HOME] + match[AWAY]
+
+
+class MatchEndScreen(AlertScreen):
+
+    def __init__(self, match, **kwargs):
+        score = "{:<45}{} - {}{:>45}".format(
+            match[HOME], match[HOME_GOALS], match[AWAY_GOALS], match[AWAY])
+        super(MatchEndScreen, self).__init__(
+            "", score, "finished.png", **kwargs)
+        self.name = "finished" + match[DATE] + match[HOME] + match[AWAY]
 
 
 class TeamName(Label):
@@ -164,6 +74,10 @@ class ButtonNew(Button):
 
 
 class MatchLabel(Label):
+    pass
+
+
+class OpeningScreen(Screen):
     pass
 
 
@@ -180,18 +94,19 @@ class HomeScreen(ScreenNew):
         self.__finished = []
         self.__live = []
         self.__future = []
-        self.__user_place = "live"
+        self.__user_place = "Live matches"
         self.__match_labels = []
         self.__app = app
 
     def update(self):
         """Update the home screen according to the user's live updates."""
         self.grid.add_widget(Label(
-            text=self.LOADING, height=50, size_hint_y=None))
+            text=self.LOADING, height=50, size_hint_y=None, font_size=32))
         # get the finished, live and future matches of the user
         self.__finished, self.__live, self.__future =\
             self.app.user.get_matches_categorized()
         self.show_live()
+        self.bar.disabled = False
         while True:
             new_matches, ended_matches, new_goals_matches, updated = \
                 self.app.user.get_changes_categorized()
@@ -205,25 +120,31 @@ class HomeScreen(ScreenNew):
             else:
                 for match in ended_matches:
                     self.__finished.append(match)
-                    # present on screen!
+                    self.__app.audio("final-whistle.mp3")
+                    # present the finished match message
+                    self.__app.add_and_switch_screen(MatchEndScreen(match))
                 for match in new_matches:
                     self.__future = [future_match for future_match in
                                      self.__future if future_match[HOME] !=
                                      match[HOME] or future_match[DATE] !=
                                      datetime.datetime.today()]
-                    # present on screen!
+                    self.__app.audio("whistle.mp3")
+                    # present the new match message
+                    self.__app.add_and_switch_screen(MatchStartScreen(match))
                 for match in new_goals_matches:
-                    print "present on screen!"
+                    self.__app.audio("goal-sound.mp3")
+                    # present the goal message
+                    self.__app.add_and_switch_screen(GoalScreen(match))
                 self.__live = updated
                 # update the screen according to the changes
-                if self.__user_place == "live":
+                if self.__user_place == "Live matches":
                     self.show_live()
-                elif self.__user_place == "finished":
+                elif self.__user_place == "Finished matches":
                     self.show_finished()
                 else:
                     self.show_future()
 
-    def show_games(self, to_show, type_time):
+    def show_matches(self, to_show, type_time):
         """Clear the screen and present the given information.
 
 
@@ -235,28 +156,38 @@ class HomeScreen(ScreenNew):
         self.grid.clear_widgets()
         self.grid.add_widget(Label(height=15, size_hint_y=None))
         if to_show:
+            self.grid.add_widget(Label(
+                text=self.__user_place, height=40,
+                size_hint_y=None, font_size=24))
             for match in to_show:
                 match[HOME] = self.__app.special_names(match[HOME])
                 match[AWAY] = self.__app.special_names(match[AWAY])
                 self.add_match(match, type_time)
-        elif self.__user_place == "live":
-            self.grid.add_widget(Label(text=self.NO_LIVE_MATCHES))
-        elif self.__user_place == "finished":
-            self.grid.add_widget(Label(text=self.NO_FINISHED_MATCHES))
+        elif self.__user_place == "Live matches":
+            self.grid.add_widget(Label(text=self.NO_LIVE_MATCHES, height=40,
+                                       size_hint_y=None, font_size=32))
+        elif self.__user_place == "Finished matches":
+            self.grid.add_widget(Label(text=self.NO_FINISHED_MATCHES,
+                                       height=40, size_hint_y=None,
+                                       font_size=32))
         else:
-            self.grid.add_widget(Label(text=self.NO_FUTURE_MATCHES))
+            self.grid.add_widget(Label(text=self.NO_FUTURE_MATCHES, height=40,
+                                       size_hint_y=None, font_size=32))
 
     def show_live(self):
-        self.__user_place = "live"
-        self.show_games(self.__live, TIME)
+        """Present the live matches on the screen."""
+        self.__user_place = "Live matches"
+        self.show_matches(self.__live, TIME)
 
     def show_finished(self):
-        self.__user_place = "finished"
-        self.show_games(self.__finished, DATE)
+        """Present the finished matches on the screen."""
+        self.__user_place = "Finished matches"
+        self.show_matches(self.__finished, DATE)
 
     def show_future(self):
-        self.__user_place = "future"
-        self.show_games(self.__future, DATE)
+        """Present the future matches on the screen."""
+        self.__user_place = "Future matches"
+        self.show_matches(self.__future, DATE)
 
     def add_match(self, match, type_time):
         """Present a live match on the screen.
@@ -271,11 +202,10 @@ class HomeScreen(ScreenNew):
                                 height=30, size_hint_y=None)
         self.grid.add_widget(time_label)
         # present the score and teams' names
-        label = MatchLabel(text="{0:>33}{1:11}{2:<5}{3:<5}{4:<11}{5:<6}".format(
-            match[HOME], " ", match[HOME_GOALS],
-            "-", match[AWAY_GOALS], match[AWAY]),
-            font_name=self.FONT, padding_x=0,
-            height=25, width=480, size_hint_y=None)
+        label = MatchLabel(text=TEXT_ORGANIZE.format(
+            match[HOME], " ", match[HOME_GOALS], "-",
+            match[AWAY_GOALS], match[AWAY]), font_name=self.FONT,
+            padding_x=0, height=25, width=480, size_hint_y=None)
         label.bind(size=label.setter("text_size"))
         self.grid.add_widget(label)
         self.grid.add_widget(Label(height=50, size_hint_y=None))
@@ -320,6 +250,7 @@ class TeamSelectionScreen(ScreenNew):
 
     @property
     def selected_teams(self):
+        """Get the selected teams."""
         return self.__selected_teams
 
     def add_remove_team(self, team):
@@ -357,8 +288,7 @@ class LoginScreen(Screen):
             text_width = text_input._get_text_width(
                 text_input.text,
                 text_input.tab_width,
-                text_input._label_cached
-            )
+                text_input._label_cached)
             text_input.padding_x = (text_input.width - text_width) / 2
         else:
             # manually calculated padding
@@ -386,6 +316,8 @@ class ScreenManagerNew(ScreenManager):
         Window.size = (800, 480)
         super(ScreenManagerNew, self).__init__(**kwargs)
         self.__app = app
+        self.opening_screen = OpeningScreen()
+        self.add_widget(self.opening_screen)
         self.home_screen = HomeScreen(app, name="home")
         self.add_widget(LoginScreen(app, name="login"))
         self.add_widget(TeamSelectionScreen(app, teams, name="team_selection"))

@@ -1,0 +1,159 @@
+<OpeningScreen@Screen>:
+    size_hint: 1, 1
+    width: 800
+    height: 480
+    name: "opening"
+    Image:
+        allow_stretch: True
+        keep_ratio: False
+        source: "opening.jpg"
+        width: 800
+
+<LoginScreen>:
+    RelativeLayout:
+        Label:
+            text: "Football Pi"
+            color: 110 / 255.0, 148 / 255.0, 209 / 255.0, 1
+            pos: 0, 200
+            font_size: "64sp"
+        TextInput:
+            pos_hint: {"x": 0.25, "y": 0.5}
+            size_hint: 0.5, 0.07
+            multiline: False
+            hint_text: "Enter Your Name"
+            padding_x: 150
+            id: username
+            on_text: root.update_input_padding(self)
+            on_text_validate: root.check_username(self)
+<TeamName>:
+    text_size: self.size
+
+<CheckButton>:
+    size_hint_y: None
+    size_hint_x: None
+    height: 24
+    width: 24
+    background_normal: "button-before-check.png"
+    background_down: "button-after-check-2.png"
+    on_press: root.add_remove_team(), app.audio(app.CLICK_SOUND)
+
+<ButtonNew>:
+    background_normal: "button-before-press.png"
+    background_down: "button-after-press.png"
+    border: 20, 20, 20, 20
+
+<HomeScreen>:
+    app: app
+    bar: bar
+    pos_hint_x: .03
+    grid: layout
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, 1
+        height: 50
+        width: 800
+        pos: 0, 480 - self.height
+        id: bar
+        cols: 4
+        disabled: True
+        ButtonNew:
+            text: "Live"
+            on_press: app.audio(app.CLICK_SOUND), root.show_live()
+        ButtonNew:
+            text: "Future Matches"
+            on_press: app.audio(app.CLICK_SOUND), root.show_future()
+        ButtonNew:
+            text: "Finished Matches"
+            on_press: app.audio(app.CLICK_SOUND), root.show_finished()
+        ButtonNew:
+            text: "Exit"
+            on_press: app.audio(app.CLICK_SOUND), exit()
+    ScrollView:
+        size_hint: 1, None
+        size: 800, 480 - bar.height
+        GridLayout:
+            id: layout
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+            Label:
+                height: 15
+                size_hint_y: None
+
+
+<TeamSelectionScreen>:
+    layout: layout
+    bar: bar
+    pos_hint_x: .03
+    GridLayout:
+        pos: 0, 480 - self.height
+        id: bar
+        size_hint: 1, 1
+        spacing: 10
+        width: 800
+        height: 50
+        cols: 2
+        Label:
+            text: "Pick the teams you would like to follow"
+            bold: True
+            size_hint_x: None
+            width: 0.7 * 800
+        ButtonNew:
+            text: "Done"
+            on_press: app.end_team_selection_screen(root.selected_teams), app.audio(app.CLICK_SOUND)
+
+    ScrollView:
+        size_hint: 1, None
+        size: 800, 480 - bar.height
+        GridLayout:
+            padding: 20, 0
+            width: 800
+            id: layout
+            cols: 2
+            spacing: 20
+            size_hint_y: None
+            height: self.minimum_height
+
+
+<MatchLabel@Label>:
+    canvas:
+        Color:
+            rgb: .8, 0, 0
+        Rectangle:
+            pos: self.pos
+            size: self.width, 2
+        Rectangle:
+            pos: self.x, self.y + self.height
+            size: self.width, 2
+        Rectangle:
+            pos: self.pos
+            size: 2, self.height
+        Rectangle:
+            pos: self.x + self.width - 2, self.y
+            size: 2, self.height
+
+<AlertScreen@ScreenNew>:
+    button: button
+    text_label0: text0
+    text_label1: text1
+    FloatLayout:
+        size_hint: 1, 1
+        height: 480
+        width: 800
+        pos: 0, 0
+        Button:
+            id: button
+            on_press: app.audio(app.CLICK_SOUND), app.set_screen("home")
+        Label:
+            pos: 0, 0
+            id: text0
+            color: 110 / 255.0, 148 / 255.0, 209 / 255.0, 1
+            font_size: 32
+        Label:
+            pos: 0, -50
+            id: text1
+            color: 110 / 255.0, 148 / 255.0, 209 / 255.0, 1
+            font_size: 16
+            font_name: "Inconsolata-Bold.ttf"
+            padding_x: 0
+            width: 480

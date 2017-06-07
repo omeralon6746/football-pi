@@ -59,6 +59,8 @@ class Changes(object):
                 if live_match[HOME] == match[HOME]:
                     if live_match[HOME_GOALS] != match[HOME_GOALS]:
                         new_goals.append(live_match)
+                        # add "homeGoal" and "awayGoal" labels in order
+                        # to know which team has scored
                         new_goals[index]["homeGoal"] = True
                         if live_match[AWAY_GOALS] != match[AWAY_GOALS]:
                             new_goals[index]["awayGoal"] = True

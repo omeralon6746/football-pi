@@ -31,6 +31,7 @@ class InformationSource(object):
         """
         old_scores = self.__last_scores
         new_scores = self.get_live_matches()
+        # get the live matches changes
         changed = changes.Changes(new_scores, old_scores).find_all_changes()
         return changed[0], changed[1], changed[2]
 
@@ -55,7 +56,8 @@ class InformationSource(object):
             return self.get_live_matches()
         # filter the live matches
         self.__last_scores = [match for match in matches[MATCHES] if -1 not in
-                              match.values() and FINAL_TIME not in match.values()]
+                              match.values() and
+                              FINAL_TIME not in match.values()]
         for match in self.__last_scores:
             del match["league"]
         return self.__last_scores
@@ -86,14 +88,16 @@ class InformationSource(object):
         """
         all_matches = []
         for team in user_teams:
+            # get the matches of specific team from the information server
             all_matches += InformationSource.get_team_matches(team)
-        delete_duplicates = []
+        without_duplications = []
         for match in all_matches:
             match[DATE] = InformationSource.convert_to_local_time(match[DATE])
         for match in all_matches:
-            if match not in delete_duplicates:
-                delete_duplicates.append(match)
-        return sorted(delete_duplicates, key=lambda fixture: fixture[DATE])
+            if match not in without_duplications:
+                without_duplications.append(match)
+        # sort the matches by date
+        return sorted(without_duplications, key=lambda fixture: fixture[DATE])
 
     @staticmethod
     def get_team_matches(team):
@@ -105,7 +109,7 @@ class InformationSource(object):
 
 
         Returns:
-            All the team's matches(finished, future and live).
+            A list of dictionaries that contains all the team's matches.
         """
         team_code = TEAM_CODES[team]
         try:
@@ -133,7 +137,7 @@ class InformationSource(object):
 
 
         Receives:
-            The time of the match in Israel.
+            A datetime object that contains the time of the match in Israel.
         """
         timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
         timestamp = calendar.timegm(timestamp.timetuple())

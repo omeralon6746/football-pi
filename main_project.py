@@ -33,6 +33,9 @@ class Main(App):
 
     def build(self):
         """Set window size."""
+        threading.Timer(4, self.set_screen, ["login"]).start()
+        # start the sound (almost) immediately
+        threading.Timer(0.01, self.audio, ["goal-sound.mp3"]).start()
         return self.__screen_manager
 
     def end_team_selection_screen(self, selected_teams):
@@ -103,6 +106,16 @@ class Main(App):
             thread.daemon = True
             thread.start()
         self.__screen_manager.current = screen_name
+
+    def add_and_switch_screen(self, screen):
+        """Add and switch to screen.
+
+
+        Receives:
+            screen - A string that contains a screen name.
+        """
+        self.__screen_manager.add_widget(screen)
+        self.__screen_manager.current = screen.name
 
 
 if __name__ == '__main__':

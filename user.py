@@ -49,6 +49,7 @@ class User(object):
             if users:
                 for user in users:
                     if self.__username in user.keys():
+                        # restore the user's teams
                         for value in user.values():
                             for team in value:
                                 self.__teams.append(team)
@@ -60,10 +61,11 @@ class User(object):
 
 
         Returns:
-            new matches, ended matches, goals, live matches
+            A lists of new matches, ended matches, goals, live matches
         """
         # get the changes from the information source
-        new_matches, ended_matches, goals = self.__information_source.get_changes()
+        new_matches, ended_matches, goals = \
+            self.__information_source.get_changes()
         return self.get_user_matches(new_matches), \
             self.get_user_matches(ended_matches), \
             self.get_user_matches(goals), \
@@ -88,7 +90,7 @@ class User(object):
 
 
         Returns:
-            all the matches that belong to the user.
+            A list that contains all the matches that belong to the user.
         """
         return self.__information_source.get_matches(self.__teams)
 
@@ -97,7 +99,7 @@ class User(object):
 
 
         Returns:
-            finished matches, live matches, future matches.
+            A lists of finished matches, live matches, future matches.
         """
         live = self.__information_source.get_live_matches()
         return self.get_finished_matches(live), self.get_user_matches(live), \
@@ -111,13 +113,12 @@ class User(object):
             live - A string that contains the live matches.
 
         Returns:
-            The user teams' finished matches.
+            A list that contains the user teams' finished matches.
         """
         finished_matches = [match for match in self.get_all_matches() if
                             match["status"] == "FINISHED"]
         for i in xrange(len(finished_matches)):
             finished_matches[i] = User.choose_information(finished_matches[i])
-        print User.check_in_live(finished_matches, live)
         return User.check_in_live(finished_matches, live)
 
     def get_future_matches(self, live):
@@ -128,7 +129,7 @@ class User(object):
             live - A string that contains the live matches.
 
         Returns:
-            The user teams' future matches.
+            A list that contains the user teams' future matches.
         """
         future_matches = [match for match in self.get_all_matches() if
                           None in match["result"].values() and
@@ -147,7 +148,8 @@ class User(object):
             live_matches - A list of dictionaries that contains live matches.
 
         Returns:
-            matches - The given matches without the live matches.
+            matches - A list that contains
+                      the given matches without the live matches.
         """
         for i in xrange(len(matches)):
             for live_match in live_matches:
@@ -166,7 +168,8 @@ class User(object):
             match - A dictionary that contains finished/future match.
 
         Returns:
-            edited_match - The given match without the Unnecessary values.
+            edited_match - A list that contains
+                           the given match without the Unnecessary values.
         """
         edited_match = {DATE: match[DATE],
                         HOME_GOALS: match["result"][HOME_GOALS],
