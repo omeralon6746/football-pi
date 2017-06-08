@@ -4,7 +4,6 @@ By: Omer Alon
 Date: 02/04/17
 Program Version: 1.0.0
 """
-import time
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 from screen import ScreenNew, ScreenManager
@@ -104,61 +103,49 @@ class HomeScreen(ScreenNew):
         self.grid.add_widget(Label(
             text=self.LOADING, height=50, size_hint_y=None, font_size=32))
         # get the finished, live and future matches of the user
-        self.__finished, bla, self.__future =\
+        self.__finished, self.__live, self.__future =\
             self.app.user.get_matches_categorized()
-        self.__live = [{"homeTeamName": "Real Madrid", "awayTeamName": "Juventus", "homeGoal": True, "awayGoal": False, "time": "78'", "goalsHomeTeam": 3, "goalsAwayTeam": 1}]
         self.show_live()
         self.bar.disabled = False
         while True:
-            if True:
-                time.sleep(5)
-                self.__live = [{"homeTeamName": "Real Madrid", "awayTeamName": "Juventus", "homeGoal": True, "awayGoal": False, "time": "79'", "goalsHomeTeam": 3, "goalsAwayTeam": 1}]
-                self.change_minutes(self.__live)
-                time.sleep(5)
-                self.__live = [{"homeTeamName": "Real Madrid", "awayTeamName": "Juventus", "homeGoal": True, "awayGoal": False, "time": "79'", "goalsHomeTeam": 4, "goalsAwayTeam": 1}]
-                self.__app.audio("goal-sound.mp3")
-                self.__app.add_and_switch_screen(GoalScreen(self.__live[0]))
+            new_matches, ended_matches, new_goals_matches, updated = \
+                self.app.user.get_changes_categorized()
+            # if only the minutes changed, present the updated
+            if not (new_matches or ended_matches or new_goals_matches):
+                for i in xrange(len(updated)):
+                    if updated[i][TIME] != self.__live[i][TIME]:
+                        self.change_minutes(updated)
+                        break
+                self.__live = updated
             else:
-                new_matches, ended_matches, new_goals_matches, updated = \
-                    self.app.user.get_changes_categorized()
-                # if only the minutes changed, present the updated
-                if not (new_matches or ended_matches or new_goals_matches):
-                    for i in xrange(len(updated)):
-                        if updated[i][TIME] != self.__live[i][TIME]:
-                            self.change_minutes(updated)
-                            break
-                    self.__live = updated
+                for match in ended_matches:
+                    self.__finished.append(match)
+                    self.__app.audio("final-whistle.mp3")
+                    # present the finished match message
+                    self.__app.add_and_switch_screen(MatchEndScreen(match))
+                for match in new_matches:
+                    self.__future = [future_match for future_match in
+                                     self.__future if future_match[HOME] !=
+                                     match[HOME] or future_match[DATE] !=
+                                     datetime.datetime.today()]
+                    self.__app.audio("whistle.mp3")
+                    # present the new match message
+                    self.__app.add_and_switch_screen(MatchStartScreen(match))
+                for match in new_goals_matches:
+                    self.__app.audio("goal-sound.mp3")
+                    # present the goal message
+                    self.__app.add_and_switch_screen(GoalScreen(match))
+                self.__live = updated
+                # update the screen according to the changes
+                if self.__user_place == "Live matches":
+                    self.show_live()
+                elif self.__user_place == "Finished matches":
+                    self.show_finished()
                 else:
-                    for match in ended_matches:
-                        self.__finished.append(match)
-                        self.__app.audio("final-whistle.mp3")
-                        # present the finished match message
-                        self.__app.add_and_switch_screen(MatchEndScreen(match))
-                    for match in new_matches:
-                        self.__future = [future_match for future_match in
-                                         self.__future if future_match[HOME] !=
-                                         match[HOME] or future_match[DATE] !=
-                                         datetime.datetime.today()]
-                        self.__app.audio("whistle.mp3")
-                        # present the new match message
-                        self.__app.add_and_switch_screen(MatchStartScreen(match))
-                    for match in new_goals_matches:
-                        self.__app.audio("goal-sound.mp3")
-                        # present the goal message
-                        self.__app.add_and_switch_screen(GoalScreen(match))
-                    self.__live = updated
-                    # update the screen according to the changes
-                    if self.__user_place == "Live matches":
-                        self.show_live()
-                    elif self.__user_place == "Finished matches":
-                        self.show_finished()
-                    else:
-                        self.show_future()
+                    self.show_future()
 
     def show_matches(self, to_show, type_time):
         """Clear the screen and present the given information.
-
-
         Receives:
             to_show - A list of dictionaries that contains the matches to show.
             type_time - A string that contains the word "date"/"time".
@@ -202,8 +189,6 @@ class HomeScreen(ScreenNew):
 
     def add_match(self, match, type_time):
         """Present a live match on the screen.
-
-
         Receives:
             match - A dictionary that contains the match information.
             type_time - A string that contains the word "date"/"time".
@@ -224,8 +209,6 @@ class HomeScreen(ScreenNew):
 
     def change_minutes(self, live):
         """Change the minutes of the live matches.
-
-
         Receives:
             live - A list of dictionaries that contains the live matches.
         """
@@ -267,8 +250,6 @@ class TeamSelectionScreen(ScreenNew):
     def add_remove_team(self, team):
         """if a button was pressed, add the team that the button belongs to
            or remove the team in case the button was already pressed.
-
-
         Receives:
             team - A string that contains the team
                    that the pressed button points on.
@@ -290,8 +271,6 @@ class LoginScreen(Screen):
     @staticmethod
     def update_input_padding(text_input):
         """Set the text to the middle of the screen.
-
-
         Receives:
             text_input - A string that contains the user's input.
         """
@@ -307,8 +286,6 @@ class LoginScreen(Screen):
 
     def check_username(self, username):
         """Update the username.
-
-
         Receives:
             text_input - A string that contains the user's name.
         """
