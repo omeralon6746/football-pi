@@ -106,16 +106,16 @@ class HomeScreen(ScreenNew):
         # get the finished, live and future matches of the user
         self.__finished, bla, self.__future =\
             self.app.user.get_matches_categorized()
-        self.__live = [{"homeTeamName": "Liverpool", "awayTeamName": "Manchester United", "homeGoal": True, "awayGoal": False, "time": "73'", "goalsHomeTeam": 4, "goalsAwayTeam": 0}]
+        self.__live = [{"homeTeamName": "Real Madrid", "awayTeamName": "Juventus", "homeGoal": True, "awayGoal": False, "time": "78'", "goalsHomeTeam": 3, "goalsAwayTeam": 1}]
         self.show_live()
         self.bar.disabled = False
         while True:
             if True:
                 time.sleep(5)
-                self.__live = [{"homeTeamName": "Liverpool", "awayTeamName": "Manchester United", "homeGoal": True, "awayGoal": False, "time": "74'", "goalsHomeTeam": 5, "goalsAwayTeam": 0}]
+                self.__live = [{"homeTeamName": "Real Madrid", "awayTeamName": "Juventus", "homeGoal": True, "awayGoal": False, "time": "79'", "goalsHomeTeam": 3, "goalsAwayTeam": 1}]
                 self.change_minutes(self.__live)
                 time.sleep(5)
-                self.__live = [{"homeTeamName": "Liverpool", "awayTeamName": "Manchester United", "homeGoal": True, "awayGoal": False, "time": "73'", "goalsHomeTeam": 5, "goalsAwayTeam": 0}]
+                self.__live = [{"homeTeamName": "Real Madrid", "awayTeamName": "Juventus", "homeGoal": True, "awayGoal": False, "time": "79'", "goalsHomeTeam": 4, "goalsAwayTeam": 1}]
                 self.__app.audio("goal-sound.mp3")
                 self.__app.add_and_switch_screen(GoalScreen(self.__live[0]))
             else:
