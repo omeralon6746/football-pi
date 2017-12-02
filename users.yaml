@@ -122,3 +122,24 @@
   - Hull City
   - Leicester City
   - Liverpool
+- !!python/unicode '2018':
+  - Liverpool
+  - Manchester City
+  - Manchester United
+  - Chelsea
+  - Arsenal
+  - Tottenham Hotspur
+- !!python/unicode 'itay':
+  - Liverpool
+  - Borussia Monchengladbach
+- !!python/unicode 'denis':
+  - Crystal Palace
+  - RB Leipzig
+  - Villarreal
+- !!python/unicode 'it':
+  - West Ham United
+  - West Bromwich Albion
+  - Schalke 04
+- !!python/unicode 'galniv':
+  - Chelsea
+  - Leicester City

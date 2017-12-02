@@ -2,18 +2,18 @@
 AFC Bournemouth
 Arsenal
 Burnley
+ברייטון***************
 Chelsea
 Crystal Palace
 Everton
-Hull City
+Huddersfield Town
 Leicester City
 Liverpool
 Manchester City
 Manchester United
-Middlesbrough
+Newcastle United
 Southampton
 Stoke City
-Sunderland
 Swansea City
 Tottenham Hotspur
 Watford
@@ -28,27 +28,25 @@ Eintracht Frankfurt
 FC Augsburg
 Bayern Munich
 Schalke 04
-FC Ingolstadt 04
 FC Cologne
 Mainz
 Hamburg SV
 Hertha Berlin
 RB Leipzig
 SC Freiburg
-SV Darmstadt 98
 TSG Hoffenheim
 VfL Wolfsburg
 Werder Bremen
+Hannover 96
+שטוטגרט**************
 
 
 Angers
 AS Monaco
-AS Nancy Lorraine
 St Etienne
 Dijon FCO
 Guingamp
 Bordeaux
-Lorient
 Metz
 Nantes
 Montpellier
@@ -57,20 +55,20 @@ Marseille
 Lyon
 Lille
 Paris Saint-Germain
-Bastia
 Caen
 Stade Rennais
 Toulouse
+טרואה*******************
+אמיין********************
+Strasbourg
 
 
 Athletic Bilbao
-Osasuna
 Leganes
 Atletico Madrid
 Alav\u00e9s
 Barcelona
-Granada
-Málaga
+Málaga-M\u00e1laga
 Celta Vigo
 Deportivo La Coru\u00f1a
 Espanyol
@@ -79,11 +77,12 @@ Real Madrid
 Real Sociedad
 Eibar
 Sevilla FC
-Sporting Gijón
 Las Palmas
 Valencia
 Villarreal
-
+ג'ירונה**************
+חטאפה*************
+Levante
 
 Chievo Verona
 Fiorentina
@@ -92,16 +91,24 @@ AS Roma
 Atalanta
 Bologna
 Cagliari
-Empoli
 Crotone
 Internazionale
 Genoa
 Juventus
-US Pescara
 Napoli
 Lazio
 Torino
 Sampdoria
 Udinese
-Palermo
 Sassuolo
+Benevento
+SPAL
+ורונה*****************
+
+PEC Zwolle
+FC Utrecht
+
+Sporting CP
+Belenenses
+FC Porto
+Benfica
